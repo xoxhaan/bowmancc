@@ -6,37 +6,37 @@ using Styx.Helpers;
 using System.IO;
 using Styx;
 
-namespace Marksman
+namespace PvPBow
 {
-    public class MarksmanSettings : Settings
+    public class PvPBowSettings : Settings
     {
-        public static readonly MarksmanSettings Instance = new MarksmanSettings();
+        public static readonly PvPBowSettings Instance = new PvPBowSettings();
 
-        public MarksmanSettings()
-            : base(Path.Combine(Logging.ApplicationPath, string.Format(@"CustomClasses/Config/Bowman-Settings-{0}.xml", StyxWoW.Me.Name)))
+        public PvPBowSettings()
+            : base(Path.Combine(Logging.ApplicationPath, string.Format(@"CustomClasses/Config/PvPBow-Settings-{0}.xml", StyxWoW.Me.Name)))
         {
         }
 
         [Setting, DefaultValue(true)]
-        public bool AimedROT { get; set; }
+        public bool T1MOB { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool ArcaneROT { get; set; }
+        public bool T1DMG { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool MixedROT { get; set; }
+        public bool T1DEF { get; set; }
+		
+		[Setting, DefaultValue(false)]
+        public bool T2DMG { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool ExploROT { get; set; }
+        public bool T2DEF { get; set; }
+
+        [Setting, DefaultValue(true)]
+        public bool T2MOB { get; set; }
 
         [Setting, DefaultValue(true)]
         public bool MMSPEC { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool SSPEC { get; set; }
-
-        [Setting, DefaultValue(true)]
-        public bool Party { get; set; }
 
         [Setting, DefaultValue(false)]
         public bool CP { get; set; }
@@ -46,21 +46,39 @@ namespace Marksman
 
         [Setting, DefaultValue(false)]
         public bool MP { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool MS { get; set; }
+		
+		[Setting, DefaultValue(false)]
+        public bool WEB { get; set; }
+		
+		[Setting, DefaultValue(false)]
+        public bool ROR { get; set; }
+		
+		[Setting, DefaultValue(false)]
+        public bool ROS { get; set; }
 
         [Setting, DefaultValue(true)]
+        public bool ICET { get; set; }
+		
+		[Setting, DefaultValue(false)]
+        public bool SNAT { get; set; }
+		
+		[Setting, DefaultValue(false)]
+        public bool FRET { get; set; }
+		
+		[Setting, DefaultValue(false)]
+        public bool EXPT { get; set; }
+
+        [Setting, DefaultValue(false)]
         public bool TL { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool DSLFR { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool DSNOR { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool DSHC { get; set; }
+		
+		[Setting, DefaultValue(false)]
+        public bool TL2 { get; set; }
+		
+		[Setting, DefaultValue(false)]
+        public bool TL3 { get; set; }
+		
+		[Setting, DefaultValue(false)]
+        public bool TL4 { get; set; }
 
         [Setting, DefaultValue(false)]
         public bool T1 { get; set; }
@@ -107,11 +125,14 @@ namespace Marksman
 		[Setting, DefaultValue(true)]
         public bool HM { get; set; }
 		
+		[Setting, DefaultValue(false)]
+        public bool WVE { get; set; }
+		
 		[Setting, DefaultValue(true)]
         public bool CONC { get; set; }
 		
 		[Setting, DefaultValue(true)]
-        public bool BAR { get; set; }
+        public bool AIM { get; set; }
 		
 		[Setting, DefaultValue(false)]
         public bool DETR { get; set; }
