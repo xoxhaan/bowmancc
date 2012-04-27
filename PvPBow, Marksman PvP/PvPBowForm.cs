@@ -49,6 +49,7 @@ namespace PvPBow
 			SnakeTrap.Checked = PvPBowSettings.Instance.SNAT;
 			FreezeTrap.Checked = PvPBowSettings.Instance.FRET;
 			ExploTrap.Checked = PvPBowSettings.Instance.EXPT;
+			LauncherFail.Checked = PvPBowSettings.Instance.TLF;
             Launcher.Checked = PvPBowSettings.Instance.TL;
 			Launcher2.Checked = PvPBowSettings.Instance.TL2;
 			Launcher3.Checked = PvPBowSettings.Instance.TL3;
@@ -248,6 +249,17 @@ namespace PvPBow
             else
             {
                 PvPBowSettings.Instance.ROS = false;
+            }
+        }
+		private void LauncherFail_CheckedChanged(object sender, EventArgs e)
+        {
+            if (LauncherFail.Checked == true)
+            {
+                PvPBowSettings.Instance.TLF = true;
+            }
+            else
+            {
+                PvPBowSettings.Instance.TLF = false;
             }
         }
         private void Launcher_CheckedChanged(object sender, EventArgs e)

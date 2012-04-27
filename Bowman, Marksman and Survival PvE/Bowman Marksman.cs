@@ -19,7 +19,7 @@ namespace Marksman
 {
     class Classname : CombatRoutine
     {
-        public override sealed string Name { get { return "Bowman a Marksmanship CC v4.1.0.0"; } }
+        public override sealed string Name { get { return "Bowman a Marksmanship CC v4.1.1.0"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -39,7 +39,7 @@ namespace Marksman
         public override void Initialize()
         {
             Logging.Write(Color.White, "___________________________________________________");
-            Logging.Write(Color.Crimson, "----------- Bowman v4.1.0.0 ------------");
+            Logging.Write(Color.Crimson, "----------- Bowman v4.1.1.0 ------------");
 			Logging.Write(Color.Crimson, "by FallDown, Shaddar, Venus112 and Jasf10");
             Logging.Write(Color.Crimson, "---  Remember to comment on the forum! ---");
             Logging.Write(Color.Crimson, "--- /like and +rep if you like this CC! ----");
@@ -73,53 +73,55 @@ namespace Marksman
         {
             get
             {
-             if (!Me.GotAlivePet && MarksmanSettings.Instance.CP && !Me.Dead && !Me.Mounted) 
+             if (StyxWoW.IsInWorld && !Me.IsGhost && !Me.GotAlivePet && !Me.Dead && !Me.Mounted) 
                 {
-                if (MarksmanSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet") && !Me.Dead && !Me.Mounted)
+                if (MarksmanSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"))
                     {
                         if (CastSpell("Revive Pet")) 
                         StyxWoW.SleepForLagDuration();
                     }
+                }
+				{
+				if (MarksmanSettings.Instance.CP && Me.Pet == null && !Me.IsCasting)
                     {
-                        if (Me.Pet == null && MarksmanSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
+                        if (MarksmanSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
                         {
                             SpellManager.Cast("Call Pet 1");
-							 StyxWoW.SleepForLagDuration();
+							StyxWoW.SleepForLagDuration();
                         }
                     }
                     {
-                        if (Me.Pet == null && MarksmanSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
+                        if (MarksmanSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
                         {
                             SpellManager.Cast("Call Pet 2");
-							 StyxWoW.SleepForLagDuration();
+							StyxWoW.SleepForLagDuration();
                         }
                     }
                     {
-                        if (Me.Pet == null && MarksmanSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
+                        if (MarksmanSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
                         {
                             SpellManager.Cast("Call Pet 3");
-							 StyxWoW.SleepForLagDuration();
+							StyxWoW.SleepForLagDuration();
                         }
                     }
                     {
-                        if (Me.Pet == null && MarksmanSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
+                        if ( MarksmanSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
                         {
                             SpellManager.Cast("Call Pet 4");
-							 StyxWoW.SleepForLagDuration();
+							StyxWoW.SleepForLagDuration();
                         }
                     }
                     {
-                        if (Me.Pet == null && MarksmanSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
+                        if (MarksmanSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
                         {
                             SpellManager.Cast("Call Pet 5");
-							 StyxWoW.SleepForLagDuration();
+							StyxWoW.SleepForLagDuration();
                         }
                     }
                     StyxWoW.SleepForLagDuration();
-                }        
+                }		
                 return true;
-            }
-              
+            }    
         }
         #endregion
 
