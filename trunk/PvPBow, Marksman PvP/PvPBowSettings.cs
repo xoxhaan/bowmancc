@@ -68,6 +68,9 @@ namespace PvPBow
 		[Setting, DefaultValue(false)]
         public bool EXPT { get; set; }
 
+		[Setting, DefaultValue(false)]
+        public bool TLF { get; set; }
+		
         [Setting, DefaultValue(false)]
         public bool TL { get; set; }
 		

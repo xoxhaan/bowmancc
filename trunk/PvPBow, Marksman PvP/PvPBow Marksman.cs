@@ -19,7 +19,7 @@ namespace PvPBow
 {
     class Classname : CombatRoutine
     {
-        public override sealed string Name { get { return "PvPBow a Marksmans CC v. 0.1.0.0"; } }
+        public override sealed string Name { get { return "PvPBow a Marksmans CC v. 0.1.1.0"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -40,7 +40,7 @@ namespace PvPBow
         {
             Logging.Write(Color.White, "________________________________________");
             Logging.Write(Color.Crimson, "------ PvPBow Marksman Hunter CC  -------");
-			Logging.Write(Color.Crimson, "----------- v. 0.1.0.0 by FallDown ------------");
+			Logging.Write(Color.Crimson, "----------- v. 0.1.1.0 by FallDown ------------");
 			Logging.Write(Color.Crimson, "---- Credit to ZenLulz for some of the code ----");
             Logging.Write(Color.White, "________________________________________");
         }
@@ -352,45 +352,46 @@ namespace PvPBow
         {
             get
             {
-             if (StyxWoW.IsInWorld && !Me.IsGhost && !Me.GotAlivePet && PvPBowSettings.Instance.CP && !Me.Dead && !Me.Mounted) 
+             if (StyxWoW.IsInWorld && !Me.IsGhost && !Me.GotAlivePet && !Me.Dead && !Me.Mounted) 
                 {
-                if (PvPBowSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet") && !Me.Dead && !Me.Mounted)
+                if (PvPBowSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"))
                     {
                         if (CastSpell("Revive Pet")) 
                         StyxWoW.SleepForLagDuration();
                     }
                 }
 				{
+				if (PvPBowSettings.Instance.CP && Me.Pet == null && !Me.IsCasting)
                     {
-                        if (Me.Pet == null && PvPBowSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
+                        if (PvPBowSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
                         {
                             SpellManager.Cast("Call Pet 1");
 							StyxWoW.SleepForLagDuration();
                         }
                     }
                     {
-                        if (Me.Pet == null && PvPBowSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
+                        if (PvPBowSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
                         {
                             SpellManager.Cast("Call Pet 2");
 							StyxWoW.SleepForLagDuration();
                         }
                     }
                     {
-                        if (Me.Pet == null && PvPBowSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
+                        if (PvPBowSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
                         {
                             SpellManager.Cast("Call Pet 3");
 							StyxWoW.SleepForLagDuration();
                         }
                     }
                     {
-                        if (Me.Pet == null && PvPBowSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
+                        if ( PvPBowSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
                         {
                             SpellManager.Cast("Call Pet 4");
 							StyxWoW.SleepForLagDuration();
                         }
                     }
                     {
-                        if (Me.Pet == null && PvPBowSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
+                        if (PvPBowSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
                         {
                             SpellManager.Cast("Call Pet 5");
 							StyxWoW.SleepForLagDuration();
@@ -428,6 +429,24 @@ namespace PvPBow
         {
             if (Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && !Me.Dead && HaltTrap() && HaltFeign())
                 {  
+					/*{
+						if (PvPBowSettings.Instance.TL && PvPBowSettings.Instance.TLF && Me.HasAura("Trap Launcher") && (Me.CurrentTarget == null ||  Me.CurrentTarget.Distance > 40 || Me.CurrentTarget.Distance < 8 || SpellManager.Spells["Ice Trap"].Cooldowntimeleft > 1))
+						{
+							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
+						}
+						else if (PvPBowSettings.Instance.TL2 && PvPBowSettings.Instance.TLF && Me.HasAura("Trap Launcher") && (Me.CurrentTarget == null ||  Me.CurrentTarget.Distance > 40 || Me.CurrentTarget.Distance < 8 || SpellManager.Spells["Snake Trap"].Cooldowntimeleft > 1))
+						{
+							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
+						}
+						else if (PvPBowSettings.Instance.TL3 && PvPBowSettings.Instance.TLF && Me.HasAura("Trap Launcher") && (Me.CurrentTarget == null ||  Me.CurrentTarget.Distance > 40 || Me.CurrentTarget.Distance < 8 || SpellManager.Spells["Freezing Trap"].Cooldowntimeleft > 1))
+						{
+							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
+						}
+						else if (PvPBowSettings.Instance.TL4 && PvPBowSettings.Instance.TLF && Me.HasAura("Trap Launcher") && (Me.CurrentTarget == null ||  Me.CurrentTarget.Distance > 40 || Me.CurrentTarget.Distance < 8 || SpellManager.Spells["Explosive Trap"].Cooldowntimeleft > 1))
+						{
+							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
+						}
+					}*/
 					{
 						if (PvPBowSettings.Instance.MP && Me.GotAlivePet && Me.Pet.HealthPercent < 75 && !Me.Pet.ActiveAuras.ContainsKey("Mend Pet"))
 						{
@@ -692,78 +711,6 @@ namespace PvPBow
 							}
 						}
 					}
-					{
-						if (PvPBowSettings.Instance.TL4 && Me.CurrentTarget.IsPlayer && !Me.CurrentTarget.IsMoving && SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds < 1 && !Me.HasAura("Trap Launcher"))
-						{
-							if (CastSpell("Trap Launcher"))
-							{
-								Logging.Write(Color.Red, ">> Trap Launcher Activated! <<");
-							}
-						}
-					}
-					{
-						if (Me.HasAura("Trap Launcher") && PvPBowSettings.Instance.TL4)
-						{
-							Lua.DoString("CastSpellByName('Explosive Trap');");
-							{
-								LegacySpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
-							}
-						}
-					}
-					{
-						if (PvPBowSettings.Instance.TL && Me.CurrentTarget.IsPlayer && !Me.CurrentTarget.IsMoving && SpellManager.Spells["Ice Trap"].CooldownTimeLeft.TotalSeconds < 1 && !Me.HasAura("Trap Launcher"))
-						{
-							if (CastSpell("Trap Launcher"))
-							{
-								Logging.Write(Color.Red, ">> Trap Launcher Activated! <<");
-							}
-						}
-					}
-					{
-						if (Me.HasAura("Trap Launcher") && PvPBowSettings.Instance.TL)
-						{
-							Lua.DoString("CastSpellByName('Ice Trap');");
-							{
-								LegacySpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
-							}
-						}
-					}
-					{
-						if (PvPBowSettings.Instance.TL2 && Me.CurrentTarget.IsPlayer && !Me.CurrentTarget.IsMoving && SpellManager.Spells["Snake Trap"].CooldownTimeLeft.TotalSeconds < 1 && !Me.HasAura("Trap Launcher"))
-						{
-							if (CastSpell("Trap Launcher"))
-							{
-								Logging.Write(Color.Red, ">> Trap Launcher Activated! <<");
-							}
-						}
-					}
-					{
-						if (Me.HasAura("Trap Launcher") && PvPBowSettings.Instance.TL2)
-						{
-							Lua.DoString("CastSpellByName('Snake Trap');");
-							{
-								LegacySpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
-							}
-						}
-					}
-					{
-						if (PvPBowSettings.Instance.TL3 && Me.CurrentTarget.IsPlayer && !Me.CurrentTarget.IsMoving && SpellManager.Spells["Freezing Trap"].CooldownTimeLeft.TotalSeconds < 1 && !Me.HasAura("Trap Launcher"))
-						{
-							if (CastSpell("Trap Launcher"))
-							{
-								Logging.Write(Color.Red, ">> Trap Launcher Activated! <<");
-							}
-						}
-					}
-					{
-						if (Me.HasAura("Trap Launcher") && PvPBowSettings.Instance.TL3)
-						{
-							Lua.DoString("CastSpellByName('Freezing Trap');");
-							{
-								LegacySpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
-							}
-						}
-					}
         /////////////////////////////////////////////////////Cooldowns are here/////////////////////////////////////////////////////////////////////////////////////////////////           
                     {
                         if (PvPBowSettings.Instance.RF && !Me.ActiveAuras.ContainsKey("Rapid Fire") && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.HealthPercent > 20 && Me.CurrentTarget.Distance > 9 && !Invulnerable(Me.CurrentTarget))
@@ -831,6 +778,79 @@ namespace PvPBow
                         }
                     }
 				}
+				////////////////////////////////////////////////// Trap Launchers /////////////////////////////////////////////////////////////////////////
+					{
+						if (PvPBowSettings.Instance.TL4 && Me.CurrentTarget.IsPlayer && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Explosive Trap"].Cooldown && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 20 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.HealthPercent > 20)
+						{
+							if (CastSpell("Trap Launcher"))
+							{
+								Logging.Write(Color.Red, ">> Trap Launcher Activated! <<");
+							}
+						}
+					}
+					{
+						if (Me.HasAura("Trap Launcher") && PvPBowSettings.Instance.TL4)
+						{
+							Lua.DoString("CastSpellByName('Explosive Trap');");
+							{
+								LegacySpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
+							}
+						}
+					}
+					{
+						if (PvPBowSettings.Instance.TL && Me.CurrentTarget.IsPlayer && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Ice Trap"].Cooldown && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 20 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.HealthPercent > 20)
+						{
+							if (CastSpell("Trap Launcher"))
+							{
+								Logging.Write(Color.Red, ">> Trap Launcher Activated! <<");
+							}
+						}
+					}
+					{
+						if (Me.HasAura("Trap Launcher") && PvPBowSettings.Instance.TL)
+						{
+							Lua.DoString("CastSpellByName('Ice Trap');");
+							{
+								LegacySpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
+							}
+						}
+					}
+					{
+						if (PvPBowSettings.Instance.TL2 && Me.CurrentTarget.IsPlayer && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Snake Trap"].Cooldown && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 20 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.HealthPercent > 20)
+						{
+							if (CastSpell("Trap Launcher"))
+							{
+								Logging.Write(Color.Red, ">> Trap Launcher Activated! <<");
+							}
+						}
+					}
+					{
+						if (Me.HasAura("Trap Launcher") && PvPBowSettings.Instance.TL2)
+						{
+							Lua.DoString("CastSpellByName('Snake Trap');");
+							{
+								LegacySpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
+							}
+						}
+					}
+					{
+						if (PvPBowSettings.Instance.TL3 && Me.CurrentTarget.IsPlayer && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Freezing Trap"].Cooldown && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 20 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.HealthPercent > 20)
+						{
+							if (CastSpell("Trap Launcher"))
+							{
+								Logging.Write(Color.Red, ">> Trap Launcher Activated! <<");
+							}
+						}
+					}
+					{
+						if (Me.HasAura("Trap Launcher") && PvPBowSettings.Instance.TL3)
+						{
+							Lua.DoString("CastSpellByName('Freezing Trap');");
+							{
+								LegacySpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
+							}
+						}
+					}
 			//////////////////////////////////////////////////MM Spec Rotations/////////////////////////////////////////////////////////////////////////////////////////
                 if (Me.CurrentTarget.Distance >= 5 && HaltTrap() && HaltFeign() && !Invulnerable(Me.CurrentTarget) && Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && !Me.Dead)
                 {

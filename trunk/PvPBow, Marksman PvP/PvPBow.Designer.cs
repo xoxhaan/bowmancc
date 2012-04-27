@@ -78,6 +78,7 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
             this.Mobs = new System.Windows.Forms.NumericUpDown();
+			this.LauncherFail = new System.Windows.Forms.CheckBox();
             this.Launcher = new System.Windows.Forms.CheckBox();
 			this.Launcher2 = new System.Windows.Forms.CheckBox();
 			this.Launcher3 = new System.Windows.Forms.CheckBox();
@@ -674,6 +675,7 @@
             // 
             this.groupBox4.Controls.Add(this.label8);
             this.groupBox4.Controls.Add(this.Mobs);
+			this.groupBox4.Controls.Add(this.LauncherFail);
             this.groupBox4.Controls.Add(this.Launcher);
 			this.groupBox4.Controls.Add(this.Launcher2);
 			this.groupBox4.Controls.Add(this.Launcher3);
@@ -718,7 +720,7 @@
             // 
             this.IceTrap.AutoSize = true;
             this.IceTrap.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IceTrap.Location = new System.Drawing.Point(14, 20);
+            this.IceTrap.Location = new System.Drawing.Point(14, 15);
             this.IceTrap.Name = "IceTrap";
             this.IceTrap.Size = new System.Drawing.Size(73, 17);
             this.IceTrap.TabIndex = 0;
@@ -730,7 +732,7 @@
             // 
             this.SnakeTrap.AutoSize = true;
             this.SnakeTrap.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SnakeTrap.Location = new System.Drawing.Point(14, 42);
+            this.SnakeTrap.Location = new System.Drawing.Point(14, 32);
             this.SnakeTrap.Name = "SnakeTrap";
             this.SnakeTrap.Size = new System.Drawing.Size(73, 17);
             this.SnakeTrap.TabIndex = 0;
@@ -742,7 +744,7 @@
             // 
             this.FreezeTrap.AutoSize = true;
             this.FreezeTrap.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FreezeTrap.Location = new System.Drawing.Point(14, 64);
+            this.FreezeTrap.Location = new System.Drawing.Point(14, 49);
             this.FreezeTrap.Name = "FreezeTrap";
             this.FreezeTrap.Size = new System.Drawing.Size(73, 17);
             this.FreezeTrap.TabIndex = 0;
@@ -754,13 +756,25 @@
             // 
             this.ExploTrap.AutoSize = true;
             this.ExploTrap.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExploTrap.Location = new System.Drawing.Point(14, 86);
+            this.ExploTrap.Location = new System.Drawing.Point(14, 66);
             this.ExploTrap.Name = "ExploTrap";
             this.ExploTrap.Size = new System.Drawing.Size(73, 17);
             this.ExploTrap.TabIndex = 0;
             this.ExploTrap.Text = "Explosive Trap";
             this.ExploTrap.UseVisualStyleBackColor = true;
             this.ExploTrap.CheckedChanged += new System.EventHandler(this.ExploTrap_CheckedChanged);
+			// 
+            // LauncherFail
+            // 
+            this.LauncherFail.AutoSize = true;
+            this.LauncherFail.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LauncherFail.Location = new System.Drawing.Point(14, 83);
+            this.LauncherFail.Name = "LauncherFail";
+            this.LauncherFail.Size = new System.Drawing.Size(119, 21);
+            this.LauncherFail.TabIndex = 1;
+            this.LauncherFail.Text = "Launcher Fail Safe";
+            this.LauncherFail.UseVisualStyleBackColor = true;
+            this.LauncherFail.CheckedChanged += new System.EventHandler(this.LauncherFail_CheckedChanged);
 			// 
             // Launcher
             // 
@@ -770,7 +784,7 @@
             this.Launcher.Name = "Launcher";
             this.Launcher.Size = new System.Drawing.Size(119, 21);
             this.Launcher.TabIndex = 1;
-            this.Launcher.Text = "Trap Launcher 1";
+            this.Launcher.Text = "Ice Launcher";
             this.Launcher.UseVisualStyleBackColor = true;
             this.Launcher.CheckedChanged += new System.EventHandler(this.Launcher_CheckedChanged);
 			// 
@@ -782,7 +796,7 @@
             this.Launcher2.Name = "Launcher2";
             this.Launcher2.Size = new System.Drawing.Size(119, 17);
             this.Launcher2.TabIndex = 1;
-            this.Launcher2.Text = "Trap Launcher 2";
+            this.Launcher2.Text = "Snake Launcher";
             this.Launcher2.UseVisualStyleBackColor = true;
             this.Launcher2.CheckedChanged += new System.EventHandler(this.Launcher2_CheckedChanged);
 			// 
@@ -794,7 +808,7 @@
             this.Launcher3.Name = "Launcher3";
             this.Launcher3.Size = new System.Drawing.Size(119, 17);
             this.Launcher3.TabIndex = 1;
-            this.Launcher3.Text = "Trap Launcher 3";
+            this.Launcher3.Text = "Freezing Launcher";
             this.Launcher3.UseVisualStyleBackColor = true;
             this.Launcher3.CheckedChanged += new System.EventHandler(this.Launcher3_CheckedChanged);
 			// 
@@ -806,7 +820,7 @@
             this.Launcher4.Name = "Launcher4";
             this.Launcher4.Size = new System.Drawing.Size(119, 17);
             this.Launcher4.TabIndex = 1;
-            this.Launcher4.Text = "Trap Launcher 4";
+            this.Launcher4.Text = "Explosive Launcher";
             this.Launcher4.UseVisualStyleBackColor = true;
             this.Launcher4.CheckedChanged += new System.EventHandler(this.Launcher4_CheckedChanged);
             // 
@@ -995,6 +1009,7 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown Mobs;
+		private System.Windows.Forms.CheckBox LauncherFail;
         private System.Windows.Forms.CheckBox Launcher;
 		private System.Windows.Forms.CheckBox Launcher2;
 		private System.Windows.Forms.CheckBox Launcher3;
