@@ -84,7 +84,7 @@ namespace Marksman
         }
         private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.thebuddyforum.com/newreply.php?p=425057&noquote=1");
+            System.Diagnostics.Process.Start("http://www.thebuddyforum.com/newreply.php?t=51333&noquote=1");
             linkLabel5.LinkVisited = true;
         }
         private void Mobs_ValueChanged(object sender, EventArgs e)

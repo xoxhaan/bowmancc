@@ -19,7 +19,7 @@ namespace PvPBow
 {
     class Classname : CombatRoutine
     {
-        public override sealed string Name { get { return "PvPBow a Marksmans CC v. 0.0.0.2"; } }
+        public override sealed string Name { get { return "PvPBow a Marksmans CC v. 0.1.0.0"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -40,8 +40,8 @@ namespace PvPBow
         {
             Logging.Write(Color.White, "________________________________________");
             Logging.Write(Color.Crimson, "------ PvPBow Marksman Hunter CC  -------");
-			Logging.Write(Color.Crimson, "----------- v. 0.0.0.2 by FallDown ------------");
-			Logging.Write(Color.Crimson, "---- Credit to ZeHunter for some of the code ----");
+			Logging.Write(Color.Crimson, "----------- v. 0.1.0.0 by FallDown ------------");
+			Logging.Write(Color.Crimson, "---- Credit to ZenLulz for some of the code ----");
             Logging.Write(Color.White, "________________________________________");
         }
         #endregion
