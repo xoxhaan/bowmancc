@@ -19,7 +19,7 @@ namespace PvPBow
 {
     class Classname : CombatRoutine
     {
-        public override sealed string Name { get { return "PvPBow a Marksmans CC v. 0.1.2.0"; } }
+        public override sealed string Name { get { return "PvPBow a Marksmans CC v. 0.1.2.1"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -40,7 +40,7 @@ namespace PvPBow
         {
             Logging.Write(Color.White, "________________________________________");
             Logging.Write(Color.Crimson, "------ PvPBow Marksman Hunter CC  -------");
-			Logging.Write(Color.Crimson, "----------- v. 0.1.2.0 by FallDown ------------");
+			Logging.Write(Color.Crimson, "----------- v. 0.1.2.1 by FallDown ------------");
 			Logging.Write(Color.Crimson, "---- Credit to ZenLulz for some of the code ----");
             Logging.Write(Color.White, "________________________________________");
         }
@@ -360,8 +360,8 @@ namespace PvPBow
                         StyxWoW.SleepForLagDuration();
                     }
                 }
-				{
 				if (PvPBowSettings.Instance.CP && Me.Pet == null && !Me.IsCasting)
+				{
                     {
                         if (PvPBowSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
                         {
@@ -882,7 +882,6 @@ namespace PvPBow
                             }
                         }
                     }
-
 					{
                         if (PvPBowSettings.Instance.WVE && Me.CurrentFocus > 58 && Me.CurrentTarget.IsPlayer && SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds > 1 && (!IsMyAuraActive(Me.CurrentTarget, "Widow Venom") || MyDebuffTime("Widow Venom", Me.CurrentTarget) <= 1))
                         {

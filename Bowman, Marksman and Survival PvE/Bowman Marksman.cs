@@ -19,7 +19,7 @@ namespace Marksman
 {
     class Classname : CombatRoutine
     {
-        public override sealed string Name { get { return "Bowman a Marksmanship CC v4.1.2.0"; } }
+        public override sealed string Name { get { return "Bowman a Marksmanship CC v4.1.2.1"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -39,7 +39,7 @@ namespace Marksman
         public override void Initialize()
         {
             Logging.Write(Color.White, "___________________________________________________");
-            Logging.Write(Color.Crimson, "----------- Bowman v4.1.2.0 ------------");
+            Logging.Write(Color.Crimson, "----------- Bowman v4.1.2.1 ------------");
 			Logging.Write(Color.Crimson, "by FallDown, Shaddar, Venus112 and Jasf10");
             Logging.Write(Color.Crimson, "---  Remember to comment on the forum! ---");
             Logging.Write(Color.Crimson, "--- /like and +rep if you like this CC! ----");
@@ -81,8 +81,8 @@ namespace Marksman
                         StyxWoW.SleepForLagDuration();
                     }
                 }
-				{
 				if (MarksmanSettings.Instance.CP && Me.Pet == null && !Me.IsCasting)
+				{
                     {
                         if (MarksmanSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
                         {
