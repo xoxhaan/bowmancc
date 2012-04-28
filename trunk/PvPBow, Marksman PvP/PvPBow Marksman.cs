@@ -19,7 +19,7 @@ namespace PvPBow
 {
     class Classname : CombatRoutine
     {
-        public override sealed string Name { get { return "PvPBow a Marksmans CC v. 0.1.1.0"; } }
+        public override sealed string Name { get { return "PvPBow a Marksmans CC v. 0.1.2.0"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -40,7 +40,7 @@ namespace PvPBow
         {
             Logging.Write(Color.White, "________________________________________");
             Logging.Write(Color.Crimson, "------ PvPBow Marksman Hunter CC  -------");
-			Logging.Write(Color.Crimson, "----------- v. 0.1.1.0 by FallDown ------------");
+			Logging.Write(Color.Crimson, "----------- v. 0.1.2.0 by FallDown ------------");
 			Logging.Write(Color.Crimson, "---- Credit to ZenLulz for some of the code ----");
             Logging.Write(Color.White, "________________________________________");
         }
@@ -400,9 +400,7 @@ namespace PvPBow
                     StyxWoW.SleepForLagDuration();
                 }		
                 return true;
-
-            }
-              
+            }    
         }
         #endregion
 		
@@ -427,30 +425,33 @@ namespace PvPBow
 
         public override void Combat()
         {
+				{
+					if (PvPBowSettings.Instance.TLF && Me.HasAura("Trap Launcher") && MyDebuffTime("Trap Launcher", Me) < 13 && (Me.CurrentTarget == null || !Me.CurrentTarget.InLineOfSight ||  Me.CurrentTarget.Distance > 40 || Me.CurrentTarget.Distance < 8))
+					{
+						if (PvPBowSettings.Instance.TL && SpellManager.Spells["Ice Trap"].CooldownTimeLeft.TotalSeconds > 1)
+						{
+							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
+						}
+						else if (PvPBowSettings.Instance.TL2 && SpellManager.Spells["Snake Trap"].CooldownTimeLeft.TotalSeconds > 1)
+						{
+							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
+						}
+						else if (PvPBowSettings.Instance.TL3 && SpellManager.Spells["Freezing Trap"].CooldownTimeLeft.TotalSeconds > 1)
+						{
+							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
+						}
+						else if (PvPBowSettings.Instance.TL4 && SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds > 1)
+						{
+							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
+						}
+					}
+				}
             if (Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && !Me.Dead && HaltTrap() && HaltFeign())
                 {  
-					/*{
-						if (PvPBowSettings.Instance.TL && PvPBowSettings.Instance.TLF && Me.HasAura("Trap Launcher") && (Me.CurrentTarget == null ||  Me.CurrentTarget.Distance > 40 || Me.CurrentTarget.Distance < 8 || SpellManager.Spells["Ice Trap"].Cooldowntimeleft > 1))
-						{
-							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
-						}
-						else if (PvPBowSettings.Instance.TL2 && PvPBowSettings.Instance.TLF && Me.HasAura("Trap Launcher") && (Me.CurrentTarget == null ||  Me.CurrentTarget.Distance > 40 || Me.CurrentTarget.Distance < 8 || SpellManager.Spells["Snake Trap"].Cooldowntimeleft > 1))
-						{
-							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
-						}
-						else if (PvPBowSettings.Instance.TL3 && PvPBowSettings.Instance.TLF && Me.HasAura("Trap Launcher") && (Me.CurrentTarget == null ||  Me.CurrentTarget.Distance > 40 || Me.CurrentTarget.Distance < 8 || SpellManager.Spells["Freezing Trap"].Cooldowntimeleft > 1))
-						{
-							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
-						}
-						else if (PvPBowSettings.Instance.TL4 && PvPBowSettings.Instance.TLF && Me.HasAura("Trap Launcher") && (Me.CurrentTarget == null ||  Me.CurrentTarget.Distance > 40 || Me.CurrentTarget.Distance < 8 || SpellManager.Spells["Explosive Trap"].Cooldowntimeleft > 1))
-						{
-							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
-						}
-					}*/
 					{
 						if (PvPBowSettings.Instance.MP && Me.GotAlivePet && Me.Pet.HealthPercent < 75 && !Me.Pet.ActiveAuras.ContainsKey("Mend Pet"))
 						{
-						if(CastSpell("Mend Pet"))
+						if (CastSpell("Mend Pet"))
 							{
 							Logging.Write(Color.Aqua, ">> Mend Pet <<");
 							}
@@ -459,7 +460,7 @@ namespace PvPBow
 					{
 						if (PvPBowSettings.Instance.RS && !Invulnerable(Me.CurrentTarget) && Me.Race == WoWRace.Draenei && Me.CurrentTarget.IsPlayer && Me.HealthPercent < 30 && !SpellManager.Spells["Gift of the Naaru"].Cooldown)
 						{
-							if(CastSpell("Gift of the Naaru"))
+							if (CastSpell("Gift of the Naaru"))
 							{
 							Logging.Write(Color.Aqua, ">> Gift of the Naaru <<");
 							}
@@ -780,7 +781,7 @@ namespace PvPBow
 				}
 				////////////////////////////////////////////////// Trap Launchers /////////////////////////////////////////////////////////////////////////
 					{
-						if (PvPBowSettings.Instance.TL4 && Me.CurrentTarget.IsPlayer && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Explosive Trap"].Cooldown && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 20 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.HealthPercent > 20)
+						if (PvPBowSettings.Instance.TL4 && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.InLineOfSight && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Explosive Trap"].Cooldown && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 20 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.HealthPercent > 20)
 						{
 							if (CastSpell("Trap Launcher"))
 							{
@@ -798,7 +799,7 @@ namespace PvPBow
 						}
 					}
 					{
-						if (PvPBowSettings.Instance.TL && Me.CurrentTarget.IsPlayer && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Ice Trap"].Cooldown && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 20 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.HealthPercent > 20)
+						if (PvPBowSettings.Instance.TL && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.InLineOfSight && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Ice Trap"].Cooldown && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 20 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.HealthPercent > 20)
 						{
 							if (CastSpell("Trap Launcher"))
 							{
@@ -816,7 +817,7 @@ namespace PvPBow
 						}
 					}
 					{
-						if (PvPBowSettings.Instance.TL2 && Me.CurrentTarget.IsPlayer && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Snake Trap"].Cooldown && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 20 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.HealthPercent > 20)
+						if (PvPBowSettings.Instance.TL2 && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.InLineOfSight && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Snake Trap"].Cooldown && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 20 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.HealthPercent > 20)
 						{
 							if (CastSpell("Trap Launcher"))
 							{
@@ -834,7 +835,7 @@ namespace PvPBow
 						}
 					}
 					{
-						if (PvPBowSettings.Instance.TL3 && Me.CurrentTarget.IsPlayer && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Freezing Trap"].Cooldown && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 20 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.HealthPercent > 20)
+						if (PvPBowSettings.Instance.TL3 && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.InLineOfSight && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Freezing Trap"].Cooldown && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 20 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.HealthPercent > 20)
 						{
 							if (CastSpell("Trap Launcher"))
 							{

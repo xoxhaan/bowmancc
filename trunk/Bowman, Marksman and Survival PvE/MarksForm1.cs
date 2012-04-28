@@ -47,6 +47,7 @@ namespace Marksman
             MendPet.Checked = MarksmanSettings.Instance.MP;
             MultiShot.Checked = MarksmanSettings.Instance.MS;
             Launcher.Checked = MarksmanSettings.Instance.TL;
+			LauncherFail.Checked = MarksmanSettings.Instance.TLF;
             Trinket1.Checked = MarksmanSettings.Instance.T1;
             Trinket2.Checked = MarksmanSettings.Instance.T2;
             Rapid.Checked = MarksmanSettings.Instance.RF;
@@ -252,6 +253,17 @@ namespace Marksman
             else
             {
                 MarksmanSettings.Instance.TL = false;
+            }
+        }
+		private void LauncherFail_CheckedChanged(object sender, EventArgs e)
+        {
+            if (LauncherFail.Checked == true)
+            {
+                MarksmanSettings.Instance.TLF = true;
+            }
+            else
+            {
+                MarksmanSettings.Instance.TLF = false;
             }
         }
         private void Trinket1_CheckedChanged(object sender, EventArgs e)
