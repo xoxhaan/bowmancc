@@ -88,6 +88,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.Mobs = new System.Windows.Forms.NumericUpDown();
             this.Launcher = new System.Windows.Forms.CheckBox();
+			this.LauncherFail = new System.Windows.Forms.CheckBox();
             this.MultiShot = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.PET = new System.Windows.Forms.NumericUpDown();
@@ -686,9 +687,9 @@
             this.groupBox5.Controls.Add(this.Trinket2);
             this.groupBox5.Controls.Add(this.Trinket1);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.groupBox5.Location = new System.Drawing.Point(11, 215);
+            this.groupBox5.Location = new System.Drawing.Point(11, 218);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(134, 159);
+            this.groupBox5.Size = new System.Drawing.Size(134, 156);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "CD options";
@@ -770,11 +771,12 @@
             this.groupBox4.Controls.Add(this.label8);
             this.groupBox4.Controls.Add(this.Mobs);
             this.groupBox4.Controls.Add(this.Launcher);
+			this.groupBox4.Controls.Add(this.LauncherFail);
             this.groupBox4.Controls.Add(this.MultiShot);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.groupBox4.Location = new System.Drawing.Point(11, 119);
+            this.groupBox4.Location = new System.Drawing.Point(11, 105);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(134, 90);
+            this.groupBox4.Size = new System.Drawing.Size(134, 110);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "AoE options";
@@ -783,7 +785,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(44, 66);
+            this.label8.Location = new System.Drawing.Point(44, 78);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(32, 13);
             this.label8.TabIndex = 3;
@@ -792,7 +794,7 @@
             // Mobs
             // 
             this.Mobs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Mobs.Location = new System.Drawing.Point(6, 64);
+            this.Mobs.Location = new System.Drawing.Point(6, 75);
             this.Mobs.Name = "Mobs";
             this.Mobs.Size = new System.Drawing.Size(32, 20);
             this.Mobs.TabIndex = 2;
@@ -807,19 +809,31 @@
             // 
             this.Launcher.AutoSize = true;
             this.Launcher.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Launcher.Location = new System.Drawing.Point(7, 42);
+            this.Launcher.Location = new System.Drawing.Point(7, 35);
             this.Launcher.Name = "Launcher";
             this.Launcher.Size = new System.Drawing.Size(119, 17);
             this.Launcher.TabIndex = 1;
             this.Launcher.Text = "Traplauncher + trap";
             this.Launcher.UseVisualStyleBackColor = true;
             this.Launcher.CheckedChanged += new System.EventHandler(this.Launcher_CheckedChanged);
+			// 
+            // LauncherFail
+            // 
+            this.LauncherFail.AutoSize = true;
+            this.LauncherFail.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LauncherFail.Location = new System.Drawing.Point(7, 55);
+            this.LauncherFail.Name = "LauncherFail";
+            this.LauncherFail.Size = new System.Drawing.Size(119, 17);
+            this.LauncherFail.TabIndex = 1;
+            this.LauncherFail.Text = "Launcher Fail Safe";
+            this.LauncherFail.UseVisualStyleBackColor = true;
+            this.LauncherFail.CheckedChanged += new System.EventHandler(this.LauncherFail_CheckedChanged);
             // 
             // MultiShot
             // 
             this.MultiShot.AutoSize = true;
             this.MultiShot.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MultiShot.Location = new System.Drawing.Point(7, 19);
+            this.MultiShot.Location = new System.Drawing.Point(7, 15);
             this.MultiShot.Name = "MultiShot";
             this.MultiShot.Size = new System.Drawing.Size(73, 17);
             this.MultiShot.TabIndex = 0;
@@ -834,9 +848,9 @@
             this.groupBox3.Controls.Add(this.MendPet);
             this.groupBox3.Controls.Add(this.RevivePet);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(11, 24);
+            this.groupBox3.Location = new System.Drawing.Point(11, 15);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(134, 89);
+            this.groupBox3.Size = new System.Drawing.Size(134, 88);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Pet options";
@@ -979,6 +993,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown Mobs;
         private System.Windows.Forms.CheckBox Launcher;
+		private System.Windows.Forms.CheckBox LauncherFail;
         private System.Windows.Forms.CheckBox MultiShot;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox MendPet;

@@ -52,6 +52,9 @@ namespace Marksman
 
         [Setting, DefaultValue(true)]
         public bool TL { get; set; }
+		
+        [Setting, DefaultValue(true)]
+        public bool TLF { get; set; }
 
         [Setting, DefaultValue(false)]
         public bool DSLFR { get; set; }

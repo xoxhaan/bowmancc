@@ -19,7 +19,7 @@ namespace Marksman
 {
     class Classname : CombatRoutine
     {
-        public override sealed string Name { get { return "Bowman a Marksmanship CC v4.1.1.0"; } }
+        public override sealed string Name { get { return "Bowman a Marksmanship CC v4.1.2.0"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -39,7 +39,7 @@ namespace Marksman
         public override void Initialize()
         {
             Logging.Write(Color.White, "___________________________________________________");
-            Logging.Write(Color.Crimson, "----------- Bowman v4.1.1.0 ------------");
+            Logging.Write(Color.Crimson, "----------- Bowman v4.1.2.0 ------------");
 			Logging.Write(Color.Crimson, "by FallDown, Shaddar, Venus112 and Jasf10");
             Logging.Write(Color.Crimson, "---  Remember to comment on the forum! ---");
             Logging.Write(Color.Crimson, "--- /like and +rep if you like this CC! ----");
@@ -352,6 +352,15 @@ namespace Marksman
 
         public override void Combat()
         {
+					{
+						if (MarksmanSettings.Instance.TL && MarksmanSettings.Instance.TLF && MyDebuffTime("Trap Launcher", Me) < 13 && Me.HasAura("Trap Launcher") && (Me.CurrentTarget == null || addCount() < MarksmanSettings.Instance.Mobs || !Me.CurrentTarget.InLineOfSight ||  Me.CurrentTarget.Distance > 40 || Me.CurrentTarget.Distance < 5 || SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds > 1))
+						{
+							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
+							{
+								Logging.Write(Color.Crimson, ">> Cancel Trap Launcher <<");
+							}
+						}
+					}
             if (Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && HaltTrap() && HaltFeign())
                 {      
 					{
@@ -713,7 +722,7 @@ namespace Marksman
                 }
 			}
         ///////////////////////////////////////////////Moving Rotation here////////////////////////////////////////////////////////////////////////////////////////////
-			if (addCount() < MarksmanSettings.Instance.Mobs && HaltTrap() && HaltFeign() && Me.CurrentTarget != null && Me.CurrentTarget.IsAlive && !Me.Mounted)
+			if (HaltTrap() && HaltFeign() && Me.CurrentTarget != null && Me.CurrentTarget.IsAlive && !Me.Mounted)
             {
                     {
                         if (!Me.IsMoving && !Me.Auras.ContainsKey("Aspect of the Hawk") && MarksmanSettings.Instance.AspectSwitching)
@@ -725,7 +734,7 @@ namespace Marksman
                         }
                     }
                     {
-                        if (Me.IsMoving && Me.Auras.ContainsKey("Aspect of the Hawk") && MarksmanSettings.Instance.AspectSwitching)
+                        if (Me.IsMoving && Me.Auras.ContainsKey("Aspect of the Hawk") && MarksmanSettings.Instance.AspectSwitching && Me.CurrentFocus < 66)
                         {
                             if (CastSpell("Aspect of the Fox"))
                             {
@@ -734,7 +743,7 @@ namespace Marksman
                         }
                     }
                 
-                if (MarksmanSettings.Instance.MMSPEC && Me.CurrentTarget.Distance >= 5 && Me.IsMoving)
+                if (addCount() < MarksmanSettings.Instance.Mobs && MarksmanSettings.Instance.MMSPEC && Me.CurrentTarget.Distance >= 5 && Me.IsMoving)
                 {
                     {
                         if (Me.IsMoving && Me.CurrentFocus >= 50)
@@ -746,7 +755,7 @@ namespace Marksman
                         }
                     }
                     {
-                        if (Me.IsMoving && Me.CurrentTarget.Distance >= 5 && Me.Auras.ContainsKey("Aspect of the Fox") && !SpellManager.CanCast("Kill Shot"))
+                        if (addCount() < MarksmanSettings.Instance.Mobs && Me.IsMoving && Me.CurrentTarget.Distance >= 5 && Me.Auras.ContainsKey("Aspect of the Fox") && !SpellManager.CanCast("Kill Shot"))
                         {
                             Lua.DoString("RunMacroText('/cast Steady Shot');");
                             {
@@ -760,11 +769,18 @@ namespace Marksman
             if (addCount() >= MarksmanSettings.Instance.Mobs && HaltFeign() && Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && (MarksmanSettings.Instance.MS || MarksmanSettings.Instance.TL))
 			{
                 {
-                    if (MarksmanSettings.Instance.TL && SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds < 1 && !Me.HasAura("Trap Launcher"))
+                    if (MarksmanSettings.Instance.TL && SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds < 1 && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.InLineOfSight && Me.CurrentTarget.Distance <= 40 && Me.CurrentTarget.Distance >= 5)
                     {
                         if (CastSpell("Trap Launcher"))
                         {
                             Logging.Write(Color.Red, ">> Trap Launcher Activated! <<");
+                        }
+                    }
+					else if (MarksmanSettings.Instance.TL && SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds < 1 && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance < 5)
+                    {
+                        if (CastSpell("Explosive Trap"))
+                        {
+                            Logging.Write(Color.Red, ">> Dropping Explosive Trap <<");
                         }
                     }
                 }
@@ -777,6 +793,7 @@ namespace Marksman
                         }
                     }
                 }
+
                 {
                     if (!Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.SSPEC && MarksmanSettings.Instance.ExploROT && Me.CurrentTarget.Distance >= 5 && !SpellManager.Spells["Explosive Shot"].Cooldown && MyDebuffTime("Explosive Shot", Me.CurrentTarget) <= 1 && Me.ActiveAuras.ContainsKey("Lock and Load"))
                     {
