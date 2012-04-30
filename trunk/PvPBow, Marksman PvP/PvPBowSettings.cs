@@ -143,6 +143,12 @@ namespace PvPBow
 		[Setting, DefaultValue(true)]
         public bool STING { get; set; }
 		
+		[Setting, DefaultValue(false)]
+        public bool FT { get; set; }
+		
+		[Setting, DefaultValue(false)]
+        public bool PH { get; set; }
+		
 		[Setting, DefaultValue(true)]
         public bool AGR { get; set; }
 		

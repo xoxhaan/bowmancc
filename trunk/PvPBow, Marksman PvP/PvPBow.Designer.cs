@@ -59,6 +59,7 @@
             this.Marksman = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+			this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.AspectSwitching = new System.Windows.Forms.CheckBox();
             this.label13 = new System.Windows.Forms.Label();
             this.FocusShots = new System.Windows.Forms.NumericUpDown();
@@ -68,6 +69,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.SaveButton2 = new System.Windows.Forms.Button();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.FocusTarget = new System.Windows.Forms.CheckBox();
+			this.PlaceHolder = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.LifeBlood = new System.Windows.Forms.CheckBox();
             this.Rapid = new System.Windows.Forms.CheckBox();
@@ -103,6 +106,7 @@
 			this.groupBox2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
+			this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FocusShots)).BeginInit();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Mobs)).BeginInit();
@@ -347,6 +351,7 @@
             // 
             this.tabPage2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tabPage2.Controls.Add(this.groupBox6);
+			this.tabPage2.Controls.Add(this.groupBox7);
             this.tabPage2.Controls.Add(this.linkLabel2);
             this.tabPage2.Controls.Add(this.groupBox5);
             this.tabPage2.Controls.Add(this.groupBox4);
@@ -608,6 +613,42 @@
             this.linkLabel2.TabIndex = 13;
             this.linkLabel2.TabStop = true;
             this.linkLabel2.Text = "+Survival Talent Build";
+			// 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.FocusTarget);
+            this.groupBox7.Controls.Add(this.PlaceHolder);
+			this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.groupBox7.Location = new System.Drawing.Point(5, 173);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(140, 60);
+            this.groupBox7.TabIndex = 15;
+            this.groupBox7.TabStop = false;
+			this.groupBox7.Text = "Other options";
+			// 
+            // FocusTarget
+            // 
+            this.FocusTarget.AutoSize = true;
+			this.FocusTarget.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.FocusTarget.Location = new System.Drawing.Point(7, 15);
+            this.FocusTarget.Name = "FocusTarget";
+            this.FocusTarget.Size = new System.Drawing.Size(106, 17);
+            this.FocusTarget.TabIndex = 5;
+            this.FocusTarget.Text = "Set and Target Focus";
+            this.FocusTarget.UseVisualStyleBackColor = true;
+            this.FocusTarget.CheckedChanged += new System.EventHandler(this.FocusTarget_CheckedChanged);
+			// 
+            // PlaceHolder
+            // 
+            this.PlaceHolder.AutoSize = true;
+			this.PlaceHolder.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.PlaceHolder.Location = new System.Drawing.Point(7, 35);
+            this.PlaceHolder.Name = "PlaceHolder";
+            this.PlaceHolder.Size = new System.Drawing.Size(106, 17);
+            this.PlaceHolder.TabIndex = 6;
+            this.PlaceHolder.Text = "Place holder";
+            this.PlaceHolder.UseVisualStyleBackColor = true;
+            this.PlaceHolder.CheckedChanged += new System.EventHandler(this.PlaceHolder_CheckedChanged);
             // 
             // groupBox5
             // 
@@ -616,9 +657,9 @@
             this.groupBox5.Controls.Add(this.Gloves);
             this.groupBox5.Controls.Add(this.Racial);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.groupBox5.Location = new System.Drawing.Point(11, 215);
+            this.groupBox5.Location = new System.Drawing.Point(5, 240);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(134, 159);
+            this.groupBox5.Size = new System.Drawing.Size(140, 100);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "CD options";
@@ -639,7 +680,7 @@
             // 
             this.Rapid.AutoSize = true;
             this.Rapid.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Rapid.Location = new System.Drawing.Point(7, 45);
+            this.Rapid.Location = new System.Drawing.Point(7, 35);
             this.Rapid.Name = "Rapid";
             this.Rapid.Size = new System.Drawing.Size(74, 17);
             this.Rapid.TabIndex = 4;
@@ -651,7 +692,7 @@
             // 
             this.Gloves.AutoSize = true;
             this.Gloves.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Gloves.Location = new System.Drawing.Point(7, 75);
+            this.Gloves.Location = new System.Drawing.Point(7, 55);
             this.Gloves.Name = "Gloves";
             this.Gloves.Size = new System.Drawing.Size(101, 17);
             this.Gloves.TabIndex = 3;
@@ -663,7 +704,7 @@
             // 
             this.Racial.AutoSize = true;
             this.Racial.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Racial.Location = new System.Drawing.Point(7, 105);
+            this.Racial.Location = new System.Drawing.Point(7, 75);
             this.Racial.Name = "Racial";
             this.Racial.Size = new System.Drawing.Size(78, 17);
             this.Racial.TabIndex = 2;
@@ -834,9 +875,9 @@
 			this.groupBox3.Controls.Add(this.Sacrifice);
             this.groupBox3.Controls.Add(this.RevivePet);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(11, 7);
+            this.groupBox3.Location = new System.Drawing.Point(5, 7);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(134, 205);
+            this.groupBox3.Size = new System.Drawing.Size(140, 160);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Pet options";
@@ -967,6 +1008,8 @@
             this.tabPage2.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+			this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FocusShots)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
@@ -999,6 +1042,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox FocusTarget;
+		private System.Windows.Forms.CheckBox PlaceHolder;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.CheckBox LifeBlood;
         private System.Windows.Forms.CheckBox Rapid;
@@ -1027,6 +1072,7 @@
         private System.Windows.Forms.CheckBox CallPet;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.GroupBox groupBox6;
+		private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.LinkLabel linkLabel5;
         private System.Windows.Forms.LinkLabel linkLabel3;
         private System.Windows.Forms.LinkLabel linkLabel10;
