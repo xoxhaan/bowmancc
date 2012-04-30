@@ -19,7 +19,7 @@ namespace Marksman
 {
     class Classname : CombatRoutine
     {
-        public override sealed string Name { get { return "Bowman a Marksmanship CC v4.1.2.1"; } }
+        public override sealed string Name { get { return "Bowman a Marksmanship CC v4.1.3.0"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -83,41 +83,31 @@ namespace Marksman
                 }
 				if (MarksmanSettings.Instance.CP && Me.Pet == null && !Me.IsCasting)
 				{
-                    {
-                        if (MarksmanSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
-                        {
-                            SpellManager.Cast("Call Pet 1");
-							StyxWoW.SleepForLagDuration();
-                        }
-                    }
-                    {
-                        if (MarksmanSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
-                        {
-                            SpellManager.Cast("Call Pet 2");
-							StyxWoW.SleepForLagDuration();
-                        }
-                    }
-                    {
-                        if (MarksmanSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
-                        {
-                            SpellManager.Cast("Call Pet 3");
-							StyxWoW.SleepForLagDuration();
-                        }
-                    }
-                    {
-                        if ( MarksmanSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
-                        {
-                            SpellManager.Cast("Call Pet 4");
-							StyxWoW.SleepForLagDuration();
-                        }
-                    }
-                    {
-                        if (MarksmanSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
-                        {
-                            SpellManager.Cast("Call Pet 5");
-							StyxWoW.SleepForLagDuration();
-                        }
-                    }
+					if (MarksmanSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
+					{
+						SpellManager.Cast("Call Pet 1");
+						StyxWoW.SleepForLagDuration();
+					}
+					if (MarksmanSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
+					{
+						SpellManager.Cast("Call Pet 2");
+						StyxWoW.SleepForLagDuration();
+					}
+					if (MarksmanSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
+					{
+						SpellManager.Cast("Call Pet 3");
+						StyxWoW.SleepForLagDuration();
+					}
+					if ( MarksmanSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
+					{
+						SpellManager.Cast("Call Pet 4");
+						StyxWoW.SleepForLagDuration();
+					}
+					if (MarksmanSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
+					{
+						SpellManager.Cast("Call Pet 5");
+						StyxWoW.SleepForLagDuration();
+					}
                     StyxWoW.SleepForLagDuration();
                 }		
                 return true;
@@ -146,11 +136,9 @@ namespace Marksman
 		#region Halt on Trap Launcher
         public bool HaltTrap()
         {
-            {
-             if (!Me.HasAura("Trap Launcher"))
-				return true;
-            }
-            return false;
+            if (!Me.HasAura("Trap Launcher"))
+			return true;
+			else return false;
         } 
         #endregion
 		
@@ -170,7 +158,7 @@ namespace Marksman
         public bool DebuffByID(int spellId)
         {
             if (Me.HasAura(spellId) && StyxWoW.Me.GetAuraById(spellId).TimeLeft.TotalMilliseconds <= 2000)
-                return true;
+            return true;
             else return false;
         }
 
@@ -197,41 +185,38 @@ namespace Marksman
 						}
 					}
                 }
-
             }
             return false;
         }
 
         public bool UltraFL()
         {
-            {
-                if (DebuffByID(110079)
-                    || DebuffByID(110080)
-                    || DebuffByID(110070)
-                    || DebuffByID(110069)
-                    || DebuffByID(109075)
-                    || DebuffByID(110068)
-                    || DebuffByID(105925)
-                    || DebuffByID(110078))
-                    return true;
-            }
-            return false;
+			if (DebuffByID(110079)
+				|| DebuffByID(110080)
+				|| DebuffByID(110070)
+				|| DebuffByID(110069)
+				|| DebuffByID(109075)
+				|| DebuffByID(110068)
+				|| DebuffByID(105925)
+				|| DebuffByID(110078))
+			return true;
+				
+			else return false;
         }
 
         public bool DW()
         {
-            {
-                if (DebuffByID(110139)
-                    || DebuffByID(110140)
-                    || DebuffByID(110141)
-                    || DebuffByID(106791)
-                    || DebuffByID(109599)
-                    || DebuffByID(106794)
-                    || DebuffByID(109597)
-                    || DebuffByID(109598))
-                    return true;
-            }
-            return false;
+			if (DebuffByID(110139)
+				|| DebuffByID(110140)
+				|| DebuffByID(110141)
+				|| DebuffByID(106791)
+				|| DebuffByID(109599)
+				|| DebuffByID(106794)
+				|| DebuffByID(109597)
+				|| DebuffByID(109598))
+			return true;
+			
+			else return false;
         }
         #endregion
 
@@ -352,489 +337,384 @@ namespace Marksman
 
         public override void Combat()
         {
-					{
-						if (MarksmanSettings.Instance.TL && MarksmanSettings.Instance.TLF && MyDebuffTime("Trap Launcher", Me) < 13 && Me.HasAura("Trap Launcher") && (Me.CurrentTarget == null || addCount() < MarksmanSettings.Instance.Mobs || !Me.CurrentTarget.InLineOfSight ||  Me.CurrentTarget.Distance > 40 || Me.CurrentTarget.Distance < 5 || SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds > 1))
-						{
-							Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
-							{
-								Logging.Write(Color.Crimson, ">> Cancel Trap Launcher <<");
-							}
-						}
-					}
+			if (MarksmanSettings.Instance.TL && MarksmanSettings.Instance.TLF && MyDebuffTime("Trap Launcher", Me) < 13 && Me.HasAura("Trap Launcher") && (Me.CurrentTarget == null || addCount() < MarksmanSettings.Instance.Mobs || !Me.CurrentTarget.InLineOfSight ||  Me.CurrentTarget.Distance > 40 || Me.CurrentTarget.Distance < 5 || SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds > 1))
+			{
+				Lua.DoString("RunMacroText('/cancelaura Trap Launcher');");
+				{
+					Logging.Write(Color.Crimson, ">> Cancel Trap Launcher <<");
+				}
+			}
             if (Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && HaltTrap() && HaltFeign())
                 {      
+					if (Ultra())
 					{
-						if (Ultra())
+						Lua.DoString("RunMacroText('/click ExtraActionButton1');");
+						SpellManager.StopCasting();
 						{
-							Lua.DoString("RunMacroText('/click ExtraActionButton1');");
-							SpellManager.StopCasting();
-							{
-								Logging.Write(Color.Aqua, ">> Heroic Will! <<");
-							}
-						}   
-					}
+							Logging.Write(Color.Aqua, ">> Heroic Will! <<");
+						}
+					}   
+					if (UltraFL())
 					{
-						if (UltraFL())
+						Lua.DoString("RunMacroText('/click ExtraActionButton1');");
+						SpellManager.StopCasting();
 						{
-							Lua.DoString("RunMacroText('/click ExtraActionButton1');");
-							SpellManager.StopCasting();
-							{
-								Logging.Write(Color.Aqua, ">> Heroic Will! <<");
-							}
+							Logging.Write(Color.Aqua, ">> Heroic Will! <<");
 						}
 					}
+					if (DW())
 					{
-						if (DW())
+						Lua.DoString("RunMacroText('/click ExtraActionButton1');");
+						SpellManager.StopCasting();
 						{
-							Lua.DoString("RunMacroText('/click ExtraActionButton1');");
-							SpellManager.StopCasting();
-							{
-								Logging.Write(Color.Aqua, ">> Enter the dream! <<");
-							}
+							Logging.Write(Color.Aqua, ">> Enter the dream! <<");
 						}
 					}
+					if (MarksmanSettings.Instance.MP && Me.GotAlivePet && Me.Pet.HealthPercent < 50 && !Me.Pet.ActiveAuras.ContainsKey("Mend Pet"))
 					{
-						if (MarksmanSettings.Instance.MP && Me.GotAlivePet && Me.Pet.HealthPercent < 50 && !Me.Pet.ActiveAuras.ContainsKey("Mend Pet"))
+					if(CastSpell("Mend Pet"))
 						{
-						if(CastSpell("Mend Pet"))
-							{
-							Logging.Write(Color.Aqua, ">> Mend Pet <<");
-							}
+						Logging.Write(Color.Aqua, ">> Mend Pet <<");
 						}
 					}
-		///////////////////////////////////////////Close Combat and Defense Mechanisms//////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////Close Combat and Defense Mechanisms//////////////////////////////////////////////////////////////////////////////////////
+					if (MarksmanSettings.Instance.AGR && Me.CurrentTarget.ThreatInfo.RawPercent > 90 && (Me.CurrentTarget.CurrentTargetGuid == Me.Guid || Me.CurrentTarget.IsCasting))
 					{
-                        if (MarksmanSettings.Instance.AGR && Me.CurrentTarget.ThreatInfo.RawPercent > 90 && (Me.CurrentTarget.CurrentTargetGuid == Me.Guid || Me.CurrentTarget.IsCasting))
-                        {
-                            if (CastSpell("Feign Death"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Aggro'd Feign Death <<");
-                            }
-                        }
-                    }	
-					{
-						if (MarksmanSettings.Instance.INT && MarksmanSettings.Instance.MMSPEC && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && Me.CurrentTarget.Distance > 5)
+						if (CastSpell("Feign Death"))
 						{
-							if (CastSpell("Silencing Shot"))
-							{
-                            Logging.Write(Color.Aqua, ">> Silencing Shot <<");
-							}
-						}
-					}					
-					{
-						if (MarksmanSettings.Instance.INT && Me.CurrentTarget.Distance <= 20 && ((MarksmanSettings.Instance.MMSPEC && SpellManager.Spells["Silencing Shot"].CooldownTimeLeft.TotalSeconds > 1) || (MarksmanSettings.Instance.SSPEC)) && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast)
-						{
-							if (CastSpell("Scatter Shot"))
-							{
-                            Logging.Write(Color.Aqua, ">> Scatter Shot, Interrupt <<");
-							}
-						}
-					}	
-					{
-						if (MarksmanSettings.Instance.SCAT && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid)
-						{
-							if (CastSpell("Scatter Shot"))
-							{
-                            Logging.Write(Color.Aqua, ">> Scatter Shot, Evade <<");
-							}
-						}
-					}						
-					{
-						if (MarksmanSettings.Instance.CONC && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Me.CurrentTarget.HasAura("Wing Clip") && !Me.CurrentTarget.HasAura("Concussive Shot") && Me.CurrentTarget.Distance < 35 && Me.CurrentTarget.Distance > 5 && Me.CurrentTarget.IsMoving)
-						{
-							if (CastSpell("Concussive Shot"))
-							{
-                            Logging.Write(Color.Aqua, ">> Concussive Shot <<");
-							}
+							Logging.Write(Color.Aqua, ">> Aggro'd Feign Death <<");
 						}
 					}
+					if (MarksmanSettings.Instance.INT && MarksmanSettings.Instance.MMSPEC && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && Me.CurrentTarget.Distance > 5)
 					{
-						if (MarksmanSettings.Instance.MLE && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Me.IsCasting && !Me.CurrentTarget.HasAura("Wing Clip") && !Me.CurrentTarget.HasAura("Concussive Shot") && Me.CurrentTarget.Distance < 5)
+						if (CastSpell("Silencing Shot"))
 						{
-							if (CastSpell("Wing Clip"))
-							{
-                            Logging.Write(Color.Aqua, ">> Wing Clip<<");
-							}
+						Logging.Write(Color.Aqua, ">> Silencing Shot <<");
 						}
 					}
+					if (MarksmanSettings.Instance.INT && Me.CurrentTarget.Distance <= 20 && ((MarksmanSettings.Instance.MMSPEC && SpellManager.Spells["Silencing Shot"].CooldownTimeLeft.TotalSeconds > 1) || (MarksmanSettings.Instance.SSPEC)) && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast)
 					{
-						if (MarksmanSettings.Instance.MLE && Me.CurrentTarget.Distance < 5 && !Me.IsCasting)
+						if (CastSpell("Scatter Shot"))
 						{
-							if (CastSpell("Raptor Strike"))
-							{
-                            Logging.Write(Color.Aqua, ">> Raptor Strike <<");
-							}
-						}
-					}	
-					{
-						if (MarksmanSettings.Instance.DIS && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Distance < 5 && Me.HealthPercent < 60)
-						{
-							if (CastSpell("Disengage"))
-							{
-                            Logging.Write(Color.Aqua, ">> Disengage <<");
-							}
+						Logging.Write(Color.Aqua, ">> Scatter Shot, Interrupt <<");
 						}
 					}
+					if (MarksmanSettings.Instance.SCAT && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid)
 					{
-						if (MarksmanSettings.Instance.DETR &&	Me.HealthPercent < 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && (Me.CurrentTarget.Distance < 10 || Me.CurrentTarget.IsCasting))
+						if (CastSpell("Scatter Shot"))
 						{
-							if (CastSpell("Deterrence"))
-							{
-                            Logging.Write(Color.Aqua, ">> Deterrence <<");
-							}
+						Logging.Write(Color.Aqua, ">> Scatter Shot, Evade <<");
 						}
-					}						
-        /////////////////////////////////////////////////////Cooldowns are here/////////////////////////////////////////////////////////////////////////////////////////////////           
-                    {
-                        if (MarksmanSettings.Instance.RF && !Me.ActiveAuras.ContainsKey("Rapid Fire") && IsTargetBoss())
-                        {
-                            if (CastSpell("Rapid Fire"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Rapid Fire <<");
-                            }
-                        }
-                    }
-                    {
-                        if (MarksmanSettings.Instance.MMSPEC && MarksmanSettings.Instance.RF && IsTargetBoss() && ((Me.ActiveAuras.ContainsKey("Rapid Fire") && SpellManager.Spells["Rapid Fire"].CooldownTimeLeft.TotalSeconds > 10) || SpellManager.Spells["Rapid Fire"].CooldownTimeLeft.TotalSeconds > 120))
-                        {
-                            if (CastSpell("Readiness"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Readiness <<");
-                            }
-                        }
-                    }
+					}
+					if (MarksmanSettings.Instance.CONC && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Me.CurrentTarget.HasAura("Wing Clip") && !Me.CurrentTarget.HasAura("Concussive Shot") && Me.CurrentTarget.Distance < 35 && Me.CurrentTarget.Distance > 5 && Me.CurrentTarget.IsMoving)
 					{
-                        if (MarksmanSettings.Instance.LB && IsTargetBoss() && !Me.ActiveAuras.ContainsKey("Rapid Fire"))
-                        {
-                            if (CastSpell("Lifeblood"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Lifeblood <<");
-                            }
-                        }
-                    }
-                    {
-                        if (MarksmanSettings.Instance.GE && IsTargetBoss())
-                        {
-                            Lua.DoString("RunMacroText('/use 10');");
-                        }
-                    }
-                    {
-                        if (MarksmanSettings.Instance.T1 && IsTargetBoss() && StyxWoW.Me.Inventory.Equipped.Trinket1 != null && StyxWoW.Me.Inventory.Equipped.Trinket1.Cooldown <= 0)
-                        {
-                            Lua.DoString("RunMacroText('/use 13');");
-                        }
-                    }
-                    {
-                        if (MarksmanSettings.Instance.T2 && IsTargetBoss() && StyxWoW.Me.Inventory.Equipped.Trinket2 != null && StyxWoW.Me.Inventory.Equipped.Trinket2.Cooldown <= 0)
-                        {
-                            Lua.DoString("RunMacroText('/use 14');");
-                        }
-                    }
-
-                    //////////////////////////////////////////////////Racial Skills here/////////////////////////////////////////////////////////////////////////////////////////
-                    {
-                        if (MarksmanSettings.Instance.RS && Me.Race == WoWRace.Troll && IsTargetBoss() && !SpellManager.Spells["Berserking"].Cooldown)
-                        {
-                            Lua.DoString("RunMacroText('/Cast Berserking');");
-                        }
-                    }
-                    {
-                        if (MarksmanSettings.Instance.RS && Me.Race == WoWRace.Orc && IsTargetBoss() && !SpellManager.Spells["Blood Fury"].Cooldown)
-                        {
-                            Lua.DoString("RunMacroText('/Cast Blood Fury');");
-                        }
-                    }
+						if (CastSpell("Concussive Shot"))
+						{
+						Logging.Write(Color.Aqua, ">> Concussive Shot <<");
+						}
+					}
+					if (MarksmanSettings.Instance.MLE && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Me.IsCasting && !Me.CurrentTarget.HasAura("Wing Clip") && !Me.CurrentTarget.HasAura("Concussive Shot") && Me.CurrentTarget.Distance < 5)
+					{
+						if (CastSpell("Wing Clip"))
+						{
+						Logging.Write(Color.Aqua, ">> Wing Clip<<");
+						}
+					}
+					if (MarksmanSettings.Instance.MLE && Me.CurrentTarget.Distance < 5 && !Me.IsCasting)
+					{
+						if (CastSpell("Raptor Strike"))
+						{
+						Logging.Write(Color.Aqua, ">> Raptor Strike <<");
+						}
+					}
+					if (MarksmanSettings.Instance.DIS && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Distance < 5 && Me.HealthPercent < 60)
+					{
+						if (CastSpell("Disengage"))
+						{
+						Logging.Write(Color.Aqua, ">> Disengage <<");
+						}
+					}
+					if (MarksmanSettings.Instance.DETR &&	Me.HealthPercent < 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && (Me.CurrentTarget.Distance < 10 || Me.CurrentTarget.IsCasting))
+					{
+						if (CastSpell("Deterrence"))
+						{
+						Logging.Write(Color.Aqua, ">> Deterrence <<");
+						}
+					}				
+	/////////////////////////////////////////////////////Cooldowns are here/////////////////////////////////////////////////////////////////////////////////////////////////           
+					if (MarksmanSettings.Instance.RF && !Me.ActiveAuras.ContainsKey("Rapid Fire") && IsTargetBoss())
+					{
+						if (CastSpell("Rapid Fire"))
+						{
+							Logging.Write(Color.Aqua, ">> Rapid Fire <<");
+						}
+					}
+					if (MarksmanSettings.Instance.MMSPEC && MarksmanSettings.Instance.RF && IsTargetBoss() && ((Me.ActiveAuras.ContainsKey("Rapid Fire") && SpellManager.Spells["Rapid Fire"].CooldownTimeLeft.TotalSeconds > 10) || SpellManager.Spells["Rapid Fire"].CooldownTimeLeft.TotalSeconds > 120))
+					{
+						if (CastSpell("Readiness"))
+						{
+							Logging.Write(Color.Aqua, ">> Readiness <<");
+						}
+					}
+					if (MarksmanSettings.Instance.LB && IsTargetBoss() && !Me.ActiveAuras.ContainsKey("Rapid Fire"))
+					{
+						if (CastSpell("Lifeblood"))
+						{
+							Logging.Write(Color.Aqua, ">> Lifeblood <<");
+						}
+					}
+					if (MarksmanSettings.Instance.GE && IsTargetBoss())
+					{
+						Lua.DoString("RunMacroText('/use 10');");
+					}
+					if (MarksmanSettings.Instance.T1 && IsTargetBoss() && StyxWoW.Me.Inventory.Equipped.Trinket1 != null && StyxWoW.Me.Inventory.Equipped.Trinket1.Cooldown <= 0)
+					{
+						Lua.DoString("RunMacroText('/use 13');");
+					}
+					if (MarksmanSettings.Instance.T2 && IsTargetBoss() && StyxWoW.Me.Inventory.Equipped.Trinket2 != null && StyxWoW.Me.Inventory.Equipped.Trinket2.Cooldown <= 0)
+					{
+						Lua.DoString("RunMacroText('/use 14');");
+					}
+				//////////////////////////////////////////////////Racial Skills here/////////////////////////////////////////////////////////////////////////////////////////
+					if (MarksmanSettings.Instance.RS && Me.Race == WoWRace.Troll && IsTargetBoss() && !SpellManager.Spells["Berserking"].Cooldown)
+					{
+						Lua.DoString("RunMacroText('/Cast Berserking');");
+					}
+					if (MarksmanSettings.Instance.RS && Me.Race == WoWRace.Orc && IsTargetBoss() && !SpellManager.Spells["Blood Fury"].Cooldown)
+					{
+						Lua.DoString("RunMacroText('/Cast Blood Fury');");
+					}        
 				}
 			//////////////////////////////////////////////////MM Spec Rotations/////////////////////////////////////////////////////////////////////////////////////////
                 if ((addCount() < MarksmanSettings.Instance.Mobs || (!MarksmanSettings.Instance.MS && !MarksmanSettings.Instance.TL)) && MarksmanSettings.Instance.MMSPEC && Me.CurrentTarget.Distance >= 5 && HaltTrap() && HaltFeign() && Me.CurrentTarget != null && Me.CurrentTarget.IsAlive && !Me.Mounted)
                 {
-                    {
-                        if (MarksmanSettings.Instance.STING && !IsMyAuraActive(Me.CurrentTarget, "Serpent Sting"))
-                        {
-                            if (CastSpell("Serpent Sting"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Serpent Sting <<");
-                            }
-                        }
-                    }
-                    {
-                        if (MyDebuffTime("Serpent Sting", Me.CurrentTarget) >= 1)
-                        {
-                            if (CastSpell("Chimera Shot"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Chimera Shot <<");
-                            }
-                        }
-                    }
+					if (MarksmanSettings.Instance.STING && !IsMyAuraActive(Me.CurrentTarget, "Serpent Sting"))
 					{
-						if (MarksmanSettings.Instance.HM && !Me.CurrentTarget.HasAura("Hunter's Mark") && !Me.CurrentTarget.HasAura("Marked for Death") && (addCount() < 2 || IsTargetBoss()))
+						if (CastSpell("Serpent Sting"))
 						{
-							if (CastSpell("Hunter's Mark"))
-							{
-								Logging.Write(Color.Aqua, ">> Hunter's Mark <<");
-							}
+							Logging.Write(Color.Aqua, ">> Serpent Sting <<");
 						}
 					}
-                    {
-                        if (SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalMilliseconds > 500 && Me.Auras.ContainsKey("Fire!"))
-                        {
-                            Lua.DoString(String.Format("RunMacroText(\"/use Aimed Shot!\")"));
-                            SpellManager.StopCasting();
-                            {
-                                Logging.Write(Color.Aqua, ">> Free Aimed Shot <<");
-                            }
-                        }
-                    }
-                    {
-                        if (Me.CurrentTarget.HealthPercent <= 20)
-                        {
-                            if (CastSpell("Kill Shot"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Kill Shot <<");
-                            }
-                        }
-                    }
-        /////////////////////////////////////////////Aimed Shot Rotation////////////////////////////////////////////////////////////////////////////////////////////
+					if (MyDebuffTime("Serpent Sting", Me.CurrentTarget) >= 1)
 					{
-                        if (MarksmanSettings.Instance.AimedROT && !Me.IsMoving && SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds > 1)
-                        {
-                            if (CastSpell("Aimed Shot"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Aimed Shot <<");
-                            }
-                        }
-                    }
-		/////////////////////////////////////////////Arcane Shot Rotation///////////////////////////////////////////////////////////////////////////////////////////
-                    {
-                        if (MarksmanSettings.Instance.ArcaneROT && !Me.IsMoving && ((Me.CurrentFocus >= 50 && SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds > 1) || SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds >= 4))
-                        {
-                            if (CastSpell("Arcane Shot"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Arcane Shot <<");
-                            }
-                        }
-                    }
-		////////////////////////////////Aimed + Arcane shot Rotation/////Aimed shot when haste bonus, else Arcane shot///////////////////////////				
+						if (CastSpell("Chimera Shot"))
+						{
+							Logging.Write(Color.Aqua, ">> Chimera Shot <<");
+						}
+					}
+					if (MarksmanSettings.Instance.HM && !Me.CurrentTarget.HasAura("Hunter's Mark") && !Me.CurrentTarget.HasAura("Marked for Death") && (addCount() < 2 || IsTargetBoss()))
 					{
-                        if (MarksmanSettings.Instance.MixedROT && !Me.IsMoving && (AimedShot() || Me.CurrentTarget.HealthPercent >= 90) && SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds >= 1)
-                        {
-                            if (CastSpell("Aimed Shot"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Aimed Shot <<");
-                            }
-                        }
-                    }
-                    {
-                        if (MarksmanSettings.Instance.MixedROT && Me.CurrentTarget.HealthPercent < 90 && !Me.IsMoving && !AimedShot() && ((Me.CurrentFocus >= 50 && SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds > 1) || SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds >= 4))
-                        {
-                            if (CastSpell("Arcane Shot"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Arcane Shot <<");
-                            }
-                        }
-                    }
-		//////////////////////////////////////////////////MM Spec continued//////////////////////////////////////////////////////////////////////////////////////////
-                    {
-                        if (!Me.ActiveAuras.ContainsKey("Fire!") && !Me.IsMoving && Me.CurrentFocus <= MarksmanSettings.Instance.FocusShots && !SpellManager.CanCast("Kill Shot"))
-                        {
-                            if (CastSpell("Steady Shot"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Steady Shot <<");
-                            }
-                        }
-                    }
+						if (CastSpell("Hunter's Mark"))
+						{
+							Logging.Write(Color.Aqua, ">> Hunter's Mark <<");
+						}
+					}
+					if (SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalMilliseconds > 500 && Me.Auras.ContainsKey("Fire!"))
+					{
+						Lua.DoString(String.Format("RunMacroText(\"/use Aimed Shot!\")"));
+						SpellManager.StopCasting();
+						{
+							Logging.Write(Color.Aqua, ">> Free Aimed Shot <<");
+						}
+					}
+					if (Me.CurrentTarget.HealthPercent <= 20)
+					{
+						if (CastSpell("Kill Shot"))
+						{
+							Logging.Write(Color.Aqua, ">> Kill Shot <<");
+						}
+					}
+	/////////////////////////////////////////////Aimed Shot Rotation////////////////////////////////////////////////////////////////////////////////////////////
+					if (MarksmanSettings.Instance.AimedROT && !Me.IsMoving && SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds > 1)
+					{
+						if (CastSpell("Aimed Shot"))
+						{
+							Logging.Write(Color.Aqua, ">> Aimed Shot <<");
+						}
+					}
+	/////////////////////////////////////////////Arcane Shot Rotation///////////////////////////////////////////////////////////////////////////////////////////
+					if (MarksmanSettings.Instance.ArcaneROT && !Me.IsMoving && ((Me.CurrentFocus >= 50 && SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds > 1) || SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds >= 4))
+					{
+						if (CastSpell("Arcane Shot"))
+						{
+							Logging.Write(Color.Aqua, ">> Arcane Shot <<");
+						}
+					}
+	////////////////////////////////Aimed + Arcane shot Rotation/////Aimed shot when haste bonus, else Arcane shot///////////////////////////				
+					if (MarksmanSettings.Instance.MixedROT && !Me.IsMoving && (AimedShot() || Me.CurrentTarget.HealthPercent >= 90) && SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds >= 1)
+					{
+						if (CastSpell("Aimed Shot"))
+						{
+							Logging.Write(Color.Aqua, ">> Aimed Shot <<");
+						}
+					}
+					if (MarksmanSettings.Instance.MixedROT && Me.CurrentTarget.HealthPercent < 90 && !Me.IsMoving && !AimedShot() && ((Me.CurrentFocus >= 50 && SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds > 1) || SpellManager.Spells["Chimera Shot"].CooldownTimeLeft.TotalSeconds >= 4))
+					{
+						if (CastSpell("Arcane Shot"))
+						{
+							Logging.Write(Color.Aqua, ">> Arcane Shot <<");
+						}
+					}
+	//////////////////////////////////////////////////MM Spec continued//////////////////////////////////////////////////////////////////////////////////////////
+					if (!Me.ActiveAuras.ContainsKey("Fire!") && !Me.IsMoving && Me.CurrentFocus <= MarksmanSettings.Instance.FocusShots && !SpellManager.CanCast("Kill Shot"))
+					{
+						if (CastSpell("Steady Shot"))
+						{
+							Logging.Write(Color.Aqua, ">> Steady Shot <<");
+						}
+					}
                 }
         
         /////////////////////////////////////////////Survival Spec Rotation///////////////////////////////////////////////////////////////////////////////////////////
             if ((addCount() < MarksmanSettings.Instance.Mobs || (!MarksmanSettings.Instance.MS && !MarksmanSettings.Instance.TL)) && MarksmanSettings.Instance.ExploROT && MarksmanSettings.Instance.SSPEC && Me.CurrentTarget.Distance >= 5 && HaltTrap() && HaltFeign() && Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted)
             {
-                {
-                    if (MarksmanSettings.Instance.HM && Me.CurrentTarget.HealthPercent > 20 && !Me.CurrentTarget.HasAura("Hunter's Mark"))
-                    {
-                        if (CastSpell("Hunter's Mark"))
-                        {
-                            Logging.Write(Color.Aqua, ">> Hunter's Mark <<");
-                        }
-                    }
-                }
+				if (MarksmanSettings.Instance.HM && Me.CurrentTarget.HealthPercent > 20 && !Me.CurrentTarget.HasAura("Hunter's Mark"))
 				{
-                    if (!SpellManager.Spells["Explosive Shot"].Cooldown && MyDebuffTime("Explosive Shot", Me.CurrentTarget) <= 1)
-                    {
-                        if (CastSpell("Explosive Shot"))                     
-                        {
-                            Logging.Write(Color.Aqua, ">> Explosive Shot <<");
-                        }
-                    }
-                }
-				{
-                    if (Me.CurrentTarget.HealthPercent < 20)
-                    {
-                        if (CastSpell("Kill Shot"))
-                        {
-                            Logging.Write(Color.Aqua, ">> Kill Shot <<");
-                        }
-                    }
-                }
-				{
-                    if (MarksmanSettings.Instance.STING && !IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") && Me.CurrentTarget.HealthPercent > 10)
-                    {
-                        if (CastSpell("Serpent Sting"))
-                        {
-                            Logging.Write(Color.Aqua, ">> Serpent Sting <<");
-                        }
-                    }
-                }
-                {
-                    if (MarksmanSettings.Instance.BAR && !IsMyAuraActive(Me.CurrentTarget, "Black Arrow") && !SpellManager.Spells["Black Arrow"].Cooldown && Me.CurrentTarget.HealthPercent > 5)
-                    {
-                        if (CastSpell("Black Arrow"))
-                        {
-                            Logging.Write(Color.Aqua, ">> Black Arrow <<");
-                        }
-                    }
-                }
-                {
-                    if (Me.CurrentFocus >= 66 && SpellManager.Spells["Explosive Shot"].CooldownTimeLeft.TotalSeconds > 1)
-                    {
-                        if (CastSpell("Arcane Shot"))
-                        {
-                            Logging.Write(Color.Aqua, ">> Arcane Shot <<");
-                        }
-                    }
-                }
-				{
-					if (Me.IsMoving && Me.Auras.ContainsKey("Aspect of the Fox") && !Me.ActiveAuras.ContainsKey("Lock and Load") && Me.CurrentFocus < 66 && !SpellManager.CanCast("Kill Shot"))
+					if (CastSpell("Hunter's Mark"))
 					{
-						Lua.DoString("RunMacroText('/cast Cobra Shot');");
-						{
-							Logging.Write(Color.Red, ">> Moving - Cobra Shot <<");
-						}
+						Logging.Write(Color.Aqua, ">> Hunter's Mark <<");
 					}
-                }
-                {
-                    if (!Me.ActiveAuras.ContainsKey("Lock and Load") && !Me.IsMoving && Me.CurrentFocus < MarksmanSettings.Instance.FocusShots && !Me.IsCasting && !SpellManager.CanCast("Kill Shot"))
-                    {
-                        if (CastSpell("Cobra Shot"))
-                        {
-                            Logging.Write(Color.Aqua, ">> Cobra Shot <<");
-                        }
-                    }
-                }
+				}
+				if (!SpellManager.Spells["Explosive Shot"].Cooldown && MyDebuffTime("Explosive Shot", Me.CurrentTarget) <= 1)
+				{
+					if (CastSpell("Explosive Shot"))                     
+					{
+						Logging.Write(Color.Aqua, ">> Explosive Shot <<");
+					}
+				}
+				if (Me.CurrentTarget.HealthPercent < 20)
+				{
+					if (CastSpell("Kill Shot"))
+					{
+						Logging.Write(Color.Aqua, ">> Kill Shot <<");
+					}
+				}
+				if (MarksmanSettings.Instance.STING && !IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") && Me.CurrentTarget.HealthPercent > 10)
+				{
+					if (CastSpell("Serpent Sting"))
+					{
+						Logging.Write(Color.Aqua, ">> Serpent Sting <<");
+					}
+				}
+				if (MarksmanSettings.Instance.BAR && !IsMyAuraActive(Me.CurrentTarget, "Black Arrow") && !SpellManager.Spells["Black Arrow"].Cooldown && Me.CurrentTarget.HealthPercent > 5)
+				{
+					if (CastSpell("Black Arrow"))
+					{
+						Logging.Write(Color.Aqua, ">> Black Arrow <<");
+					}
+				}
+				if (Me.CurrentFocus >= 66 && SpellManager.Spells["Explosive Shot"].CooldownTimeLeft.TotalSeconds > 1)
+				{
+					if (CastSpell("Arcane Shot"))
+					{
+						Logging.Write(Color.Aqua, ">> Arcane Shot <<");
+					}
+				}
+				if (Me.IsMoving && Me.Auras.ContainsKey("Aspect of the Fox") && !Me.ActiveAuras.ContainsKey("Lock and Load") && Me.CurrentFocus < 66 && !SpellManager.CanCast("Kill Shot"))
+				{
+					Lua.DoString("RunMacroText('/cast Cobra Shot');");
+					{
+						Logging.Write(Color.Red, ">> Moving - Cobra Shot <<");
+					}
+				}
+				if (!Me.ActiveAuras.ContainsKey("Lock and Load") && !Me.IsMoving && Me.CurrentFocus < MarksmanSettings.Instance.FocusShots && !Me.IsCasting && !SpellManager.CanCast("Kill Shot"))
+				{
+					if (CastSpell("Cobra Shot"))
+					{
+						Logging.Write(Color.Aqua, ">> Cobra Shot <<");
+					}
+				}
 			}
         ///////////////////////////////////////////////Moving Rotation here////////////////////////////////////////////////////////////////////////////////////////////
 			if (HaltTrap() && HaltFeign() && Me.CurrentTarget != null && Me.CurrentTarget.IsAlive && !Me.Mounted)
             {
-                    {
-                        if (!Me.IsMoving && !Me.Auras.ContainsKey("Aspect of the Hawk") && MarksmanSettings.Instance.AspectSwitching)
-                        {
-                            if (CastSpell("Aspect of the Hawk"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Not moving - Aspect of the Hawk <<");
-                            }
-                        }
-                    }
-                    {
-                        if (Me.IsMoving && Me.Auras.ContainsKey("Aspect of the Hawk") && MarksmanSettings.Instance.AspectSwitching && Me.CurrentFocus < 66)
-                        {
-                            if (CastSpell("Aspect of the Fox"))
-                            {
-                                Logging.Write(Color.Aqua, ">> Moving - Aspect of the Fox <<");
-                            }
-                        }
-                    }
+				if (!Me.IsMoving && !Me.Auras.ContainsKey("Aspect of the Hawk") && MarksmanSettings.Instance.AspectSwitching)
+				{
+					if (CastSpell("Aspect of the Hawk"))
+					{
+						Logging.Write(Color.Aqua, ">> Not moving - Aspect of the Hawk <<");
+					}
+				}
+				if (Me.IsMoving && Me.Auras.ContainsKey("Aspect of the Hawk") && MarksmanSettings.Instance.AspectSwitching && Me.CurrentFocus < 66)
+				{
+					if (CastSpell("Aspect of the Fox"))
+					{
+						Logging.Write(Color.Aqua, ">> Moving - Aspect of the Fox <<");
+					}
+				}
                 
                 if (addCount() < MarksmanSettings.Instance.Mobs && MarksmanSettings.Instance.MMSPEC && Me.CurrentTarget.Distance >= 5 && Me.IsMoving)
                 {
-                    {
-                        if (Me.IsMoving && Me.CurrentFocus >= 50)
-                        {
-                            Lua.DoString("RunMacroText('/cast Arcane Shot');");
-                            {
-                                Logging.Write(Color.Aqua, ">> Moving - Arcane Shot <<");
-                            }
-                        }
-                    }
-                    {
-                        if (addCount() < MarksmanSettings.Instance.Mobs && Me.IsMoving && Me.CurrentTarget.Distance >= 5 && Me.Auras.ContainsKey("Aspect of the Fox") && !SpellManager.CanCast("Kill Shot"))
-                        {
-                            Lua.DoString("RunMacroText('/cast Steady Shot');");
-                            {
-                                Logging.Write(Color.Red, ">> Moving - Steady Shot <<");
-                            }
-                        }
-                    }
+					if (Me.IsMoving && Me.CurrentFocus >= 50)
+					{
+						Lua.DoString("RunMacroText('/cast Arcane Shot');");
+						{
+							Logging.Write(Color.Aqua, ">> Moving - Arcane Shot <<");
+						}
+					}
+					if (addCount() < MarksmanSettings.Instance.Mobs && Me.IsMoving && Me.CurrentTarget.Distance >= 5 && Me.Auras.ContainsKey("Aspect of the Fox") && !SpellManager.CanCast("Kill Shot"))
+					{
+						Lua.DoString("RunMacroText('/cast Steady Shot');");
+						{
+							Logging.Write(Color.Red, ">> Moving - Steady Shot <<");
+						}
+					}
 				}
 			}
         //////////////////////////////////////////////AoE Rotation here/////////////////////////////////////////////////////////////////////////////////////////////////
             if (addCount() >= MarksmanSettings.Instance.Mobs && HaltFeign() && Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && (MarksmanSettings.Instance.MS || MarksmanSettings.Instance.TL))
 			{
-                {
-                    if (MarksmanSettings.Instance.TL && SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds < 1 && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.InLineOfSight && Me.CurrentTarget.Distance <= 40 && Me.CurrentTarget.Distance >= 5)
-                    {
-                        if (CastSpell("Trap Launcher"))
-                        {
-                            Logging.Write(Color.Red, ">> Trap Launcher Activated! <<");
-                        }
-                    }
-					else if (MarksmanSettings.Instance.TL && SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds < 1 && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance < 5)
-                    {
-                        if (CastSpell("Explosive Trap"))
-                        {
-                            Logging.Write(Color.Red, ">> Dropping Explosive Trap <<");
-                        }
-                    }
-                }
-                {
-                    if (Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.TL)
-                    {
-                        Lua.DoString("CastSpellByName('Explosive Trap');");
-                        {
-                            LegacySpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
-                        }
-                    }
-                }
-
-                {
-                    if (!Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.SSPEC && MarksmanSettings.Instance.ExploROT && Me.CurrentTarget.Distance >= 5 && !SpellManager.Spells["Explosive Shot"].Cooldown && MyDebuffTime("Explosive Shot", Me.CurrentTarget) <= 1 && Me.ActiveAuras.ContainsKey("Lock and Load"))
-                    {
-                        if (CastSpell("Explosive Shot"))
-                        {
-                            Logging.Write(Color.Aqua, ">> Explosive Shot <<");
-                        }
-                    }
-                }
-                {
-                    if (!Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 5 && MarksmanSettings.Instance.MS)
-                    {
-                        if (CastSpell("Multi-Shot"))
-                        {
-                            Logging.Write(Color.Aqua, ">> Multi-Shot <<");
-                        }
-                    }
-                }
-                {
-                    if (!Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.SSPEC && Me.CurrentTarget.Distance >= 5 && Me.CurrentFocus <= 42 && !SpellManager.CanCast("Kill Shot"))
-                    {
-                        if (CastSpell("Cobra Shot"))
-                        {
-                            Logging.Write(Color.Aqua, ">> Cobra Shot <<");
-                        }
-                    }
-                }
-                {
-                    if (!Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.MMSPEC && Me.CurrentTarget.Distance >= 5 && Me.CurrentFocus <= 42 && !SpellManager.CanCast("Kill Shot"))
-                    {
-                        if (CastSpell("Steady Shot"))
-                        {
-                            Logging.Write(Color.Aqua, ">> Steady Shot <<");
-                        }
-                    }
-                }
+				if (MarksmanSettings.Instance.TL && SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds < 1 && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.InLineOfSight && Me.CurrentTarget.Distance <= 40 && Me.CurrentTarget.Distance >= 5)
+				{
+					if (CastSpell("Trap Launcher"))
+					{
+						Logging.Write(Color.Red, ">> Trap Launcher Activated! <<");
+					}
+				}
+				else if (MarksmanSettings.Instance.TL && SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds < 1 && !Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance < 5)
+				{
+					if (CastSpell("Explosive Trap"))
+					{
+						Logging.Write(Color.Red, ">> Dropping Explosive Trap <<");
+					}
+				}
+				if (Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.TL)
+				{
+					Lua.DoString("CastSpellByName('Explosive Trap');");
+					{
+						LegacySpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
+					}
+				}
+				if (!Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.SSPEC && MarksmanSettings.Instance.ExploROT && Me.CurrentTarget.Distance >= 5 && !SpellManager.Spells["Explosive Shot"].Cooldown && MyDebuffTime("Explosive Shot", Me.CurrentTarget) <= 1 && Me.ActiveAuras.ContainsKey("Lock and Load"))
+				{
+					if (CastSpell("Explosive Shot"))
+					{
+						Logging.Write(Color.Aqua, ">> Explosive Shot <<");
+					}
+				}
+				if (!Me.HasAura("Trap Launcher") && Me.CurrentTarget.Distance >= 5 && MarksmanSettings.Instance.MS)
+				{
+					if (CastSpell("Multi-Shot"))
+					{
+						Logging.Write(Color.Aqua, ">> Multi-Shot <<");
+					}
+				}
+				if (!Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.SSPEC && Me.CurrentTarget.Distance >= 5 && Me.CurrentFocus <= 42 && !SpellManager.CanCast("Kill Shot"))
+				{
+					if (CastSpell("Cobra Shot"))
+					{
+						Logging.Write(Color.Aqua, ">> Cobra Shot <<");
+					}
+				}
+				if (!Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.MMSPEC && Me.CurrentTarget.Distance >= 5 && Me.CurrentFocus <= 42 && !SpellManager.CanCast("Kill Shot"))
+				{
+					if (CastSpell("Steady Shot"))
+					{
+						Logging.Write(Color.Aqua, ">> Steady Shot <<");
+					}
+				}
             }
-
         }
-
         #endregion
-
     }
 }
