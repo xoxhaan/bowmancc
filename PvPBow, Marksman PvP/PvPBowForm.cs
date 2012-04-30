@@ -59,6 +59,8 @@ namespace PvPBow
             Rapid.Checked = PvPBowSettings.Instance.RF;
             LifeBlood.Checked = PvPBowSettings.Instance.LB;
             Gloves.Checked = PvPBowSettings.Instance.GE;
+			FocusTarget.Checked = PvPBowSettings.Instance.FT;
+			PlaceHolder.Checked = PvPBowSettings.Instance.PH;
             Racial.Checked = PvPBowSettings.Instance.RS;
             AspectSwitching.Checked = PvPBowSettings.Instance.AspectSwitching;
 			Melee.Checked = PvPBowSettings.Instance.MLE;
@@ -359,6 +361,28 @@ namespace PvPBow
             else
             {
                 PvPBowSettings.Instance.LB = false;
+            }
+        }
+		private void FocusTarget_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FocusTarget.Checked == true)
+            {
+                PvPBowSettings.Instance.FT = true;
+            }
+            else
+            {
+                PvPBowSettings.Instance.FT = false;
+            }
+        }
+		private void PlaceHolder_CheckedChanged(object sender, EventArgs e)
+        {
+            if (PlaceHolder.Checked == true)
+            {
+                PvPBowSettings.Instance.PH = true;
+            }
+            else
+            {
+                PvPBowSettings.Instance.PH = false;
             }
         }
         private void Racial_CheckedChanged(object sender, EventArgs e)
