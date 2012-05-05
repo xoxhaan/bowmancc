@@ -39,7 +39,7 @@ namespace Marksman
         public override void Initialize()
         {
             Logging.Write(Color.White, "___________________________________________________");
-            Logging.Write(Color.Crimson, "----------- Bowman v4.1.2.1 ------------");
+            Logging.Write(Color.Crimson, "----------- Bowman v4.1.3.1 ------------");
 			Logging.Write(Color.Crimson, "by FallDown, Shaddar, Venus112 and Jasf10");
             Logging.Write(Color.Crimson, "---  Remember to comment on the forum! ---");
             Logging.Write(Color.Crimson, "--- /like and +rep if you like this CC! ----");
@@ -73,45 +73,45 @@ namespace Marksman
         {
             get
             {
-             if (StyxWoW.IsInWorld && !Me.IsGhost && !Me.GotAlivePet && !Me.Dead && !Me.Mounted) 
-                {
-                if (MarksmanSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"))
-                    {
-                        if (CastSpell("Revive Pet")) 
-                        StyxWoW.SleepForLagDuration();
-                    }
-                }
-				if (MarksmanSettings.Instance.CP && Me.Pet == null && !Me.IsCasting)
+				 if (StyxWoW.IsInWorld && !Me.IsGhost && !Me.Dead && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport) 
 				{
-					if (MarksmanSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
+					if (MarksmanSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"))
 					{
-						SpellManager.Cast("Call Pet 1");
+						if (CastSpell("Revive Pet")) 
 						StyxWoW.SleepForLagDuration();
-					}
-					if (MarksmanSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
+					}			
+					if (MarksmanSettings.Instance.CP && Me.Pet == null && !Me.IsCasting )
 					{
-						SpellManager.Cast("Call Pet 2");
+						if (MarksmanSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
+						{
+							SpellManager.Cast("Call Pet 1");
+							StyxWoW.SleepForLagDuration();
+						}
+						if (MarksmanSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
+						{
+							SpellManager.Cast("Call Pet 2");
+							StyxWoW.SleepForLagDuration();
+						}
+						if (MarksmanSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
+						{
+							SpellManager.Cast("Call Pet 3");
+							StyxWoW.SleepForLagDuration();
+						}
+						if ( MarksmanSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
+						{
+							SpellManager.Cast("Call Pet 4");
+							StyxWoW.SleepForLagDuration();
+						}
+						if (MarksmanSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
+						{
+							SpellManager.Cast("Call Pet 5");
+							StyxWoW.SleepForLagDuration();
+						}
 						StyxWoW.SleepForLagDuration();
-					}
-					if (MarksmanSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
-					{
-						SpellManager.Cast("Call Pet 3");
-						StyxWoW.SleepForLagDuration();
-					}
-					if ( MarksmanSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
-					{
-						SpellManager.Cast("Call Pet 4");
-						StyxWoW.SleepForLagDuration();
-					}
-					if (MarksmanSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
-					{
-						SpellManager.Cast("Call Pet 5");
-						StyxWoW.SleepForLagDuration();
-					}
-                    StyxWoW.SleepForLagDuration();
-                }		
-                return true;
-            }    
+					}	
+				}					
+				return true;
+			}	    
         }
         #endregion
 
@@ -563,8 +563,7 @@ namespace Marksman
 							Logging.Write(Color.Aqua, ">> Steady Shot <<");
 						}
 					}
-                }
-        
+                } 
         /////////////////////////////////////////////Survival Spec Rotation///////////////////////////////////////////////////////////////////////////////////////////
             if ((addCount() < MarksmanSettings.Instance.Mobs || (!MarksmanSettings.Instance.MS && !MarksmanSettings.Instance.TL)) && MarksmanSettings.Instance.ExploROT && MarksmanSettings.Instance.SSPEC && Me.CurrentTarget.Distance >= 5 && HaltTrap() && HaltFeign() && Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted)
             {

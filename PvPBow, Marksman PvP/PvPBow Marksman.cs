@@ -19,7 +19,7 @@ namespace PvPBow
 {
     class Classname : CombatRoutine
     {
-        public override sealed string Name { get { return "PvPBow a Marksmans CC v. 0.1.3.0"; } }
+        public override sealed string Name { get { return "PvPBow a Marksmans CC v. 0.1.3.1"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -40,7 +40,7 @@ namespace PvPBow
         {
             Logging.Write(Color.White, "________________________________________");
             Logging.Write(Color.Crimson, "------ PvPBow Marksman Hunter CC  -------");
-			Logging.Write(Color.Crimson, "----------- v. 0.1.2.1 by FallDown ------------");
+			Logging.Write(Color.Crimson, "----------- v. 0.1.3.1 by FallDown ------------");
 			Logging.Write(Color.Crimson, "---- Credit to ZenLulz for some of the code ----");
             Logging.Write(Color.White, "________________________________________");
         }
@@ -358,43 +358,43 @@ namespace PvPBow
         {
             get
             {
-				if (StyxWoW.IsInWorld && !Me.IsGhost && !Me.GotAlivePet && !Me.Dead && !Me.Mounted) 
+				if (StyxWoW.IsInWorld && !Me.IsGhost && !Me.Dead && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport) 
 				{
 					if (PvPBowSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"))
                     {
                         if (CastSpell("Revive Pet")) 
                         StyxWoW.SleepForLagDuration();
-                    }
+                    }				
+					if (PvPBowSettings.Instance.CP && Me.Pet == null && !Me.IsCasting)
+					{
+						if (PvPBowSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
+						{
+							SpellManager.Cast("Call Pet 1");
+							StyxWoW.SleepForLagDuration();
+						}
+						if (PvPBowSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
+						{
+							SpellManager.Cast("Call Pet 2");
+							StyxWoW.SleepForLagDuration();
+						}
+						if (PvPBowSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
+						{
+							SpellManager.Cast("Call Pet 3");
+							StyxWoW.SleepForLagDuration();
+						}
+						if ( PvPBowSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
+						{
+							SpellManager.Cast("Call Pet 4");
+							StyxWoW.SleepForLagDuration();
+						}
+						if (PvPBowSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
+						{
+							SpellManager.Cast("Call Pet 5");
+							StyxWoW.SleepForLagDuration();
+						}
+						StyxWoW.SleepForLagDuration();
+					}		
 				}
-				if (PvPBowSettings.Instance.CP && Me.Pet == null && !Me.IsCasting)
-				{
-					if (PvPBowSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
-					{
-						SpellManager.Cast("Call Pet 1");
-						StyxWoW.SleepForLagDuration();
-					}
-					if (PvPBowSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
-					{
-						SpellManager.Cast("Call Pet 2");
-						StyxWoW.SleepForLagDuration();
-					}
-					if (PvPBowSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
-					{
-						SpellManager.Cast("Call Pet 3");
-						StyxWoW.SleepForLagDuration();
-					}
-					if ( PvPBowSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
-					{
-						SpellManager.Cast("Call Pet 4");
-						StyxWoW.SleepForLagDuration();
-					}
-					if (PvPBowSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
-					{
-						SpellManager.Cast("Call Pet 5");
-						StyxWoW.SleepForLagDuration();
-					}
-                    StyxWoW.SleepForLagDuration();
-                }		
                 return true;
             }    
         }
@@ -528,7 +528,7 @@ namespace PvPBow
 						Logging.Write(Color.Aqua, ">> Stoneform <<");
 					}
 				}						
-				if (PvPBowSettings.Instance.INT && Me.CurrentTarget.IsPlayer && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && Me.CurrentTarget.Distance >= 5)
+				if (PvPBowSettings.Instance.INT && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.Class != WoWClass.Hunter && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && Me.CurrentTarget.Distance >= 5)
 				{
 					if (CastSpell("Silencing Shot"))
 					{
@@ -656,7 +656,7 @@ namespace PvPBow
 					}
 				}
 /////////////////////////////////////////////////////Cooldowns are here/////////////////////////////////////////////////////////////////////////////////////////////////           
-				if (PvPBowSettings.Instance.RF && !Me.ActiveAuras.ContainsKey("Rapid Fire") && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 20 && Me.CurrentTarget.Distance > 9 && !Invulnerable(Me.CurrentTarget))
+				if (PvPBowSettings.Instance.RF && !Me.ActiveAuras.ContainsKey("Rapid Fire") && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 20 && Me.CurrentTarget.Distance > 9 && Me.CurrentTarget.Distance < 40 && Me.CurrentTarget.InLineOfSight && Me.IsFacing(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget))
 				{
 					if (CastSpell("Rapid Fire"))
 					{
