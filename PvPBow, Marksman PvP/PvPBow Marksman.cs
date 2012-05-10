@@ -19,7 +19,7 @@ namespace PvPBow
 {
     class Classname : CombatRoutine
     {
-        public override sealed string Name { get { return "PvPBow a Marksmans CC v. 0.1.3.1"; } }
+        public override sealed string Name { get { return "PvPBow a Marksmans CC v. 0.1.3.2"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -40,7 +40,7 @@ namespace PvPBow
         {
             Logging.Write(Color.White, "________________________________________");
             Logging.Write(Color.Crimson, "------ PvPBow Marksman Hunter CC  -------");
-			Logging.Write(Color.Crimson, "----------- v. 0.1.3.1 by FallDown ------------");
+			Logging.Write(Color.Crimson, "----------- v. 0.1.3.2 by FallDown ------------");
 			Logging.Write(Color.Crimson, "---- Credit to ZenLulz for some of the code ----");
             Logging.Write(Color.White, "________________________________________");
         }
@@ -130,7 +130,8 @@ namespace PvPBow
             int count = 0;
             foreach (WoWUnit u in ObjectManager.GetObjectsOfType<WoWUnit>(true, true))
             {
-                if (u.IsAlive
+                if (Me.GotTarget
+					&& u.IsAlive
                     && u.Guid != Me.Guid
                     && u.IsHostile
                     && !u.IsCritter
@@ -362,7 +363,10 @@ namespace PvPBow
 				{
 					if (PvPBowSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"))
                     {
-                        if (CastSpell("Revive Pet")) 
+						if (CastSpell("Revive Pet")) 
+						{
+						Logging.Write(Color.Aqua, ">> Reviving Pet <<");
+						} 
                         StyxWoW.SleepForLagDuration();
                     }				
 					if (PvPBowSettings.Instance.CP && Me.Pet == null && !Me.IsCasting)
@@ -455,7 +459,7 @@ namespace PvPBow
             {  
 				if (PvPBowSettings.Instance.MP && Me.GotAlivePet && Me.Pet.HealthPercent < 75 && !Me.Pet.ActiveAuras.ContainsKey("Mend Pet"))
 				{
-				if (CastSpell("Mend Pet"))
+					if (CastSpell("Mend Pet"))
 					{
 					Logging.Write(Color.Aqua, ">> Mend Pet <<");
 					}

@@ -19,7 +19,7 @@ namespace Marksman
 {
     class Classname : CombatRoutine
     {
-        public override sealed string Name { get { return "Bowman a Marksmanship CC v4.1.3.0"; } }
+        public override sealed string Name { get { return "Bowman a Marksmanship CC v4.1.3.2"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -39,7 +39,7 @@ namespace Marksman
         public override void Initialize()
         {
             Logging.Write(Color.White, "___________________________________________________");
-            Logging.Write(Color.Crimson, "----------- Bowman v4.1.3.1 ------------");
+            Logging.Write(Color.Crimson, "----------- Bowman v4.1.3.2 ------------");
 			Logging.Write(Color.Crimson, "by FallDown, Shaddar, Venus112 and Jasf10");
             Logging.Write(Color.Crimson, "---  Remember to comment on the forum! ---");
             Logging.Write(Color.Crimson, "--- /like and +rep if you like this CC! ----");
@@ -65,53 +65,6 @@ namespace Marksman
 
             Marksman.MarksForm1 f1 = new Marksman.MarksForm1();
             f1.ShowDialog();
-        }
-        #endregion
-
-        #region rest
-        public override bool NeedRest
-        {
-            get
-            {
-				 if (StyxWoW.IsInWorld && !Me.IsGhost && !Me.Dead && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport) 
-				{
-					if (MarksmanSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"))
-					{
-						if (CastSpell("Revive Pet")) 
-						StyxWoW.SleepForLagDuration();
-					}			
-					if (MarksmanSettings.Instance.CP && Me.Pet == null && !Me.IsCasting )
-					{
-						if (MarksmanSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
-						{
-							SpellManager.Cast("Call Pet 1");
-							StyxWoW.SleepForLagDuration();
-						}
-						if (MarksmanSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
-						{
-							SpellManager.Cast("Call Pet 2");
-							StyxWoW.SleepForLagDuration();
-						}
-						if (MarksmanSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
-						{
-							SpellManager.Cast("Call Pet 3");
-							StyxWoW.SleepForLagDuration();
-						}
-						if ( MarksmanSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
-						{
-							SpellManager.Cast("Call Pet 4");
-							StyxWoW.SleepForLagDuration();
-						}
-						if (MarksmanSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
-						{
-							SpellManager.Cast("Call Pet 5");
-							StyxWoW.SleepForLagDuration();
-						}
-						StyxWoW.SleepForLagDuration();
-					}	
-				}					
-				return true;
-			}	    
         }
         #endregion
 
@@ -227,7 +180,8 @@ namespace Marksman
             int count = 0;
             foreach (WoWUnit u in ObjectManager.GetObjectsOfType<WoWUnit>(true, true))
             {
-                if (u.IsAlive
+                if (Me.GotTarget
+					&& u.IsAlive
                     && u.Guid != Me.Guid
                     && u.IsHostile
                     && !u.IsCritter
@@ -320,6 +274,56 @@ namespace Marksman
             }
         }
         #endregion
+		
+		#region rest
+        public override bool NeedRest
+        {
+            get
+            {
+				 if (StyxWoW.IsInWorld && !Me.IsGhost && !Me.Dead && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport) 
+				{
+					if (MarksmanSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"))
+					{
+						if (CastSpell("Revive Pet")) 
+						{
+						Logging.Write(Color.Aqua, ">> Reviving Pet <<");
+						}
+						StyxWoW.SleepForLagDuration();
+					}			
+					if (MarksmanSettings.Instance.CP && Me.Pet == null && !Me.IsCasting )
+					{
+						if (MarksmanSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
+						{
+							SpellManager.Cast("Call Pet 1");
+							StyxWoW.SleepForLagDuration();
+						}
+						if (MarksmanSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
+						{
+							SpellManager.Cast("Call Pet 2");
+							StyxWoW.SleepForLagDuration();
+						}
+						if (MarksmanSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
+						{
+							SpellManager.Cast("Call Pet 3");
+							StyxWoW.SleepForLagDuration();
+						}
+						if ( MarksmanSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
+						{
+							SpellManager.Cast("Call Pet 4");
+							StyxWoW.SleepForLagDuration();
+						}
+						if (MarksmanSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
+						{
+							SpellManager.Cast("Call Pet 5");
+							StyxWoW.SleepForLagDuration();
+						}
+						StyxWoW.SleepForLagDuration();
+					}	
+				}					
+				return true;
+			}	    
+        }
+        #endregion
 
         #region CombatStart
 
@@ -372,7 +376,7 @@ namespace Marksman
 					}
 					if (MarksmanSettings.Instance.MP && Me.GotAlivePet && Me.Pet.HealthPercent < 50 && !Me.Pet.ActiveAuras.ContainsKey("Mend Pet"))
 					{
-					if(CastSpell("Mend Pet"))
+						if(CastSpell("Mend Pet"))
 						{
 						Logging.Write(Color.Aqua, ">> Mend Pet <<");
 						}
@@ -385,7 +389,7 @@ namespace Marksman
 							Logging.Write(Color.Aqua, ">> Aggro'd Feign Death <<");
 						}
 					}
-					if (MarksmanSettings.Instance.INT && MarksmanSettings.Instance.MMSPEC && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && Me.CurrentTarget.Distance > 5)
+					if (MarksmanSettings.Instance.INT && MarksmanSettings.Instance.MMSPEC && SpellManager.HasSpell("Silencing Shot") && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && Me.CurrentTarget.Distance > 5)
 					{
 						if (CastSpell("Silencing Shot"))
 						{
@@ -486,7 +490,7 @@ namespace Marksman
 					}        
 				}
 			//////////////////////////////////////////////////MM Spec Rotations/////////////////////////////////////////////////////////////////////////////////////////
-                if ((addCount() < MarksmanSettings.Instance.Mobs || (!MarksmanSettings.Instance.MS && !MarksmanSettings.Instance.TL)) && MarksmanSettings.Instance.MMSPEC && Me.CurrentTarget.Distance >= 5 && HaltTrap() && HaltFeign() && Me.CurrentTarget != null && Me.CurrentTarget.IsAlive && !Me.Mounted)
+                if (Me.GotTarget && (addCount() < MarksmanSettings.Instance.Mobs || (!MarksmanSettings.Instance.MS && !MarksmanSettings.Instance.TL)) && MarksmanSettings.Instance.MMSPEC && !MarksmanSettings.Instance.ExploROT && Me.CurrentTarget.Distance >= 5 && HaltTrap() && HaltFeign() && Me.CurrentTarget.IsAlive && !Me.Mounted)
                 {
 					if (MarksmanSettings.Instance.STING && !IsMyAuraActive(Me.CurrentTarget, "Serpent Sting"))
 					{
@@ -565,7 +569,7 @@ namespace Marksman
 					}
                 } 
         /////////////////////////////////////////////Survival Spec Rotation///////////////////////////////////////////////////////////////////////////////////////////
-            if ((addCount() < MarksmanSettings.Instance.Mobs || (!MarksmanSettings.Instance.MS && !MarksmanSettings.Instance.TL)) && MarksmanSettings.Instance.ExploROT && MarksmanSettings.Instance.SSPEC && Me.CurrentTarget.Distance >= 5 && HaltTrap() && HaltFeign() && Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted)
+            if (Me.GotTarget && (addCount() < MarksmanSettings.Instance.Mobs || (!MarksmanSettings.Instance.MS && !MarksmanSettings.Instance.TL)) && MarksmanSettings.Instance.ExploROT && MarksmanSettings.Instance.SSPEC && Me.CurrentTarget.Distance >= 5 && HaltTrap() && HaltFeign() && Me.CurrentTarget.IsAlive && !Me.Mounted)
             {
 				if (MarksmanSettings.Instance.HM && Me.CurrentTarget.HealthPercent > 20 && !Me.CurrentTarget.HasAura("Hunter's Mark"))
 				{
