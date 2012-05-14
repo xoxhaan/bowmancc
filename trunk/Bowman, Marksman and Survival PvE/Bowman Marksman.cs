@@ -19,7 +19,7 @@ namespace Marksman
 {
     class Classname : CombatRoutine
     {
-        public override sealed string Name { get { return "Bowman a Marksmanship CC v4.1.3.2"; } }
+        public override sealed string Name { get { return "Bowman PvE CC v4.1.3.2"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -38,13 +38,13 @@ namespace Marksman
         #region Initialize
         public override void Initialize()
         {
-            Logging.Write(Color.White, "___________________________________________________");
-            Logging.Write(Color.Crimson, "----------- Bowman v4.1.3.2 ------------");
+            Logging.Write(Color.White, "___________________________________________");
+            Logging.Write(Color.Crimson, "----------- Bowman PvE CC v4.1.3.2 ------------");
 			Logging.Write(Color.Crimson, "by FallDown, Shaddar, Venus112 and Jasf10");
             Logging.Write(Color.Crimson, "---  Remember to comment on the forum! ---");
             Logging.Write(Color.Crimson, "--- /like and +rep if you like this CC! ----");
             Logging.Write(Color.Crimson, "----Thank you to Fiftypence for support ----");
-            Logging.Write(Color.White, "___________________________________________________");
+            Logging.Write(Color.White, "___________________________________________");
         }
         #endregion
 
@@ -560,7 +560,7 @@ namespace Marksman
 						}
 					}
 	//////////////////////////////////////////////////MM Spec continued//////////////////////////////////////////////////////////////////////////////////////////
-					if (!Me.ActiveAuras.ContainsKey("Fire!") && !Me.IsMoving && Me.CurrentFocus <= MarksmanSettings.Instance.FocusShots && !SpellManager.CanCast("Kill Shot"))
+					if (!Me.ActiveAuras.ContainsKey("Fire!") && !Me.IsMoving && Me.CurrentFocus <= MarksmanSettings.Instance.FocusShots && !SpellManager.CanCast("Kill Shot") && !SpellManager.GlobalCooldown)
 					{
 						if (CastSpell("Steady Shot"))
 						{
@@ -576,13 +576,6 @@ namespace Marksman
 					if (CastSpell("Hunter's Mark"))
 					{
 						Logging.Write(Color.Aqua, ">> Hunter's Mark <<");
-					}
-				}
-				if (!SpellManager.Spells["Explosive Shot"].Cooldown && MyDebuffTime("Explosive Shot", Me.CurrentTarget) <= 1)
-				{
-					if (CastSpell("Explosive Shot"))                     
-					{
-						Logging.Write(Color.Aqua, ">> Explosive Shot <<");
 					}
 				}
 				if (Me.CurrentTarget.HealthPercent < 20)
@@ -606,27 +599,49 @@ namespace Marksman
 						Logging.Write(Color.Aqua, ">> Black Arrow <<");
 					}
 				}
-				if (Me.CurrentFocus >= 66 && SpellManager.Spells["Explosive Shot"].CooldownTimeLeft.TotalSeconds > 1)
+				if (!SpellManager.Spells["Explosive Shot"].Cooldown && MyDebuffTime("Explosive Shot", Me.CurrentTarget) <= 1)
+				{
+					if (CastSpell("Explosive Shot"))                     
+					{
+						Logging.Write(Color.Aqua, ">> Explosive Shot <<");
+					}
+				}
+				if (Me.CurrentFocus >= 66 && (SpellManager.Spells["Explosive Shot"].CooldownTimeLeft.TotalSeconds > 1 || Me.CurrentFocus > 89) && SpellManager.Spells["Black Arrow"].CooldownTimeLeft.TotalSeconds > 1)
 				{
 					if (CastSpell("Arcane Shot"))
 					{
 						Logging.Write(Color.Aqua, ">> Arcane Shot <<");
 					}
 				}
-				if (Me.IsMoving && Me.Auras.ContainsKey("Aspect of the Fox") && !Me.ActiveAuras.ContainsKey("Lock and Load") && Me.CurrentFocus < 66 && !SpellManager.CanCast("Kill Shot"))
+				if (Me.CurrentFocus > 90 && Me.IsCasting && Me.CastingSpell.Name == "Cobra Shot" && Me.CurrentCastTimeLeft.TotalMilliseconds > 700)
+				{
+					SpellManager.StopCasting();
+					Logging.Write(Color.Red, ">> Stop Cobra Shot <<");
+				}
+				if (Me.IsMoving && Me.Auras.ContainsKey("Aspect of the Fox") && !Me.ActiveAuras.ContainsKey("Lock and Load") && Me.CurrentFocus < MarksmanSettings.Instance.FocusShots && !SpellManager.CanCast("Kill Shot") && !SpellManager.GlobalCooldown)
 				{
 					Lua.DoString("RunMacroText('/cast Cobra Shot');");
 					{
 						Logging.Write(Color.Red, ">> Moving - Cobra Shot <<");
 					}
 				}
-				if (!Me.ActiveAuras.ContainsKey("Lock and Load") && !Me.IsMoving && Me.CurrentFocus < MarksmanSettings.Instance.FocusShots && !Me.IsCasting && !SpellManager.CanCast("Kill Shot"))
+				if (!Me.ActiveAuras.ContainsKey("Lock and Load") && !Me.IsMoving && !SpellManager.GlobalCooldown && !SpellManager.CanCast("Kill Shot") && !SpellManager.CanCast("Black Arrow"))
 				{
-					if (CastSpell("Cobra Shot"))
+					if (Me.IsCasting && Me.CastingSpell.Name == "Cobra Shot" && Me.CurrentFocus + 18 < MarksmanSettings.Instance.FocusShots)
 					{
-						Logging.Write(Color.Aqua, ">> Cobra Shot <<");
+						if (CastSpell("Cobra Shot"))
+						{	
+						Logging.Write(Color.Aqua, ">> 2nd Cobra Shot <<");
+						}
 					}
-				}
+					else if (!Me.IsCasting && Me.CurrentFocus < MarksmanSettings.Instance.FocusShots)
+ 					{
+						if (CastSpell("Cobra Shot"))
+						{	
+						Logging.Write(Color.Aqua, ">> Cobra Shot <<");
+						}
+					}
+				}			
 			}
         ///////////////////////////////////////////////Moving Rotation here////////////////////////////////////////////////////////////////////////////////////////////
 			if (HaltTrap() && HaltFeign() && Me.CurrentTarget != null && Me.CurrentTarget.IsAlive && !Me.Mounted)
@@ -655,7 +670,7 @@ namespace Marksman
 							Logging.Write(Color.Aqua, ">> Moving - Arcane Shot <<");
 						}
 					}
-					if (addCount() < MarksmanSettings.Instance.Mobs && Me.IsMoving && Me.CurrentTarget.Distance >= 5 && Me.Auras.ContainsKey("Aspect of the Fox") && !SpellManager.CanCast("Kill Shot"))
+					if (addCount() < MarksmanSettings.Instance.Mobs && Me.IsMoving && Me.CurrentTarget.Distance >= 5 && Me.Auras.ContainsKey("Aspect of the Fox") && !SpellManager.CanCast("Kill Shot") && !SpellManager.GlobalCooldown)
 					{
 						Lua.DoString("RunMacroText('/cast Steady Shot');");
 						{
@@ -702,14 +717,14 @@ namespace Marksman
 						Logging.Write(Color.Aqua, ">> Multi-Shot <<");
 					}
 				}
-				if (!Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.SSPEC && Me.CurrentTarget.Distance >= 5 && Me.CurrentFocus <= 42 && !SpellManager.CanCast("Kill Shot"))
+				if (!Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.SSPEC && Me.CurrentTarget.Distance >= 5 && Me.CurrentFocus <= 42 && !SpellManager.CanCast("Kill Shot") && !SpellManager.GlobalCooldown)
 				{
 					if (CastSpell("Cobra Shot"))
 					{
 						Logging.Write(Color.Aqua, ">> Cobra Shot <<");
 					}
 				}
-				if (!Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.MMSPEC && Me.CurrentTarget.Distance >= 5 && Me.CurrentFocus <= 42 && !SpellManager.CanCast("Kill Shot"))
+				if (!Me.HasAura("Trap Launcher") && MarksmanSettings.Instance.MMSPEC && Me.CurrentTarget.Distance >= 5 && Me.CurrentFocus <= 42 && !SpellManager.CanCast("Kill Shot") && !SpellManager.GlobalCooldown)
 				{
 					if (CastSpell("Steady Shot"))
 					{
