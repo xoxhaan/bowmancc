@@ -25,24 +25,53 @@ namespace Marksman
         {
             InitializeComponent();
         }
+
+        private void FillFDCBox()
+        {
+            FDBox.Items.Clear();
+            FDBox.Items.Add("Never");
+            FDBox.Items.Add("High Threat");
+            FDBox.Items.Add("On Aggro");
+            FDBox.Items.Add("Low Health");
+        }
+
+        private void FDBoxSelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch ((string)FDBox.SelectedItem)
+            {
+                case "Never":
+                    MarksmanSettings.Instance.FDCBox = (string)FDBox.SelectedItem;
+                    break;
+                case "High Threat":
+                    MarksmanSettings.Instance.FDCBox = (string)FDBox.SelectedItem;
+                    break;
+                case "On Aggro":
+                    MarksmanSettings.Instance.FDCBox = (string)FDBox.SelectedItem;
+                    break;
+                case "Low Health":
+                    MarksmanSettings.Instance.FDCBox = (string)FDBox.SelectedItem;
+                    break;
+            }
+        }
+
         private void MarksForm1_Load(object sender, EventArgs e)
         {
+
+            FillFDCBox();
+            FDBox.SelectedItem = (string)MarksmanSettings.Instance.FDCBox;
+
             MarksmanSettings.Instance.Load();
 
             Mobs.Value = new decimal(MarksmanSettings.Instance.Mobs);
             PET.Value = new decimal(MarksmanSettings.Instance.PET);
+            MendHealth.Value = new decimal(MarksmanSettings.Instance.MendHealth);
             FocusShots.Value = new decimal(MarksmanSettings.Instance.FocusShots);
-            Aimed.Checked = MarksmanSettings.Instance.AimedROT;
-            Arcane.Checked = MarksmanSettings.Instance.ArcaneROT;
-            Mixed.Checked = MarksmanSettings.Instance.MixedROT;
-            Explo.Checked = MarksmanSettings.Instance.ExploROT;
-            Marksman.Checked = MarksmanSettings.Instance.MMSPEC;
-            Survival.Checked = MarksmanSettings.Instance.SSPEC;
             Party.Checked = MarksmanSettings.Instance.Party;
             DSHC.Checked = MarksmanSettings.Instance.DSHC;
             DSLFR.Checked = MarksmanSettings.Instance.DSLFR;
             DSNOR.Checked = MarksmanSettings.Instance.DSNOR;
             CallPet.Checked = MarksmanSettings.Instance.CP;
+            CallWild.Checked = MarksmanSettings.Instance.CW;
             RevivePet.Checked = MarksmanSettings.Instance.RP;
             MendPet.Checked = MarksmanSettings.Instance.MP;
             MultiShot.Checked = MarksmanSettings.Instance.MS;
@@ -64,7 +93,7 @@ namespace Marksman
 			BArrow.Checked = MarksmanSettings.Instance.BAR;
 			Deterrence.Checked = MarksmanSettings.Instance.DETR;
 			SerSting.Checked = MarksmanSettings.Instance.STING;
-			Aggro.Checked = MarksmanSettings.Instance.AGR;
+            Misdirect.Checked = MarksmanSettings.Instance.MDPet;
 
             
         }
@@ -72,11 +101,6 @@ namespace Marksman
         {
             System.Diagnostics.Process.Start("http://www.thebuddyforum.com/honorbuddy-forum/classes/all-one/42174-lazyraider-all-one-pve-ccs.html");
             linkLabel1.LinkVisited = true;
-        }
-        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("http://www.wowhead.com/talent#ccbcZfRG0GkMuroM");
-            linkLabel3.LinkVisited = true;
         }
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -96,76 +120,13 @@ namespace Marksman
         {
             MarksmanSettings.Instance.PET = (int)PET.Value;
         }
-
         private void FocusShots_ValueChanged(object sender, EventArgs e)
         {
             MarksmanSettings.Instance.FocusShots = (int)FocusShots.Value;
         }
-        private void Aimed_CheckedChanged(object sender, EventArgs e)
+        private void MendHealth_ValueChanged(object sender, EventArgs e)
         {
-            if (Aimed.Checked == true)
-            {
-                MarksmanSettings.Instance.AimedROT = true;
-            }
-            else
-            {
-                MarksmanSettings.Instance.AimedROT = false;
-            }
-        }
-        private void Arcane_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Arcane.Checked == true)
-            {
-                MarksmanSettings.Instance.ArcaneROT = true;
-            }
-            else
-            {
-                MarksmanSettings.Instance.ArcaneROT = false;
-            }
-        }
-        private void Mixed_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Mixed.Checked == true)
-            {
-                MarksmanSettings.Instance.MixedROT = true;
-            }
-            else
-            {
-                MarksmanSettings.Instance.MixedROT = false;
-            }
-        }
-        private void Explo_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Explo.Checked == true)
-            {
-                MarksmanSettings.Instance.ExploROT = true;
-            }
-            else
-            {
-                MarksmanSettings.Instance.ExploROT = false;
-            }
-        }
-        private void Marksman_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Marksman.Checked == true)
-            {
-                MarksmanSettings.Instance.MMSPEC = true;
-            }
-            else
-            {
-                MarksmanSettings.Instance.MMSPEC = false;
-            }
-        }
-        private void Survival_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Survival.Checked == true)
-            {
-                MarksmanSettings.Instance.SSPEC = true;
-            }
-            else
-            {
-                MarksmanSettings.Instance.SSPEC = false;
-            }
+            MarksmanSettings.Instance.MendHealth = (int)MendHealth.Value;
         }
         private void Party_CheckedChanged(object sender, EventArgs e)
         {
@@ -220,6 +181,17 @@ namespace Marksman
             else
             {
                 MarksmanSettings.Instance.CP = false;
+            }
+        }
+        private void CallWild_CheckedChanged(object sender, EventArgs e)
+        {
+            if (CallWild.Checked == true)
+            {
+                MarksmanSettings.Instance.CW = true;
+            }
+            else
+            {
+                MarksmanSettings.Instance.CW = false;
             }
         }
         private void RevivePet_CheckedChanged(object sender, EventArgs e)
@@ -433,6 +405,17 @@ namespace Marksman
                 MarksmanSettings.Instance.DETR = false;
             }
         }
+        private void Misdirect_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Misdirect.Checked == true)
+            {
+                MarksmanSettings.Instance.MDPet = true;
+            }
+            else
+            {
+                MarksmanSettings.Instance.MDPet = false;
+            }
+        }
 		private void BArrow_CheckedChanged(object sender, EventArgs e)
         {
             if (BArrow.Checked == true)
@@ -454,17 +437,6 @@ namespace Marksman
             {
                 MarksmanSettings.Instance.STING = false;
             }
-        }
-		private void Aggro_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Aggro.Checked == true)
-            {
-                MarksmanSettings.Instance.AGR = true;
-            }
-            else
-            {
-                MarksmanSettings.Instance.AGR = false;
-            }
         }      
         private void SaveButton_Click_1(object sender, EventArgs e)
         {
@@ -475,9 +447,15 @@ namespace Marksman
 
         private void SaveButton2_Click_1(object sender, EventArgs e)
         {
+            MarksmanSettings.Instance.FDCBox = (string)FDBox.SelectedItem;
             MarksmanSettings.Instance.Save();
             Logging.Write("Configuration Saved");
             Close();
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

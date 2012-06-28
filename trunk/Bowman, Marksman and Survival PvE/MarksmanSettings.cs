@@ -16,30 +16,23 @@ namespace Marksman
             : base(Path.Combine(Logging.ApplicationPath, string.Format(@"CustomClasses/Config/Bowman-Settings-{0}.xml", StyxWoW.Me.Name)))
         {
         }
-
-        [Setting, DefaultValue(true)]
-        public bool AimedROT { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool ArcaneROT { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool MixedROT { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool ExploROT { get; set; }
-
-        [Setting, DefaultValue(true)]
-        public bool MMSPEC { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool SSPEC { get; set; }
-
         [Setting, DefaultValue(true)]
         public bool Party { get; set; }
 
         [Setting, DefaultValue(false)]
+        public bool DSLFR { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool DSNOR { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool DSHC { get; set; }
+
+        [Setting, DefaultValue(false)]
         public bool CP { get; set; }
+
+        [Setting, DefaultValue(true)]
+        public bool CW { get; set; }
 
         [Setting, DefaultValue(false)]
         public bool RP { get; set; }
@@ -55,15 +48,6 @@ namespace Marksman
 		
         [Setting, DefaultValue(true)]
         public bool TLF { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool DSLFR { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool DSNOR { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool DSHC { get; set; }
 
         [Setting, DefaultValue(false)]
         public bool T1 { get; set; }
@@ -89,8 +73,11 @@ namespace Marksman
         [Setting, DefaultValue(1)]
         public int PET { get; set; }
 
-        [Setting, DefaultValue(88)]
+        [Setting, DefaultValue(66)]
         public int FocusShots { get; set; }
+
+        [Setting, DefaultValue(50)]
+        public int MendHealth { get; set; }
 
         [Setting, DefaultValue(true)]
         public bool AspectSwitching { get; set; }
@@ -121,9 +108,12 @@ namespace Marksman
 		
 		[Setting, DefaultValue(true)]
         public bool STING { get; set; }
-		
-		[Setting, DefaultValue(true)]
-        public bool AGR { get; set; }
+
+        [Setting, DefaultValue(true)]
+        public bool MDPet { get; set; }
+
+        [Setting, DefaultValue("Never")]
+        public string FDCBox { get; set; }
 		
     }
 }
