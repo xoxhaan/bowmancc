@@ -802,7 +802,7 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Lynx Rush <<");
                     }
                 }
-                if (Me.GotAlivePet && Me.Pet.Auras.ContainsKey("Frenzy") && !Me.ActiveAuras.ContainsKey("The Beast Within") 
+                if (BeastMasterSettings.Instance.FF && Me.GotAlivePet && Me.Pet.Auras.ContainsKey("Frenzy") && !Me.ActiveAuras.ContainsKey("The Beast Within") 
                     && ((SpellManager.Spells["Bestial Wrath"].Cooldown && SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 9) 
                     || (!SpellManager.Spells["Bestial Wrath"].Cooldown && (Me.CurrentTarget.MaxHealth <= 200000 || Me.ActiveAuras.ContainsKey("Rapid Fire")))))
                 {
@@ -842,7 +842,7 @@ namespace TheBeastMaster
                         }
                     }
                 }
-                if (Me.Pet.Auras.ContainsKey("Frenzy") && Me.Pet.Auras["Frenzy"].StackCount >= 1 && DebuffTime("Frenzy", Me.Pet) < 2)
+                if (BeastMasterSettings.Instance.FF && Me.Pet.Auras.ContainsKey("Frenzy") && Me.Pet.Auras["Frenzy"].StackCount >= 1 && DebuffTime("Frenzy", Me.Pet) < 2)
                 {
                     if (CastSpell("Focus Fire"))
                     {
@@ -922,7 +922,7 @@ namespace TheBeastMaster
                         }
                     }              
                 }
-                if (Me.GotAlivePet && Me.Pet.Auras.ContainsKey("Frenzy") && !Me.ActiveAuras.ContainsKey("The Beast Within")
+                if (BeastMasterSettings.Instance.FF && Me.GotAlivePet && Me.Pet.Auras.ContainsKey("Frenzy") && !Me.ActiveAuras.ContainsKey("The Beast Within")
                     && ((SpellManager.Spells["Bestial Wrath"].Cooldown && SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 9)
                     || (!SpellManager.Spells["Bestial Wrath"].Cooldown && (Me.CurrentTarget.MaxHealth <= 200000 || Me.ActiveAuras.ContainsKey("Rapid Fire")))))
                 {
@@ -962,7 +962,7 @@ namespace TheBeastMaster
                         }
                     }
                 }
-                if (Me.Pet.Auras.ContainsKey("Frenzy") && Me.Pet.Auras["Frenzy"].StackCount >= 1 && DebuffTime("Frenzy", Me.Pet) < 2)
+                if (BeastMasterSettings.Instance.FF && Me.Pet.Auras.ContainsKey("Frenzy") && Me.Pet.Auras["Frenzy"].StackCount >= 1 && DebuffTime("Frenzy", Me.Pet) < 2)
                 {
                     if (CastSpell("Focus Fire"))
                     {

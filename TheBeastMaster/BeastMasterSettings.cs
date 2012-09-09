@@ -15,7 +15,7 @@ namespace TheBeastMaster
         public static readonly BeastMasterSettings Instance = new BeastMasterSettings();
 
         public BeastMasterSettings()
-            : base(Path.Combine(Utilities.AssemblyDirectory, string.Format(@"CustomClasses/Config/TheBeastMaster-Settings-{0}.xml", StyxWoW.Me.Name)))
+            : base(Path.Combine(Utilities.AssemblyDirectory, string.Format(@"Settings/TheBeastMaster-Settings-{0}.xml", StyxWoW.Me.Name)))
         {
         }
 
