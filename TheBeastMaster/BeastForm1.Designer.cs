@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.DBeast = new System.Windows.Forms.CheckBox();
-            this.Glaives = new System.Windows.Forms.CheckBox();
-            this.Silence = new System.Windows.Forms.CheckBox();
+            this.Readiness = new System.Windows.Forms.CheckBox();
+            this.MDFocus = new System.Windows.Forms.CheckBox();
             this.Binding = new System.Windows.Forms.CheckBox();
             this.HMark = new System.Windows.Forms.CheckBox();
             this.Concussive = new System.Windows.Forms.CheckBox();
@@ -85,25 +85,6 @@
             this.RevivePet = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.TL3_None = new System.Windows.Forms.RadioButton();
-            this.TL3_Lynx = new System.Windows.Forms.RadioButton();
-            this.TL3_Crows = new System.Windows.Forms.RadioButton();
-            this.TL3_Blink = new System.Windows.Forms.RadioButton();
-            this.label18 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.TL2_None = new System.Windows.Forms.RadioButton();
-            this.TL2_Thrill = new System.Windows.Forms.RadioButton();
-            this.TL2_Fervor = new System.Windows.Forms.RadioButton();
-            this.TL2_Dire = new System.Windows.Forms.RadioButton();
-            this.label17 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.TL1_None = new System.Windows.Forms.RadioButton();
-            this.TL1_Binding = new System.Windows.Forms.RadioButton();
-            this.TL1_Silence = new System.Windows.Forms.RadioButton();
-            this.label16 = new System.Windows.Forms.Label();
-            this.TL1_Wyvern = new System.Windows.Forms.RadioButton();
-            this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -119,6 +100,30 @@
             this.label6 = new System.Windows.Forms.Label();
             this.DSLFR = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.TL4_None = new System.Windows.Forms.RadioButton();
+            this.SpiritBond = new System.Windows.Forms.RadioButton();
+            this.Exhilaration = new System.Windows.Forms.RadioButton();
+            this.IronHawk = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.TL1_None = new System.Windows.Forms.RadioButton();
+            this.TL1_Binding = new System.Windows.Forms.RadioButton();
+            this.TL1_Silence = new System.Windows.Forms.RadioButton();
+            this.label16 = new System.Windows.Forms.Label();
+            this.TL1_Wyvern = new System.Windows.Forms.RadioButton();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.TL2_None = new System.Windows.Forms.RadioButton();
+            this.TL2_Thrill = new System.Windows.Forms.RadioButton();
+            this.TL2_Fervor = new System.Windows.Forms.RadioButton();
+            this.TL2_Dire = new System.Windows.Forms.RadioButton();
+            this.label17 = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.TL3_None = new System.Windows.Forms.RadioButton();
+            this.TL3_Lynx = new System.Windows.Forms.RadioButton();
+            this.TL3_Crows = new System.Windows.Forms.RadioButton();
+            this.TL3_Blink = new System.Windows.Forms.RadioButton();
+            this.label18 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -131,63 +136,64 @@
             ((System.ComponentModel.ISupportInitialize)(this.MendHealth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PET)).BeginInit();
             this.tabPage1.SuspendLayout();
-            this.panel4.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.panel5.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // DBeast
             // 
             this.DBeast.AutoSize = true;
-            this.DBeast.Location = new System.Drawing.Point(169, 88);
+            this.DBeast.Location = new System.Drawing.Point(169, 87);
             this.DBeast.Name = "DBeast";
-            this.DBeast.Size = new System.Drawing.Size(75, 17);
+            this.DBeast.Size = new System.Drawing.Size(85, 17);
             this.DBeast.TabIndex = 24;
-            this.DBeast.Text = "Dire Beast";
+            this.DBeast.Text = "Arcane Shot";
             this.DBeast.UseVisualStyleBackColor = true;
             this.DBeast.CheckedChanged += new System.EventHandler(this.DBeast_CheckedChanged);
             // 
-            // Glaives
+            // Readiness
             // 
-            this.Glaives.AutoSize = true;
-            this.Glaives.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Glaives.Location = new System.Drawing.Point(7, 142);
-            this.Glaives.Name = "Glaives";
-            this.Glaives.Size = new System.Drawing.Size(76, 17);
-            this.Glaives.TabIndex = 24;
-            this.Glaives.Text = "Readiness";
-            this.Glaives.UseVisualStyleBackColor = true;
-            this.Glaives.CheckedChanged += new System.EventHandler(this.Glaives_CheckedChanged);
+            this.Readiness.AutoSize = true;
+            this.Readiness.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Readiness.Location = new System.Drawing.Point(7, 142);
+            this.Readiness.Name = "Readiness";
+            this.Readiness.Size = new System.Drawing.Size(76, 17);
+            this.Readiness.TabIndex = 24;
+            this.Readiness.Text = "Readiness";
+            this.Readiness.UseVisualStyleBackColor = true;
+            this.Readiness.CheckedChanged += new System.EventHandler(this.Readiness_CheckedChanged);
             // 
-            // Silence
+            // MDFocus
             // 
-            this.Silence.AutoSize = true;
-            this.Silence.Location = new System.Drawing.Point(17, 64);
-            this.Silence.Name = "Silence";
-            this.Silence.Size = new System.Drawing.Size(94, 17);
-            this.Silence.TabIndex = 24;
-            this.Silence.Text = "Silencing Shot";
-            this.Silence.UseVisualStyleBackColor = true;
-            this.Silence.CheckedChanged += new System.EventHandler(this.Silence_CheckedChanged);
+            this.MDFocus.AutoSize = true;
+            this.MDFocus.Location = new System.Drawing.Point(17, 111);
+            this.MDFocus.Name = "MDFocus";
+            this.MDFocus.Size = new System.Drawing.Size(115, 17);
+            this.MDFocus.TabIndex = 24;
+            this.MDFocus.Text = "Misdirect on Focus";
+            this.MDFocus.UseVisualStyleBackColor = true;
+            this.MDFocus.CheckedChanged += new System.EventHandler(this.MDFocus_CheckedChanged);
             // 
             // Binding
             // 
             this.Binding.AutoSize = true;
-            this.Binding.Location = new System.Drawing.Point(11, 146);
+            this.Binding.Location = new System.Drawing.Point(17, 134);
             this.Binding.Name = "Binding";
-            this.Binding.Size = new System.Drawing.Size(140, 17);
+            this.Binding.Size = new System.Drawing.Size(89, 17);
             this.Binding.TabIndex = 24;
-            this.Binding.Text = "Binding Shot (Not in yet)";
+            this.Binding.Text = "Kill Command";
             this.Binding.UseVisualStyleBackColor = true;
             this.Binding.CheckedChanged += new System.EventHandler(this.Binding_CheckedChanged);
             // 
             // HMark
             // 
             this.HMark.AutoSize = true;
-            this.HMark.Location = new System.Drawing.Point(17, 111);
+            this.HMark.Location = new System.Drawing.Point(17, 87);
             this.HMark.Name = "HMark";
             this.HMark.Size = new System.Drawing.Size(92, 17);
             this.HMark.TabIndex = 24;
@@ -198,7 +204,7 @@
             // Concussive
             // 
             this.Concussive.AutoSize = true;
-            this.Concussive.Location = new System.Drawing.Point(17, 88);
+            this.Concussive.Location = new System.Drawing.Point(17, 64);
             this.Concussive.Name = "Concussive";
             this.Concussive.Size = new System.Drawing.Size(106, 17);
             this.Concussive.TabIndex = 24;
@@ -220,11 +226,11 @@
             // LynxRush
             // 
             this.LynxRush.AutoSize = true;
-            this.LynxRush.Location = new System.Drawing.Point(169, 112);
+            this.LynxRush.Location = new System.Drawing.Point(169, 111);
             this.LynxRush.Name = "LynxRush";
-            this.LynxRush.Size = new System.Drawing.Size(76, 17);
+            this.LynxRush.Size = new System.Drawing.Size(64, 17);
             this.LynxRush.TabIndex = 24;
-            this.LynxRush.Text = "Lynx Rush";
+            this.LynxRush.Text = "Kill Shot";
             this.LynxRush.UseVisualStyleBackColor = true;
             this.LynxRush.CheckedChanged += new System.EventHandler(this.LynxRush_CheckedChanged);
             // 
@@ -282,7 +288,7 @@
             this.groupBox6.Controls.Add(this.FDBox);
             this.groupBox6.Controls.Add(this.AspectSwitching);
             this.groupBox6.Controls.Add(this.DBeast);
-            this.groupBox6.Controls.Add(this.Silence);
+            this.groupBox6.Controls.Add(this.MDFocus);
             this.groupBox6.Controls.Add(this.Binding);
             this.groupBox6.Controls.Add(this.groupBox4);
             this.groupBox6.Controls.Add(this.HMark);
@@ -363,7 +369,7 @@
             // SSStacks
             // 
             this.SSStacks.AutoSize = true;
-            this.SSStacks.Location = new System.Drawing.Point(238, 134);
+            this.SSStacks.Location = new System.Drawing.Point(238, 136);
             this.SSStacks.Name = "SSStacks";
             this.SSStacks.Size = new System.Drawing.Size(43, 13);
             this.SSStacks.TabIndex = 28;
@@ -371,7 +377,7 @@
             // 
             // FFS
             // 
-            this.FFS.Location = new System.Drawing.Point(283, 132);
+            this.FFS.Location = new System.Drawing.Point(283, 134);
             this.FFS.Maximum = new decimal(new int[] {
             5,
             0,
@@ -396,7 +402,7 @@
             // 
             this.FocusFire.AutoSize = true;
             this.FocusFire.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.FocusFire.Location = new System.Drawing.Point(169, 133);
+            this.FocusFire.Location = new System.Drawing.Point(169, 134);
             this.FocusFire.Name = "FocusFire";
             this.FocusFire.Size = new System.Drawing.Size(75, 17);
             this.FocusFire.TabIndex = 27;
@@ -595,7 +601,7 @@
             this.groupBox5.Controls.Add(this.Racial);
             this.groupBox5.Controls.Add(this.Trinket2);
             this.groupBox5.Controls.Add(this.Trinket1);
-            this.groupBox5.Controls.Add(this.Glaives);
+            this.groupBox5.Controls.Add(this.Readiness);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.groupBox5.Location = new System.Drawing.Point(11, 218);
             this.groupBox5.Name = "groupBox5";
@@ -834,7 +840,6 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.label15);
             this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.label10);
             this.tabPage1.Controls.Add(this.label12);
@@ -852,244 +857,11 @@
             this.tabPage1.Text = "Beast Master";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.TL3_None);
-            this.panel4.Controls.Add(this.TL3_Lynx);
-            this.panel4.Controls.Add(this.TL3_Crows);
-            this.panel4.Controls.Add(this.TL3_Blink);
-            this.panel4.Controls.Add(this.label18);
-            this.panel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel4.Location = new System.Drawing.Point(8, 107);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(422, 37);
-            this.panel4.TabIndex = 34;
-            // 
-            // TL3_None
-            // 
-            this.TL3_None.AutoSize = true;
-            this.TL3_None.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL3_None.Checked = true;
-            this.TL3_None.Location = new System.Drawing.Point(3, 3);
-            this.TL3_None.Name = "TL3_None";
-            this.TL3_None.Size = new System.Drawing.Size(37, 30);
-            this.TL3_None.TabIndex = 34;
-            this.TL3_None.TabStop = true;
-            this.TL3_None.Text = "None";
-            this.TL3_None.UseVisualStyleBackColor = true;
-            this.TL3_None.CheckedChanged += new System.EventHandler(this.TL3_None_CheckedChanged);
-            // 
-            // TL3_Lynx
-            // 
-            this.TL3_Lynx.AutoSize = true;
-            this.TL3_Lynx.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL3_Lynx.Location = new System.Drawing.Point(344, 3);
-            this.TL3_Lynx.Name = "TL3_Lynx";
-            this.TL3_Lynx.Size = new System.Drawing.Size(61, 30);
-            this.TL3_Lynx.TabIndex = 36;
-            this.TL3_Lynx.TabStop = true;
-            this.TL3_Lynx.Text = "Lynx Rush";
-            this.TL3_Lynx.UseVisualStyleBackColor = true;
-            // 
-            // TL3_Crows
-            // 
-            this.TL3_Crows.AutoSize = true;
-            this.TL3_Crows.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL3_Crows.Location = new System.Drawing.Point(82, 3);
-            this.TL3_Crows.Name = "TL3_Crows";
-            this.TL3_Crows.Size = new System.Drawing.Size(98, 30);
-            this.TL3_Crows.TabIndex = 35;
-            this.TL3_Crows.TabStop = true;
-            this.TL3_Crows.Text = "A Murder of Crows";
-            this.TL3_Crows.UseVisualStyleBackColor = true;
-            this.TL3_Crows.CheckedChanged += new System.EventHandler(this.TL3_Crows_CheckedChanged);
-            // 
-            // TL3_Blink
-            // 
-            this.TL3_Blink.AutoSize = true;
-            this.TL3_Blink.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL3_Blink.Location = new System.Drawing.Point(227, 3);
-            this.TL3_Blink.Name = "TL3_Blink";
-            this.TL3_Blink.Size = new System.Drawing.Size(64, 30);
-            this.TL3_Blink.TabIndex = 34;
-            this.TL3_Blink.TabStop = true;
-            this.TL3_Blink.Text = "Blink Strike";
-            this.TL3_Blink.UseVisualStyleBackColor = true;
-            this.TL3_Blink.CheckedChanged += new System.EventHandler(this.TL3_Blink_CheckedChanged);
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(-3, -16);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(391, 13);
-            this.label18.TabIndex = 14;
-            this.label18.Text = "________________________________________________________________";
-            // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.TL2_None);
-            this.panel3.Controls.Add(this.TL2_Thrill);
-            this.panel3.Controls.Add(this.TL2_Fervor);
-            this.panel3.Controls.Add(this.TL2_Dire);
-            this.panel3.Controls.Add(this.label17);
-            this.panel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel3.Location = new System.Drawing.Point(8, 61);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(422, 38);
-            this.panel3.TabIndex = 28;
-            // 
-            // TL2_None
-            // 
-            this.TL2_None.AutoSize = true;
-            this.TL2_None.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL2_None.Checked = true;
-            this.TL2_None.Location = new System.Drawing.Point(3, 3);
-            this.TL2_None.Name = "TL2_None";
-            this.TL2_None.Size = new System.Drawing.Size(37, 30);
-            this.TL2_None.TabIndex = 28;
-            this.TL2_None.TabStop = true;
-            this.TL2_None.Text = "None";
-            this.TL2_None.UseVisualStyleBackColor = true;
-            this.TL2_None.CheckedChanged += new System.EventHandler(this.TL2_None_CheckedChanged);
-            // 
-            // TL2_Thrill
-            // 
-            this.TL2_Thrill.AutoSize = true;
-            this.TL2_Thrill.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL2_Thrill.Location = new System.Drawing.Point(330, 3);
-            this.TL2_Thrill.Name = "TL2_Thrill";
-            this.TL2_Thrill.Size = new System.Drawing.Size(89, 30);
-            this.TL2_Thrill.TabIndex = 33;
-            this.TL2_Thrill.TabStop = true;
-            this.TL2_Thrill.Text = "Thrill of the Hunt";
-            this.TL2_Thrill.UseVisualStyleBackColor = true;
-            this.TL2_Thrill.CheckedChanged += new System.EventHandler(this.TL2_Thrill_CheckedChanged);
-            // 
-            // TL2_Fervor
-            // 
-            this.TL2_Fervor.AutoSize = true;
-            this.TL2_Fervor.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL2_Fervor.Location = new System.Drawing.Point(110, 3);
-            this.TL2_Fervor.Name = "TL2_Fervor";
-            this.TL2_Fervor.Size = new System.Drawing.Size(41, 30);
-            this.TL2_Fervor.TabIndex = 32;
-            this.TL2_Fervor.TabStop = true;
-            this.TL2_Fervor.Text = "Fervor";
-            this.TL2_Fervor.UseVisualStyleBackColor = true;
-            this.TL2_Fervor.CheckedChanged += new System.EventHandler(this.TL2_Fervor_CheckedChanged);
-            // 
-            // TL2_Dire
-            // 
-            this.TL2_Dire.AutoSize = true;
-            this.TL2_Dire.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL2_Dire.Location = new System.Drawing.Point(229, 3);
-            this.TL2_Dire.Name = "TL2_Dire";
-            this.TL2_Dire.Size = new System.Drawing.Size(60, 30);
-            this.TL2_Dire.TabIndex = 31;
-            this.TL2_Dire.TabStop = true;
-            this.TL2_Dire.Text = "Dire Beast";
-            this.TL2_Dire.UseVisualStyleBackColor = true;
-            this.TL2_Dire.CheckedChanged += new System.EventHandler(this.TL2_Dire_CheckedChanged);
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(-3, -16);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(391, 13);
-            this.label17.TabIndex = 14;
-            this.label17.Text = "________________________________________________________________";
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.TL1_None);
-            this.panel2.Controls.Add(this.TL1_Binding);
-            this.panel2.Controls.Add(this.TL1_Silence);
-            this.panel2.Controls.Add(this.label16);
-            this.panel2.Controls.Add(this.TL1_Wyvern);
-            this.panel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel2.Location = new System.Drawing.Point(8, 19);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(422, 36);
-            this.panel2.TabIndex = 21;
-            // 
-            // TL1_None
-            // 
-            this.TL1_None.AutoSize = true;
-            this.TL1_None.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL1_None.Checked = true;
-            this.TL1_None.Location = new System.Drawing.Point(3, 2);
-            this.TL1_None.Name = "TL1_None";
-            this.TL1_None.Size = new System.Drawing.Size(37, 30);
-            this.TL1_None.TabIndex = 27;
-            this.TL1_None.TabStop = true;
-            this.TL1_None.Text = "None";
-            this.TL1_None.UseVisualStyleBackColor = true;
-            this.TL1_None.CheckedChanged += new System.EventHandler(this.TL1_None_CheckedChanged);
-            // 
-            // TL1_Binding
-            // 
-            this.TL1_Binding.AutoSize = true;
-            this.TL1_Binding.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL1_Binding.Location = new System.Drawing.Point(340, 3);
-            this.TL1_Binding.Name = "TL1_Binding";
-            this.TL1_Binding.Size = new System.Drawing.Size(71, 30);
-            this.TL1_Binding.TabIndex = 20;
-            this.TL1_Binding.TabStop = true;
-            this.TL1_Binding.Text = "Binding Shot";
-            this.TL1_Binding.UseVisualStyleBackColor = true;
-            this.TL1_Binding.CheckedChanged += new System.EventHandler(this.TL1_Binding_CheckedChanged);
-            // 
-            // TL1_Silence
-            // 
-            this.TL1_Silence.AutoSize = true;
-            this.TL1_Silence.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL1_Silence.Location = new System.Drawing.Point(91, 3);
-            this.TL1_Silence.Name = "TL1_Silence";
-            this.TL1_Silence.Size = new System.Drawing.Size(79, 30);
-            this.TL1_Silence.TabIndex = 18;
-            this.TL1_Silence.TabStop = true;
-            this.TL1_Silence.Text = "Silencing Shot";
-            this.TL1_Silence.UseVisualStyleBackColor = true;
-            this.TL1_Silence.CheckedChanged += new System.EventHandler(this.TL1_Silence_CheckedChanged);
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(-3, -16);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(391, 13);
-            this.label16.TabIndex = 14;
-            this.label16.Text = "________________________________________________________________";
-            // 
-            // TL1_Wyvern
-            // 
-            this.TL1_Wyvern.AutoSize = true;
-            this.TL1_Wyvern.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL1_Wyvern.Location = new System.Drawing.Point(221, 3);
-            this.TL1_Wyvern.Name = "TL1_Wyvern";
-            this.TL1_Wyvern.Size = new System.Drawing.Size(75, 30);
-            this.TL1_Wyvern.TabIndex = 17;
-            this.TL1_Wyvern.TabStop = true;
-            this.TL1_Wyvern.Text = "Wyvern Sting";
-            this.TL1_Wyvern.UseVisualStyleBackColor = true;
-            this.TL1_Wyvern.CheckedChanged += new System.EventHandler(this.TL1_Wyvern_CheckedChanged);
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(29, 334);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(333, 13);
-            this.label15.TabIndex = 26;
-            this.label15.Text = "(Enable Hunter\'s Mark in the options only if you don\'t have this Glyph)";
-            // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(26, 313);
+            this.label14.Location = new System.Drawing.Point(26, 341);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(242, 13);
             this.label14.TabIndex = 25;
@@ -1099,16 +871,16 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(26, 290);
+            this.label10.Location = new System.Drawing.Point(26, 319);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(404, 13);
+            this.label10.Size = new System.Drawing.Size(426, 13);
             this.label10.TabIndex = 24;
-            this.label10.Text = "Must Have Talents: Silencing Shot, Iron Hawk, Dire Beast, Lynx Rush";
+            this.label10.Text = "Recommended Talents: Silencing Shot, Iron Hawk, Dire Beast, Lynx Rush";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(26, 266);
+            this.label12.Location = new System.Drawing.Point(26, 299);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(247, 13);
             this.label12.TabIndex = 23;
@@ -1120,7 +892,7 @@
             this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label11.Font = new System.Drawing.Font("Candara", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.label11.Location = new System.Drawing.Point(28, 237);
+            this.label11.Location = new System.Drawing.Point(28, 272);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(110, 21);
             this.label11.TabIndex = 20;
@@ -1132,7 +904,7 @@
             this.linkLabel1.Font = new System.Drawing.Font("Franklin Gothic Medium", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.SystemColors.Highlight;
-            this.linkLabel1.Location = new System.Drawing.Point(189, 351);
+            this.linkLabel1.Location = new System.Drawing.Point(189, 354);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(109, 30);
             this.linkLabel1.TabIndex = 19;
@@ -1154,7 +926,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(11, 354);
+            this.label4.Location = new System.Drawing.Point(11, 357);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(182, 26);
             this.label4.TabIndex = 5;
@@ -1251,16 +1023,317 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.panel5);
             this.groupBox2.Controls.Add(this.panel2);
             this.groupBox2.Controls.Add(this.panel3);
             this.groupBox2.Controls.Add(this.panel4);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(20, 75);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(439, 152);
+            this.groupBox2.Size = new System.Drawing.Size(439, 190);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Talents";
+            // 
+            // panel5
+            // 
+            this.panel5.Controls.Add(this.TL4_None);
+            this.panel5.Controls.Add(this.SpiritBond);
+            this.panel5.Controls.Add(this.Exhilaration);
+            this.panel5.Controls.Add(this.IronHawk);
+            this.panel5.Controls.Add(this.label1);
+            this.panel5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.panel5.Location = new System.Drawing.Point(8, 61);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(422, 37);
+            this.panel5.TabIndex = 37;
+            // 
+            // TL4_None
+            // 
+            this.TL4_None.AutoSize = true;
+            this.TL4_None.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL4_None.Checked = true;
+            this.TL4_None.Location = new System.Drawing.Point(3, 3);
+            this.TL4_None.Name = "TL4_None";
+            this.TL4_None.Size = new System.Drawing.Size(37, 30);
+            this.TL4_None.TabIndex = 34;
+            this.TL4_None.TabStop = true;
+            this.TL4_None.Text = "None";
+            this.TL4_None.UseVisualStyleBackColor = true;
+            this.TL4_None.CheckedChanged += new System.EventHandler(this.TL4_None_CheckedChanged);
+            // 
+            // SpiritBond
+            // 
+            this.SpiritBond.AutoSize = true;
+            this.SpiritBond.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.SpiritBond.Location = new System.Drawing.Point(344, 3);
+            this.SpiritBond.Name = "SpiritBond";
+            this.SpiritBond.Size = new System.Drawing.Size(62, 30);
+            this.SpiritBond.TabIndex = 36;
+            this.SpiritBond.TabStop = true;
+            this.SpiritBond.Text = "Spirit Bond";
+            this.SpiritBond.UseVisualStyleBackColor = true;
+            this.SpiritBond.CheckedChanged += new System.EventHandler(this.SpiritBond_CheckedChanged);
+            // 
+            // Exhilaration
+            // 
+            this.Exhilaration.AutoSize = true;
+            this.Exhilaration.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.Exhilaration.Location = new System.Drawing.Point(97, 3);
+            this.Exhilaration.Name = "Exhilaration";
+            this.Exhilaration.Size = new System.Drawing.Size(65, 30);
+            this.Exhilaration.TabIndex = 35;
+            this.Exhilaration.TabStop = true;
+            this.Exhilaration.Text = "Exhilaration";
+            this.Exhilaration.UseVisualStyleBackColor = true;
+            this.Exhilaration.CheckedChanged += new System.EventHandler(this.Exhilaration_CheckedChanged);
+            // 
+            // IronHawk
+            // 
+            this.IronHawk.AutoSize = true;
+            this.IronHawk.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.IronHawk.Location = new System.Drawing.Point(192, 3);
+            this.IronHawk.Name = "IronHawk";
+            this.IronHawk.Size = new System.Drawing.Size(132, 30);
+            this.IronHawk.TabIndex = 34;
+            this.IronHawk.TabStop = true;
+            this.IronHawk.Text = "Aspect Of The Iron Hawk";
+            this.IronHawk.UseVisualStyleBackColor = true;
+            this.IronHawk.CheckedChanged += new System.EventHandler(this.IronHawk_CheckedChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(-3, -16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(391, 13);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "________________________________________________________________";
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.TL1_None);
+            this.panel2.Controls.Add(this.TL1_Binding);
+            this.panel2.Controls.Add(this.TL1_Silence);
+            this.panel2.Controls.Add(this.label16);
+            this.panel2.Controls.Add(this.TL1_Wyvern);
+            this.panel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.panel2.Location = new System.Drawing.Point(8, 19);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(422, 36);
+            this.panel2.TabIndex = 21;
+            // 
+            // TL1_None
+            // 
+            this.TL1_None.AutoSize = true;
+            this.TL1_None.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL1_None.Checked = true;
+            this.TL1_None.Location = new System.Drawing.Point(3, 2);
+            this.TL1_None.Name = "TL1_None";
+            this.TL1_None.Size = new System.Drawing.Size(37, 30);
+            this.TL1_None.TabIndex = 27;
+            this.TL1_None.TabStop = true;
+            this.TL1_None.Text = "None";
+            this.TL1_None.UseVisualStyleBackColor = true;
+            this.TL1_None.CheckedChanged += new System.EventHandler(this.TL1_None_CheckedChanged);
+            // 
+            // TL1_Binding
+            // 
+            this.TL1_Binding.AutoSize = true;
+            this.TL1_Binding.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL1_Binding.Location = new System.Drawing.Point(340, 3);
+            this.TL1_Binding.Name = "TL1_Binding";
+            this.TL1_Binding.Size = new System.Drawing.Size(71, 30);
+            this.TL1_Binding.TabIndex = 20;
+            this.TL1_Binding.TabStop = true;
+            this.TL1_Binding.Text = "Binding Shot";
+            this.TL1_Binding.UseVisualStyleBackColor = true;
+            this.TL1_Binding.CheckedChanged += new System.EventHandler(this.TL1_Binding_CheckedChanged);
+            // 
+            // TL1_Silence
+            // 
+            this.TL1_Silence.AutoSize = true;
+            this.TL1_Silence.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL1_Silence.Location = new System.Drawing.Point(91, 3);
+            this.TL1_Silence.Name = "TL1_Silence";
+            this.TL1_Silence.Size = new System.Drawing.Size(79, 30);
+            this.TL1_Silence.TabIndex = 18;
+            this.TL1_Silence.TabStop = true;
+            this.TL1_Silence.Text = "Silencing Shot";
+            this.TL1_Silence.UseVisualStyleBackColor = true;
+            this.TL1_Silence.CheckedChanged += new System.EventHandler(this.TL1_Silence_CheckedChanged);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(-3, -16);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(391, 13);
+            this.label16.TabIndex = 14;
+            this.label16.Text = "________________________________________________________________";
+            // 
+            // TL1_Wyvern
+            // 
+            this.TL1_Wyvern.AutoSize = true;
+            this.TL1_Wyvern.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL1_Wyvern.Location = new System.Drawing.Point(221, 3);
+            this.TL1_Wyvern.Name = "TL1_Wyvern";
+            this.TL1_Wyvern.Size = new System.Drawing.Size(75, 30);
+            this.TL1_Wyvern.TabIndex = 17;
+            this.TL1_Wyvern.TabStop = true;
+            this.TL1_Wyvern.Text = "Wyvern Sting";
+            this.TL1_Wyvern.UseVisualStyleBackColor = true;
+            this.TL1_Wyvern.CheckedChanged += new System.EventHandler(this.TL1_Wyvern_CheckedChanged);
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.TL2_None);
+            this.panel3.Controls.Add(this.TL2_Thrill);
+            this.panel3.Controls.Add(this.TL2_Fervor);
+            this.panel3.Controls.Add(this.TL2_Dire);
+            this.panel3.Controls.Add(this.label17);
+            this.panel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.panel3.Location = new System.Drawing.Point(8, 104);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(422, 38);
+            this.panel3.TabIndex = 28;
+            // 
+            // TL2_None
+            // 
+            this.TL2_None.AutoSize = true;
+            this.TL2_None.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL2_None.Checked = true;
+            this.TL2_None.Location = new System.Drawing.Point(3, 3);
+            this.TL2_None.Name = "TL2_None";
+            this.TL2_None.Size = new System.Drawing.Size(37, 30);
+            this.TL2_None.TabIndex = 28;
+            this.TL2_None.TabStop = true;
+            this.TL2_None.Text = "None";
+            this.TL2_None.UseVisualStyleBackColor = true;
+            this.TL2_None.CheckedChanged += new System.EventHandler(this.TL2_None_CheckedChanged);
+            // 
+            // TL2_Thrill
+            // 
+            this.TL2_Thrill.AutoSize = true;
+            this.TL2_Thrill.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL2_Thrill.Location = new System.Drawing.Point(330, 3);
+            this.TL2_Thrill.Name = "TL2_Thrill";
+            this.TL2_Thrill.Size = new System.Drawing.Size(89, 30);
+            this.TL2_Thrill.TabIndex = 33;
+            this.TL2_Thrill.TabStop = true;
+            this.TL2_Thrill.Text = "Thrill of the Hunt";
+            this.TL2_Thrill.UseVisualStyleBackColor = true;
+            this.TL2_Thrill.CheckedChanged += new System.EventHandler(this.TL2_Thrill_CheckedChanged);
+            // 
+            // TL2_Fervor
+            // 
+            this.TL2_Fervor.AutoSize = true;
+            this.TL2_Fervor.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL2_Fervor.Location = new System.Drawing.Point(110, 3);
+            this.TL2_Fervor.Name = "TL2_Fervor";
+            this.TL2_Fervor.Size = new System.Drawing.Size(41, 30);
+            this.TL2_Fervor.TabIndex = 32;
+            this.TL2_Fervor.TabStop = true;
+            this.TL2_Fervor.Text = "Fervor";
+            this.TL2_Fervor.UseVisualStyleBackColor = true;
+            this.TL2_Fervor.CheckedChanged += new System.EventHandler(this.TL2_Fervor_CheckedChanged);
+            // 
+            // TL2_Dire
+            // 
+            this.TL2_Dire.AutoSize = true;
+            this.TL2_Dire.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL2_Dire.Location = new System.Drawing.Point(229, 3);
+            this.TL2_Dire.Name = "TL2_Dire";
+            this.TL2_Dire.Size = new System.Drawing.Size(60, 30);
+            this.TL2_Dire.TabIndex = 31;
+            this.TL2_Dire.TabStop = true;
+            this.TL2_Dire.Text = "Dire Beast";
+            this.TL2_Dire.UseVisualStyleBackColor = true;
+            this.TL2_Dire.CheckedChanged += new System.EventHandler(this.TL2_Dire_CheckedChanged);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(-3, -16);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(391, 13);
+            this.label17.TabIndex = 14;
+            this.label17.Text = "________________________________________________________________";
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.TL3_None);
+            this.panel4.Controls.Add(this.TL3_Lynx);
+            this.panel4.Controls.Add(this.TL3_Crows);
+            this.panel4.Controls.Add(this.TL3_Blink);
+            this.panel4.Controls.Add(this.label18);
+            this.panel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.panel4.Location = new System.Drawing.Point(8, 148);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(422, 37);
+            this.panel4.TabIndex = 34;
+            // 
+            // TL3_None
+            // 
+            this.TL3_None.AutoSize = true;
+            this.TL3_None.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL3_None.Checked = true;
+            this.TL3_None.Location = new System.Drawing.Point(3, 3);
+            this.TL3_None.Name = "TL3_None";
+            this.TL3_None.Size = new System.Drawing.Size(37, 30);
+            this.TL3_None.TabIndex = 34;
+            this.TL3_None.TabStop = true;
+            this.TL3_None.Text = "None";
+            this.TL3_None.UseVisualStyleBackColor = true;
+            this.TL3_None.CheckedChanged += new System.EventHandler(this.TL3_None_CheckedChanged);
+            // 
+            // TL3_Lynx
+            // 
+            this.TL3_Lynx.AutoSize = true;
+            this.TL3_Lynx.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL3_Lynx.Location = new System.Drawing.Point(344, 3);
+            this.TL3_Lynx.Name = "TL3_Lynx";
+            this.TL3_Lynx.Size = new System.Drawing.Size(61, 30);
+            this.TL3_Lynx.TabIndex = 36;
+            this.TL3_Lynx.TabStop = true;
+            this.TL3_Lynx.Text = "Lynx Rush";
+            this.TL3_Lynx.UseVisualStyleBackColor = true;
+            this.TL3_Lynx.CheckedChanged += new System.EventHandler(this.TL3_Lynx_CheckedChanged);
+            // 
+            // TL3_Crows
+            // 
+            this.TL3_Crows.AutoSize = true;
+            this.TL3_Crows.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL3_Crows.Location = new System.Drawing.Point(82, 3);
+            this.TL3_Crows.Name = "TL3_Crows";
+            this.TL3_Crows.Size = new System.Drawing.Size(98, 30);
+            this.TL3_Crows.TabIndex = 35;
+            this.TL3_Crows.TabStop = true;
+            this.TL3_Crows.Text = "A Murder of Crows";
+            this.TL3_Crows.UseVisualStyleBackColor = true;
+            this.TL3_Crows.CheckedChanged += new System.EventHandler(this.TL3_Crows_CheckedChanged);
+            // 
+            // TL3_Blink
+            // 
+            this.TL3_Blink.AutoSize = true;
+            this.TL3_Blink.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL3_Blink.Location = new System.Drawing.Point(227, 3);
+            this.TL3_Blink.Name = "TL3_Blink";
+            this.TL3_Blink.Size = new System.Drawing.Size(64, 30);
+            this.TL3_Blink.TabIndex = 34;
+            this.TL3_Blink.TabStop = true;
+            this.TL3_Blink.Text = "Blink Strike";
+            this.TL3_Blink.UseVisualStyleBackColor = true;
+            this.TL3_Blink.CheckedChanged += new System.EventHandler(this.TL3_Blink_CheckedChanged);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(-3, -16);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(391, 13);
+            this.label18.TabIndex = 14;
+            this.label18.Text = "________________________________________________________________";
             // 
             // BeastForm1
             // 
@@ -1289,16 +1362,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.PET)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1345,8 +1420,8 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.NumericUpDown FocusShots;
 		private System.Windows.Forms.CheckBox DBeast;
-		private System.Windows.Forms.CheckBox Glaives;
-		private System.Windows.Forms.CheckBox Silence;
+		private System.Windows.Forms.CheckBox Readiness;
+		private System.Windows.Forms.CheckBox MDFocus;
 		private System.Windows.Forms.CheckBox Binding;
 		private System.Windows.Forms.CheckBox HMark;
 		private System.Windows.Forms.CheckBox Concussive;
@@ -1361,7 +1436,6 @@
         private System.Windows.Forms.CheckBox Misdirect;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox FDBox;
-        private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label SSStacks;
@@ -1396,6 +1470,12 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.RadioButton TL4_None;
+        private System.Windows.Forms.RadioButton SpiritBond;
+        private System.Windows.Forms.RadioButton Exhilaration;
+        private System.Windows.Forms.RadioButton IronHawk;
+        private System.Windows.Forms.Label label1;
     }
 }
 

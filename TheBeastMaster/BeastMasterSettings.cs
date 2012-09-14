@@ -40,6 +40,9 @@ namespace TheBeastMaster
         [Setting, DefaultValue(true)]
         public bool TL3_NO { get; set; }
 
+        [Setting, DefaultValue(true)]
+        public bool TL4_NO { get; set; }
+
         [Setting, DefaultValue(false)]
         public bool TL1_SS { get; set; }
 
@@ -66,6 +69,15 @@ namespace TheBeastMaster
 
         [Setting, DefaultValue(false)]
         public bool TL3_LR { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool EXH { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool AOTIH { get; set; }
+        
+        [Setting, DefaultValue(false)]
+        public bool SB { get; set; }
 
         [Setting, DefaultValue(false)]
         public bool CP { get; set; }
@@ -134,15 +146,15 @@ namespace TheBeastMaster
         public bool DB { get; set; }
 		
 		[Setting, DefaultValue(false)]
-        public bool GLV { get; set; }
+        public bool RDN { get; set; }
 		
-		[Setting, DefaultValue(true)]
-        public bool SLS { get; set; }
+		[Setting, DefaultValue(false)]
+        public bool MDF { get; set; }
 		
 		[Setting, DefaultValue(true)]
         public bool BDS { get; set; }
 		
-		[Setting, DefaultValue(true)]
+		[Setting, DefaultValue(false)]
         public bool HM { get; set; }
 		
 		[Setting, DefaultValue(true)]
@@ -163,7 +175,7 @@ namespace TheBeastMaster
         [Setting, DefaultValue(false)]
         public bool BRA { get; set; }
 
-        [Setting, DefaultValue(true)]
+        [Setting, DefaultValue(false)]
         public bool MDPet { get; set; }
 
         [Setting, DefaultValue("Never")]
@@ -172,10 +184,10 @@ namespace TheBeastMaster
         [Setting, DefaultValue("Always")]
         public string SerpentBox { get; set; }
 
-        [Setting, DefaultValue("1 + 2")]
+        [Setting, DefaultValue("2. Defense")]
         public string ScatterBox { get; set; }
 
-        [Setting, DefaultValue("1 + 2")]
+        [Setting, DefaultValue("2. Defense")]
         public string IntimidateBox { get; set; }
 		
     }

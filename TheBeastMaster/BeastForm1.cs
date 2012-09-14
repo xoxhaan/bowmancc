@@ -155,6 +155,7 @@ namespace TheBeastMaster
             TL1_None.Checked = BeastMasterSettings.Instance.TL1_NO;
             TL2_None.Checked = BeastMasterSettings.Instance.TL2_NO;
             TL3_None.Checked = BeastMasterSettings.Instance.TL3_NO;
+            TL4_None.Checked = BeastMasterSettings.Instance.TL4_NO;
             TL1_Silence.Checked = BeastMasterSettings.Instance.TL1_SS;
             TL1_Wyvern.Checked = BeastMasterSettings.Instance.TL1_WS;
             TL1_Binding.Checked = BeastMasterSettings.Instance.TL1_BS;
@@ -164,6 +165,9 @@ namespace TheBeastMaster
             TL3_Crows.Checked = BeastMasterSettings.Instance.TL3_AMOC;
             TL3_Blink.Checked = BeastMasterSettings.Instance.TL3_BSTRK;
             TL3_Lynx.Checked = BeastMasterSettings.Instance.TL3_LR;
+            Exhilaration.Checked = BeastMasterSettings.Instance.EXH;
+            IronHawk.Checked = BeastMasterSettings.Instance.AOTIH;
+            SpiritBond.Checked = BeastMasterSettings.Instance.SB;
             CallPet.Checked = BeastMasterSettings.Instance.CP;
             FocusFire.Checked = BeastMasterSettings.Instance.FF;
             CallWild.Checked = BeastMasterSettings.Instance.CW;
@@ -181,8 +185,8 @@ namespace TheBeastMaster
             Racial.Checked = BeastMasterSettings.Instance.RS;
             AspectSwitching.Checked = BeastMasterSettings.Instance.AspectSwitching;
 			DBeast.Checked = BeastMasterSettings.Instance.DB;
-			Glaives.Checked = BeastMasterSettings.Instance.GLV;
-			Silence.Checked = BeastMasterSettings.Instance.SLS;
+			Readiness.Checked = BeastMasterSettings.Instance.RDN;
+			MDFocus.Checked = BeastMasterSettings.Instance.MDF;
 			Binding.Checked = BeastMasterSettings.Instance.BDS;
 			HMark.Checked = BeastMasterSettings.Instance.HM;
 			Concussive.Checked = BeastMasterSettings.Instance.CONC;
@@ -195,12 +199,12 @@ namespace TheBeastMaster
         }
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.thebuddyforum.com/honorbuddy-forum/classes/all-one/42174-lazyraider-all-one-pve-ccs.html");
+            System.Diagnostics.Process.Start("http://www.thebuddyforum.com/members/61684-falldown.html");
             linkLabel1.LinkVisited = true;
         }
         private void linkLabel5_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.thebuddyforum.com/newreply.php?t=51333&noquote=1");
+            System.Diagnostics.Process.Start("http://www.thebuddyforum.com/honorbuddy-forum/classes/hunter/68054-beast-master-lazyraider.html");
             linkLabel5.LinkVisited = true;
         }
         private void Mobs_ValueChanged(object sender, EventArgs e)
@@ -300,6 +304,17 @@ namespace TheBeastMaster
                 BeastMasterSettings.Instance.TL3_NO = false;
             }
         }
+        private void TL4_None_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TL4_None.Checked == true)
+            {
+                BeastMasterSettings.Instance.TL4_NO = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.TL4_NO = false;
+            }
+        }
         private void TL1_Silence_CheckedChanged(object sender, EventArgs e)
         {
             if (TL1_Silence.Checked == true)
@@ -397,6 +412,39 @@ namespace TheBeastMaster
             else
             {
                 BeastMasterSettings.Instance.TL3_LR = false;
+            }
+        }
+        private void Exhilaration_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Exhilaration.Checked == true)
+            {
+                BeastMasterSettings.Instance.EXH = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.EXH = false;
+            }
+        }
+        private void IronHawk_CheckedChanged(object sender, EventArgs e)
+        {
+            if (IronHawk.Checked == true)
+            {
+                BeastMasterSettings.Instance.AOTIH = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.AOTIH = false;
+            }
+        }
+        private void SpiritBond_CheckedChanged(object sender, EventArgs e)
+        {
+            if (SpiritBond.Checked == true)
+            {
+                BeastMasterSettings.Instance.SB = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.SB = false;
             }
         }
         private void CallPet_CheckedChanged(object sender, EventArgs e)
@@ -610,26 +658,26 @@ namespace TheBeastMaster
                 BeastMasterSettings.Instance.DB = false;
             }
         }
-		private void Glaives_CheckedChanged(object sender, EventArgs e)
+		private void Readiness_CheckedChanged(object sender, EventArgs e)
         {
-            if (Glaives.Checked == true)
+            if (Readiness.Checked == true)
             {
-                BeastMasterSettings.Instance.GLV = true;
+                BeastMasterSettings.Instance.RDN = true;
             }
             else
             {
-                BeastMasterSettings.Instance.GLV = false;
+                BeastMasterSettings.Instance.RDN = false;
             }
         }
-		private void Silence_CheckedChanged(object sender, EventArgs e)
+		private void MDFocus_CheckedChanged(object sender, EventArgs e)
         {
-            if (Silence.Checked == true)
+            if (MDFocus.Checked == true)
             {
-                BeastMasterSettings.Instance.SLS = true;
+                BeastMasterSettings.Instance.MDF = true;
             }
             else
             {
-                BeastMasterSettings.Instance.SLS = false;
+                BeastMasterSettings.Instance.MDF = false;
             }
         }
 		private void Binding_CheckedChanged(object sender, EventArgs e)
