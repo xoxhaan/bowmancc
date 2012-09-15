@@ -8,8 +8,6 @@ using Styx.CommonBot;
 using Styx.CommonBot.POI;
 using Styx.CommonBot.Routines;
 using Styx.Helpers;
-using Styx.Pathing;
-using Styx.Plugins;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 
