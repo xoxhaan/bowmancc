@@ -35,10 +35,10 @@ namespace TheBeastMaster
         public bool TL1_NO { get; set; }
 
         [Setting, DefaultValue(true)]
-        public bool TL2_NO { get; set; }
+        public bool TL3_NO { get; set; }
 
         [Setting, DefaultValue(true)]
-        public bool TL3_NO { get; set; }
+        public bool TL2_NO { get; set; }
 
         [Setting, DefaultValue(true)]
         public bool TL4_NO { get; set; }
@@ -53,31 +53,31 @@ namespace TheBeastMaster
         public bool TL1_BS { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool TL2_FV { get; set; }
+        public bool TL3_FV { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool TL2_DB { get; set; }
+        public bool TL3_DB { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool TL2_TOTH { get; set; }
+        public bool TL3_TOTH { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool TL3_AMOC { get; set; }
+        public bool TL4_AMOC { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool TL3_BSTRK { get; set; }
+        public bool TL4_BSTRK { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool TL3_LR { get; set; }
+        public bool TL4_LR { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool EXH { get; set; }
+        public bool TL2_EXH { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool AOTIH { get; set; }
+        public bool TL2_AOTIH { get; set; }
         
         [Setting, DefaultValue(false)]
-        public bool SB { get; set; }
+        public bool TL2_SB { get; set; }
 
         [Setting, DefaultValue(false)]
         public bool CP { get; set; }
@@ -143,7 +143,7 @@ namespace TheBeastMaster
         public bool AspectSwitching { get; set; }
 		
 		[Setting, DefaultValue(true)]
-        public bool DB { get; set; }
+        public bool ARC { get; set; }
 		
 		[Setting, DefaultValue(false)]
         public bool RDN { get; set; }
@@ -152,7 +152,7 @@ namespace TheBeastMaster
         public bool MDF { get; set; }
 		
 		[Setting, DefaultValue(true)]
-        public bool BDS { get; set; }
+        public bool KCO { get; set; }
 		
 		[Setting, DefaultValue(false)]
         public bool HM { get; set; }
@@ -161,7 +161,7 @@ namespace TheBeastMaster
         public bool CONC { get; set; }
 		
 		[Setting, DefaultValue(true)]
-        public bool LXR { get; set; }
+        public bool KSH { get; set; }
 
         [Setting, DefaultValue(true)]
         public bool FF { get; set; }
