@@ -153,21 +153,21 @@ namespace TheBeastMaster
             DSLFR.Checked = BeastMasterSettings.Instance.DSLFR;
             DSNOR.Checked = BeastMasterSettings.Instance.DSNOR;
             TL1_None.Checked = BeastMasterSettings.Instance.TL1_NO;
-            TL2_None.Checked = BeastMasterSettings.Instance.TL2_NO;
             TL3_None.Checked = BeastMasterSettings.Instance.TL3_NO;
             TL4_None.Checked = BeastMasterSettings.Instance.TL4_NO;
+            TL2_None.Checked = BeastMasterSettings.Instance.TL2_NO;
             TL1_Silence.Checked = BeastMasterSettings.Instance.TL1_SS;
             TL1_Wyvern.Checked = BeastMasterSettings.Instance.TL1_WS;
             TL1_Binding.Checked = BeastMasterSettings.Instance.TL1_BS;
-            TL2_Fervor.Checked = BeastMasterSettings.Instance.TL2_FV;
-            TL2_Dire.Checked = BeastMasterSettings.Instance.TL2_DB;
-            TL2_Thrill.Checked = BeastMasterSettings.Instance.TL2_TOTH;
-            TL3_Crows.Checked = BeastMasterSettings.Instance.TL3_AMOC;
-            TL3_Blink.Checked = BeastMasterSettings.Instance.TL3_BSTRK;
-            TL3_Lynx.Checked = BeastMasterSettings.Instance.TL3_LR;
-            Exhilaration.Checked = BeastMasterSettings.Instance.EXH;
-            IronHawk.Checked = BeastMasterSettings.Instance.AOTIH;
-            SpiritBond.Checked = BeastMasterSettings.Instance.SB;
+            TL3_Fervor.Checked = BeastMasterSettings.Instance.TL3_FV;
+            TL3_Dire.Checked = BeastMasterSettings.Instance.TL3_DB;
+            TL3_Thrill.Checked = BeastMasterSettings.Instance.TL3_TOTH;
+            TL4_Crows.Checked = BeastMasterSettings.Instance.TL4_AMOC;
+            TL4_Blink.Checked = BeastMasterSettings.Instance.TL4_BSTRK;
+            TL4_Lynx.Checked = BeastMasterSettings.Instance.TL4_LR;
+            TL2_Exhilaration.Checked = BeastMasterSettings.Instance.TL2_EXH;
+            TL2_IronHawk.Checked = BeastMasterSettings.Instance.TL2_AOTIH;
+            TL2_SpiritBond.Checked = BeastMasterSettings.Instance.TL2_SB;
             CallPet.Checked = BeastMasterSettings.Instance.CP;
             FocusFire.Checked = BeastMasterSettings.Instance.FF;
             CallWild.Checked = BeastMasterSettings.Instance.CW;
@@ -184,13 +184,13 @@ namespace TheBeastMaster
             Gloves.Checked = BeastMasterSettings.Instance.GE;
             Racial.Checked = BeastMasterSettings.Instance.RS;
             AspectSwitching.Checked = BeastMasterSettings.Instance.AspectSwitching;
-			DBeast.Checked = BeastMasterSettings.Instance.DB;
+			Arcane.Checked = BeastMasterSettings.Instance.ARC;
 			Readiness.Checked = BeastMasterSettings.Instance.RDN;
 			MDFocus.Checked = BeastMasterSettings.Instance.MDF;
-			Binding.Checked = BeastMasterSettings.Instance.BDS;
+			KillCom.Checked = BeastMasterSettings.Instance.KCO;
 			HMark.Checked = BeastMasterSettings.Instance.HM;
 			Concussive.Checked = BeastMasterSettings.Instance.CONC;
-			LynxRush.Checked = BeastMasterSettings.Instance.LXR;
+			KillShot.Checked = BeastMasterSettings.Instance.KSH;
 			Deterrence.Checked = BeastMasterSettings.Instance.DETR;
 			BWrath.Checked = BeastMasterSettings.Instance.BWR;
             SpiritMend.Checked = BeastMasterSettings.Instance.SMend;
@@ -282,17 +282,6 @@ namespace TheBeastMaster
                 BeastMasterSettings.Instance.TL1_NO = false;
             }
         }
-        private void TL2_None_CheckedChanged(object sender, EventArgs e)
-        {
-            if (TL2_None.Checked == true)
-            {
-                BeastMasterSettings.Instance.TL2_NO = true;
-            }
-            else
-            {
-                BeastMasterSettings.Instance.TL2_NO = false;
-            }
-        }
         private void TL3_None_CheckedChanged(object sender, EventArgs e)
         {
             if (TL3_None.Checked == true)
@@ -313,6 +302,17 @@ namespace TheBeastMaster
             else
             {
                 BeastMasterSettings.Instance.TL4_NO = false;
+            }
+        }
+        private void TL2_None_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TL2_None.Checked == true)
+            {
+                BeastMasterSettings.Instance.TL2_NO = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.TL2_NO = false;
             }
         }
         private void TL1_Silence_CheckedChanged(object sender, EventArgs e)
@@ -348,103 +348,103 @@ namespace TheBeastMaster
                 BeastMasterSettings.Instance.TL1_BS = false;
             }
         }
-        private void TL2_Fervor_CheckedChanged(object sender, EventArgs e)
+        private void TL3_Fervor_CheckedChanged(object sender, EventArgs e)
         {
-            if (TL2_Fervor.Checked == true)
+            if (TL3_Fervor.Checked == true)
             {
-                BeastMasterSettings.Instance.TL2_FV = true;
+                BeastMasterSettings.Instance.TL3_FV = true;
             }
             else
             {
-                BeastMasterSettings.Instance.TL2_FV = false;
+                BeastMasterSettings.Instance.TL3_FV = false;
             }
         }
-        private void TL2_Dire_CheckedChanged(object sender, EventArgs e)
+        private void TL3_Dire_CheckedChanged(object sender, EventArgs e)
         {
-            if (TL2_Dire.Checked == true)
+            if (TL3_Dire.Checked == true)
             {
-                BeastMasterSettings.Instance.TL2_DB = true;
+                BeastMasterSettings.Instance.TL3_DB = true;
             }
             else
             {
-                BeastMasterSettings.Instance.TL2_DB = false;
+                BeastMasterSettings.Instance.TL3_DB = false;
             }
         }
-        private void TL2_Thrill_CheckedChanged(object sender, EventArgs e)
+        private void TL3_Thrill_CheckedChanged(object sender, EventArgs e)
         {
-            if (TL2_Thrill.Checked == true)
+            if (TL3_Thrill.Checked == true)
             {
-                BeastMasterSettings.Instance.TL2_TOTH = true;
+                BeastMasterSettings.Instance.TL3_TOTH = true;
             }
             else
             {
-                BeastMasterSettings.Instance.TL2_TOTH = false;
+                BeastMasterSettings.Instance.TL3_TOTH = false;
             }
         }
-        private void TL3_Crows_CheckedChanged(object sender, EventArgs e)
+        private void TL4_Crows_CheckedChanged(object sender, EventArgs e)
         {
-            if (TL3_Crows.Checked == true)
+            if (TL4_Crows.Checked == true)
             {
-                BeastMasterSettings.Instance.TL3_AMOC = true;
+                BeastMasterSettings.Instance.TL4_AMOC = true;
             }
             else
             {
-                BeastMasterSettings.Instance.TL3_AMOC = false;
+                BeastMasterSettings.Instance.TL4_AMOC = false;
             }
         }
-        private void TL3_Blink_CheckedChanged(object sender, EventArgs e)
+        private void TL4_Blink_CheckedChanged(object sender, EventArgs e)
         {
-            if (TL3_Blink.Checked == true)
+            if (TL4_Blink.Checked == true)
             {
-                BeastMasterSettings.Instance.TL3_BSTRK = true;
+                BeastMasterSettings.Instance.TL4_BSTRK = true;
             }
             else
             {
-                BeastMasterSettings.Instance.TL3_BSTRK = false;
+                BeastMasterSettings.Instance.TL4_BSTRK = false;
             }
         }
-        private void TL3_Lynx_CheckedChanged(object sender, EventArgs e)
+        private void TL4_Lynx_CheckedChanged(object sender, EventArgs e)
         {
-            if (TL3_Lynx.Checked == true)
+            if (TL4_Lynx.Checked == true)
             {
-                BeastMasterSettings.Instance.TL3_LR = true;
+                BeastMasterSettings.Instance.TL4_LR = true;
             }
             else
             {
-                BeastMasterSettings.Instance.TL3_LR = false;
+                BeastMasterSettings.Instance.TL4_LR = false;
             }
         }
-        private void Exhilaration_CheckedChanged(object sender, EventArgs e)
+        private void TL2_Exhilaration_CheckedChanged(object sender, EventArgs e)
         {
-            if (Exhilaration.Checked == true)
+            if (TL2_Exhilaration.Checked == true)
             {
-                BeastMasterSettings.Instance.EXH = true;
+                BeastMasterSettings.Instance.TL2_EXH = true;
             }
             else
             {
-                BeastMasterSettings.Instance.EXH = false;
+                BeastMasterSettings.Instance.TL2_EXH = false;
             }
         }
-        private void IronHawk_CheckedChanged(object sender, EventArgs e)
+        private void TL2_IronHawk_CheckedChanged(object sender, EventArgs e)
         {
-            if (IronHawk.Checked == true)
+            if (TL2_IronHawk.Checked == true)
             {
-                BeastMasterSettings.Instance.AOTIH = true;
+                BeastMasterSettings.Instance.TL2_AOTIH = true;
             }
             else
             {
-                BeastMasterSettings.Instance.AOTIH = false;
+                BeastMasterSettings.Instance.TL2_AOTIH = false;
             }
         }
-        private void SpiritBond_CheckedChanged(object sender, EventArgs e)
+        private void TL2_SpiritBond_CheckedChanged(object sender, EventArgs e)
         {
-            if (SpiritBond.Checked == true)
+            if (TL2_SpiritBond.Checked == true)
             {
-                BeastMasterSettings.Instance.SB = true;
+                BeastMasterSettings.Instance.TL2_SB = true;
             }
             else
             {
-                BeastMasterSettings.Instance.SB = false;
+                BeastMasterSettings.Instance.TL2_SB = false;
             }
         }
         private void CallPet_CheckedChanged(object sender, EventArgs e)
@@ -647,15 +647,15 @@ namespace TheBeastMaster
             }
         }
 		
-		private void DBeast_CheckedChanged(object sender, EventArgs e)
+		private void Arcane_CheckedChanged(object sender, EventArgs e)
         {
-            if (DBeast.Checked == true)
+            if (Arcane.Checked == true)
             {
-                BeastMasterSettings.Instance.DB = true;
+                BeastMasterSettings.Instance.ARC = true;
             }
             else
             {
-                BeastMasterSettings.Instance.DB = false;
+                BeastMasterSettings.Instance.ARC = false;
             }
         }
 		private void Readiness_CheckedChanged(object sender, EventArgs e)
@@ -680,15 +680,15 @@ namespace TheBeastMaster
                 BeastMasterSettings.Instance.MDF = false;
             }
         }
-		private void Binding_CheckedChanged(object sender, EventArgs e)
+		private void KillCom_CheckedChanged(object sender, EventArgs e)
         {
-            if (Binding.Checked == true)
+            if (KillCom.Checked == true)
             {
-                BeastMasterSettings.Instance.BDS = true;
+                BeastMasterSettings.Instance.KCO = true;
             }
             else
             {
-                BeastMasterSettings.Instance.BDS = false;
+                BeastMasterSettings.Instance.KCO = false;
             }
         }
 		private void HMark_CheckedChanged(object sender, EventArgs e)
@@ -735,15 +735,15 @@ namespace TheBeastMaster
                 BeastMasterSettings.Instance.MDPet = false;
             }
         }
-		private void LynxRush_CheckedChanged(object sender, EventArgs e)
+		private void KillShot_CheckedChanged(object sender, EventArgs e)
         {
-            if (LynxRush.Checked == true)
+            if (KillShot.Checked == true)
             {
-                BeastMasterSettings.Instance.LXR = true;
+                BeastMasterSettings.Instance.KSH = true;
             }
             else
             {
-                BeastMasterSettings.Instance.LXR = false;
+                BeastMasterSettings.Instance.KSH = false;
             }
         }
 		private void BWrath_CheckedChanged(object sender, EventArgs e)

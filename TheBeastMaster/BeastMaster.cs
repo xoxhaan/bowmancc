@@ -18,7 +18,7 @@ namespace TheBeastMaster
 {
     internal class BeastMaster : CombatRoutine
     {
-        public override sealed string Name { get { return "The Beast Master PvE CC 1.3"; } }
+        public override sealed string Name { get { return "The Beast Master PvE CC 1.4"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -37,7 +37,7 @@ namespace TheBeastMaster
         #region Initialize
         public override void Initialize()
         {
-            Logging.Write(Colors.Crimson, "The Beast Master 1.3");
+            Logging.Write(Colors.Crimson, "The Beast Master 1.4");
             Logging.Write(Colors.Crimson, "A Beast Mastery Hunter Routine");
             Logging.Write(Colors.Crimson, "Made By FallDown");
             Logging.Write(Colors.Crimson, "For LazyRaider Only!");
@@ -162,7 +162,7 @@ namespace TheBeastMaster
         {
             if (SpellManager.CanCast(spellName, target))
             {
-                if (SpellManager.HasSpell(spellName) && !SpellManager.Spells[spellName].Cooldown)
+                if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 300)
                 {
                     SpellManager.Cast(spellName, target);
                     return true;
@@ -175,7 +175,7 @@ namespace TheBeastMaster
         {
             if (SpellManager.CanCast(spellName))
             {
-                if (SpellManager.HasSpell(spellName) && !SpellManager.Spells[spellName].Cooldown)
+                if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 300)
                 {
                     SpellManager.Cast(spellName);
                     return true;
@@ -401,7 +401,7 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Mend Pet <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.EXH && (Me.HealthPercent < 70 
+                if (BeastMasterSettings.Instance.TL2_EXH && (Me.HealthPercent < 70 
                     || (Me.Pet.HealthPercent < 10 && SpellManager.HasSpell("Heart of the Phoenix") && SpellManager.Spells["Heart of the Phoenix"].CooldownTimeLeft.TotalSeconds > 5)
                     || (Me.Pet.HealthPercent < 10 && !SpellManager.HasSpell("Heart of the Phoenix"))))
                 {
@@ -579,12 +579,12 @@ namespace TheBeastMaster
                 if (BeastMasterSettings.Instance.RDN 
                     && SpellManager.Spells["Rapid Fire"].CooldownTimeLeft.TotalSeconds > 1 
                     && SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 1
-                    && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.BDS)
-                    && (SpellManager.HasSpell("Lynx Rush") && SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL3_LR)
-                    && (SpellManager.HasSpell("Fervor") && SpellManager.Spells["Fervor"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL2_FV)
-                    && (SpellManager.HasSpell("A Murder of Crows") && SpellManager.Spells["A Murder of Crows"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL3_AMOC)
-                    && (SpellManager.HasSpell("Blink Strike") && SpellManager.Spells["Blink Strike"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL3_BSTRK)
-                    && (SpellManager.HasSpell("Dire Beast") && SpellManager.Spells["Dire Beast"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL2_DB))
+                    && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.KCO)
+                    && (SpellManager.HasSpell("Lynx Rush") && SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL4_LR)
+                    && (SpellManager.HasSpell("Fervor") && SpellManager.Spells["Fervor"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL3_FV)
+                    && (SpellManager.HasSpell("A Murder of Crows") && SpellManager.Spells["A Murder of Crows"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL4_AMOC)
+                    && (SpellManager.HasSpell("Blink Strike") && SpellManager.Spells["Blink Strike"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL4_BSTRK)
+                    && (SpellManager.HasSpell("Dire Beast") && SpellManager.Spells["Dire Beast"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL3_DB))
                 {
                     if (CastSpell("Readiness"))
                     {
@@ -630,7 +630,7 @@ namespace TheBeastMaster
             ///////////////////////////////////////////////Aspect Switching////////////////////////////////////////////////////////////////////////////////////////////
             if (BeastMasterSettings.Instance.AspectSwitching && HaltFeign() && Me.CurrentTarget != null && Me.CurrentTarget.IsAlive && !Me.Mounted)
             {
-                if (BeastMasterSettings.Instance.AOTIH)
+                if (BeastMasterSettings.Instance.TL2_AOTIH)
                 {
                     if (!Me.IsMoving && !Me.Auras.ContainsKey("Aspect of the Iron Hawk"))
                     {
@@ -647,7 +647,7 @@ namespace TheBeastMaster
                         }
                     }
                 }
-                else if (!BeastMasterSettings.Instance.AOTIH)
+                else if (!BeastMasterSettings.Instance.TL2_AOTIH)
                 {
                     if (!Me.IsMoving && !Me.Auras.ContainsKey("Aspect of the Hawk"))
                     {
@@ -677,7 +677,7 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Hunter's Mark <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.LXR && Me.CurrentTarget.HealthPercent <= 20)
+                if (BeastMasterSettings.Instance.KSH && Me.CurrentTarget.HealthPercent <= 20)
                 {
                     if (CastSpell("Kill Shot"))
                     {
@@ -699,7 +699,7 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Serpent Sting <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL2_DB && ((Me.CurrentTarget.Level >= Me.Level && Me.CurrentTarget.CurrentHealth > Me.MaxHealth * 0.3) 
+                if (BeastMasterSettings.Instance.TL3_DB && ((Me.CurrentTarget.Level >= Me.Level && Me.CurrentTarget.CurrentHealth > Me.MaxHealth * 0.3) 
                     || Me.CurrentFocus < 20) || Me.CurrentTarget.Name == "Training Dummy")
                 {
                     if (CastSpell("Dire Beast"))
@@ -707,35 +707,35 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Dire Beast <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL2_FV && Me.CurrentFocus < 40)
+                if (BeastMasterSettings.Instance.TL3_FV && Me.CurrentFocus < 40)
                 {
                     if (CastSpell("Fervor"))
                     {
                         Logging.Write(Colors.Aqua, ">> Fervor <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL3_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40)
+                if (BeastMasterSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40)
                 {
                     if (CastSpell("Blink Strike"))
                     {
                         Logging.Write(Colors.Aqua, ">> Blink Strike <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.BDS && Me.GotAlivePet && Me.CurrentFocus >= 39 && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25)
+                if (BeastMasterSettings.Instance.KCO && Me.GotAlivePet && Me.CurrentFocus >= 39 && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25)
                 {
                     if (CastSpell("Kill Command"))
                     {
                         Logging.Write(Colors.Aqua, ">> Kill Command <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL3_LR && ((Me.CurrentTarget.MaxHealth > 250000 && Me.CurrentTarget.CurrentHealth > 75000) || Me.CurrentTarget.Name == "Training Dummy"))
+                if (BeastMasterSettings.Instance.TL4_LR && ((Me.CurrentTarget.MaxHealth > 250000 && Me.CurrentTarget.CurrentHealth > 75000) || Me.CurrentTarget.Name == "Training Dummy"))
                 {
                     if (CastSpell("Lynx Rush"))
                     {
                         Logging.Write(Colors.Aqua, ">> Lynx Rush <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL3_AMOC && ((Me.CurrentTarget.MaxHealth > Me.MaxHealth * 2 && Me.CurrentTarget.HealthPercent > 20) 
+                if (BeastMasterSettings.Instance.TL4_AMOC && ((Me.CurrentTarget.MaxHealth > Me.MaxHealth * 2 && Me.CurrentTarget.HealthPercent > 20) 
                     || (Me.CurrentTarget.MaxHealth > Me.MaxHealth && Me.CurrentTarget.HealthPercent <= 20) 
                     || Me.CurrentTarget.Name == "Training Dummy"))
                 {
@@ -791,9 +791,9 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Focus Fire: Running out of time <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.DB)
+                if (BeastMasterSettings.Instance.ARC)
                 {
-                    if (BeastMasterSettings.Instance.BDS)
+                    if (BeastMasterSettings.Instance.KCO)
                     {
                         if (!Me.ActiveAuras.ContainsKey("Thrill of the Hunt"))
                         {
@@ -858,7 +858,7 @@ namespace TheBeastMaster
                             }
                         }
                     }
-                    else if (!BeastMasterSettings.Instance.BDS)
+                    else if (!BeastMasterSettings.Instance.KCO)
                     {
                         if (!Me.ActiveAuras.ContainsKey("Thrill of the Hunt"))
                         {
@@ -892,8 +892,9 @@ namespace TheBeastMaster
                     Logging.Write(Colors.Red, ">> Stop Cobra Shot <<");
                 }
                 
-                if (!Me.IsCasting && ((!SpellManager.CanCast("Kill Shot") && SpellManager.Spells["Kill Shot"].CooldownTimeLeft.TotalSeconds > 1)
-                    || Me.CurrentTarget.HealthPercent > 20) && ((Me.CurrentFocus >= 40 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 39))
+                if (!Me.IsCasting && ((!SpellManager.CanCast("Kill Shot") && SpellManager.Spells["Kill Shot"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentTarget.HealthPercent > 20) 
+                    && ((!Me.ActiveAuras.ContainsKey("The Beast Within") && (Me.CurrentFocus >= 40 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 39)
+                    || (Me.ActiveAuras.ContainsKey("The Beast Within") && (Me.CurrentFocus >= 20 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 19)))
                 {
                     if (Me.Level >= 81)
                     {
@@ -1017,7 +1018,7 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Crimson, ">> Bestial Wrath, AoE <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.LXR && Me.CurrentTarget.HealthPercent < 20 && (Me.CurrentFocus < 40 || (Me.ActiveAuras.ContainsKey("The Beast Within") && Me.CurrentFocus < 20)))
+                if (BeastMasterSettings.Instance.KSH && Me.CurrentTarget.HealthPercent < 20 && (Me.CurrentFocus < 40 || (Me.ActiveAuras.ContainsKey("The Beast Within") && Me.CurrentFocus < 20)))
                 {
                     if (CastSpell("Kill Shot"))
                     {
@@ -1032,14 +1033,14 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Crimson, ">> Multi-Shot <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL2_DB && BeastMasterSettings.Instance.AOEDB && Me.CurrentFocus < 40 && !Me.ActiveAuras.ContainsKey("The Beast Within"))
+                if (BeastMasterSettings.Instance.TL3_DB && BeastMasterSettings.Instance.AOEDB && Me.CurrentFocus < 40 && !Me.ActiveAuras.ContainsKey("The Beast Within"))
                 {
                     if (CastSpell("Dire Beast"))
                     {
                         Logging.Write(Colors.Crimson, ">> Dire Beast, AoE <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL2_FV && Me.CurrentFocus < 50)
+                if (BeastMasterSettings.Instance.TL3_FV && Me.CurrentFocus < 50)
                 {
                     if (CastSpell("Fervor"))
                     {
