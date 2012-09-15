@@ -9,10 +9,8 @@ using System.Text;
 using System.Windows.Forms;
 
 using Styx;
-using Styx.Combat.CombatRoutine;
 using Styx.Helpers;
 using Styx.CommonBot;
-using Styx.Combat;
 using Styx.Pathing;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
