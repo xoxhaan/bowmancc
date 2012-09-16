@@ -89,7 +89,7 @@ namespace TheBeastMaster
 
         public bool DebuffByID(int spellId)
         {
-            if (Me.HasAura(spellId) && StyxWoW.Me.GetAuraById(spellId).TimeLeft.TotalMilliseconds <= 2500)
+            if (Me.HasAura(spellId) && StyxWoW.Me.GetAuraById(spellId).TimeLeft.TotalMilliseconds <= 2000)
                 return true;
             else return false;
         }
@@ -106,9 +106,13 @@ namespace TheBeastMaster
                             && u.Guid != Me.Guid
                             && u.IsHostile
                             && u.IsCasting
-                            && (u.CastingSpell.Id == 106174
-                                || u.CastingSpell.Id == 106389
-                                || u.CastingSpell.Id == 103327)
+                            && (u.CastingSpell.Id == 106174 
+                                || u.CastingSpell.Id == 106389 
+                                || u.CastingSpell.Id == 103327 
+                                || u.CastingSpell.Id == 109417
+                                || u.CastingSpell.Id == 109416
+                                || u.CastingSpell.Id == 109415
+                                || u.CastingSpell.Id == 106371)
                             && u.CurrentCastTimeLeft.TotalMilliseconds <= 1000)
                             return true;
                     }
@@ -119,7 +123,16 @@ namespace TheBeastMaster
 
         public bool UltraFL()
         {
-            if (DebuffByID(109200) || DebuffByID(105926) || DebuffByID(105925))
+            if (DebuffByID(110079)
+                || DebuffByID(110080)
+                || DebuffByID(110070)
+                || DebuffByID(110069)
+                || DebuffByID(109075)
+                || DebuffByID(109200) 
+                || DebuffByID(110068)
+                || DebuffByID(105926) 
+                || DebuffByID(105925)
+                || DebuffByID(110078))
                 return true;
 
             else return false;
@@ -127,7 +140,14 @@ namespace TheBeastMaster
 
         public bool DW()
         {
-            if (DebuffByID(106791) || DebuffByID(106794))
+            if (DebuffByID(110139)
+                || DebuffByID(110140)
+                || DebuffByID(110141)
+                || DebuffByID(106791)
+                || DebuffByID(109599)
+                || DebuffByID(106794)
+                || DebuffByID(109597)
+                || DebuffByID(109598))
                 return true;
 
             else return false;
@@ -725,7 +745,7 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Kill Command <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL4_LR && ((Me.CurrentTarget.MaxHealth > 250000 && Me.CurrentTarget.CurrentHealth > 75000) || Me.CurrentTarget.Name == "Training Dummy"))
+                if (BeastMasterSettings.Instance.TL4_LR && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25 && ((Me.CurrentTarget.MaxHealth > 250000 && Me.CurrentTarget.CurrentHealth > 75000) || Me.CurrentTarget.Name == "Training Dummy"))
                 {
                     if (CastSpell("Lynx Rush"))
                     {
