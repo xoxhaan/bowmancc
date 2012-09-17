@@ -15,7 +15,7 @@ namespace TheBeastMaster
 {
     internal class BeastMaster : CombatRoutine
     {
-        public override sealed string Name { get { return "The Beast Master PvE CC 1.4.3"; } }
+        public override sealed string Name { get { return "The Beast Master PvE CC 1.5"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -34,7 +34,7 @@ namespace TheBeastMaster
         #region Initialize
         public override void Initialize()
         {
-            Logging.Write(Colors.Crimson, "The Beast Master 1.4.3");
+            Logging.Write(Colors.Crimson, "The Beast Master 1.5");
             Logging.Write(Colors.Crimson, "A Beast Mastery Hunter Routine");
             Logging.Write(Colors.Crimson, "Made By FallDown");
             Logging.Write(Colors.Crimson, "For LazyRaider Only!");
@@ -179,7 +179,7 @@ namespace TheBeastMaster
         {
             if (SpellManager.CanCast(spellName, target))
             {
-                if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 300)
+                if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 500)
                 {
                     SpellManager.Cast(spellName, target);
                     return true;
@@ -192,7 +192,7 @@ namespace TheBeastMaster
         {
             if (SpellManager.CanCast(spellName))
             {
-                if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 300)
+                if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 500)
                 {
                     SpellManager.Cast(spellName);
                     return true;
@@ -575,7 +575,8 @@ namespace TheBeastMaster
                 }
                 
                 /////////////////////////////////////////////////////Cooldowns/////////////////////////////////////////////////////////////////////////////////////////////////           
-                if (BeastMasterSettings.Instance.RF && !Me.ActiveAuras.ContainsKey("Rapid Fire") && !Me.ActiveAuras.ContainsKey("The Beast Within") 
+                if (BeastMasterSettings.Instance.RF && (SpellManager.Spells["Bestial Wrath"].Cooldown || !BeastMasterSettings.Instance.BWR) 
+                    && !Me.ActiveAuras.ContainsKey("Rapid Fire") && !Me.ActiveAuras.ContainsKey("The Beast Within") 
                     && !Me.ActiveAuras.ContainsKey("Bloodlust") && !Me.ActiveAuras.ContainsKey("Heroism") && !Me.ActiveAuras.ContainsKey("Ancient Hysteria") 
                     && !Me.ActiveAuras.ContainsKey("Time Warp") && (IsTargetBoss() || Me.CurrentTarget.Name == "Training Dummy"))
                 {
@@ -584,7 +585,8 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Rapid Fire <<");
                     }
                 }
-                if (Me.GotAlivePet && BeastMasterSettings.Instance.BWR && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.ActiveAuras.ContainsKey("Rapid Fire") 
+                if (Me.GotAlivePet && BeastMasterSettings.Instance.BWR && (SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 10 
+                    || !SpellManager.Spells["Lynx Rush"].Cooldown || !BeastMasterSettings.Instance.TL4_LR) && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.ActiveAuras.ContainsKey("Rapid Fire") 
                     && !Me.ActiveAuras.ContainsKey("The Beast Within") && !Me.ActiveAuras.ContainsKey("Bloodlust") && !Me.ActiveAuras.ContainsKey("Heroism") 
                     && !Me.ActiveAuras.ContainsKey("Ancient Hysteria") && !Me.ActiveAuras.ContainsKey("Time Warp") && (Me.CurrentTarget.MaxHealth > 200000 || Me.CurrentTarget.Name == "Training Dummy"))
                 {
@@ -738,21 +740,25 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Blink Strike <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.KCO && Me.GotAlivePet && Me.CurrentFocus >= 39 && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25)
+                if (BeastMasterSettings.Instance.KCO && Me.GotAlivePet && (Me.CurrentFocus >= 39 || (Me.ActiveAuras.ContainsKey("The Beast Within") && Me.CurrentFocus >= 19)) 
+                    && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25)
                 {
                     if (CastSpell("Kill Command"))
                     {
                         Logging.Write(Colors.Aqua, ">> Kill Command <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL4_LR && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25 && ((Me.CurrentTarget.MaxHealth > 250000 && Me.CurrentTarget.CurrentHealth > 75000) || Me.CurrentTarget.Name == "Training Dummy"))
+                if (BeastMasterSettings.Instance.TL4_LR && (SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 10 || !BeastMasterSettings.Instance.BWR)
+                    && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25 && Me.GotAlivePet 
+                    && ((Me.CurrentTarget.MaxHealth > 250000 && Me.CurrentTarget.CurrentHealth > 75000) || Me.CurrentTarget.Name == "Training Dummy"))
                 {
                     if (CastSpell("Lynx Rush"))
                     {
                         Logging.Write(Colors.Aqua, ">> Lynx Rush <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL4_AMOC && ((Me.CurrentTarget.MaxHealth > Me.MaxHealth * 2 && Me.CurrentTarget.HealthPercent > 20) 
+                if (BeastMasterSettings.Instance.TL4_AMOC && (Me.CurrentFocus >= 59 || (Me.ActiveAuras.ContainsKey("The Beast Within") && Me.CurrentFocus >= 29)) 
+                    && ((Me.CurrentTarget.MaxHealth > Me.MaxHealth * 2 && Me.CurrentTarget.HealthPercent > 20) 
                     || (Me.CurrentTarget.MaxHealth > Me.MaxHealth && Me.CurrentTarget.HealthPercent <= 20) 
                     || Me.CurrentTarget.Name == "Training Dummy"))
                 {
@@ -937,7 +943,8 @@ namespace TheBeastMaster
                 }       
             }
             //////////////////////////////////////////////AoE Rotation here/////////////////////////////////////////////////////////////////////////////////////////////////
-            if (addCount() >= BeastMasterSettings.Instance.Mobs && HaltFeign() && Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && !SelfControl(Me.CurrentTarget) && (BeastMasterSettings.Instance.MS || BeastMasterSettings.Instance.TL))
+            if (addCount() >= BeastMasterSettings.Instance.Mobs && HaltFeign() && Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && !SelfControl(Me.CurrentTarget) 
+                && (BeastMasterSettings.Instance.MS || BeastMasterSettings.Instance.TL))
             {
                 if (Me.CurrentTarget.Distance >= 5)
                 {
@@ -1064,7 +1071,7 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Crimson, ">> AoE Fervor <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.AOELR && Me.CurrentFocus < 40 && !Me.ActiveAuras.ContainsKey("The Beast Within") 
+                if (BeastMasterSettings.Instance.AOELR && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && Me.CurrentFocus < 40 && !Me.ActiveAuras.ContainsKey("The Beast Within") 
                     && ((Me.CurrentTarget.MaxHealth > 250000 && Me.CurrentTarget.CurrentHealth > 75000) || Me.CurrentTarget.Name == "Training Dummy"))
                 {
                     if (CastSpell("Lynx Rush"))
@@ -1080,7 +1087,8 @@ namespace TheBeastMaster
                     }
                 }
                 if (!SpellManager.CanCast("Kill Shot") && (Me.CurrentFocus < 40 || (Me.ActiveAuras.ContainsKey("The Beast Within") && Me.CurrentFocus < 20)
-                    || (!Me.ActiveAuras.ContainsKey("The Beast Within") && !Me.ActiveAuras.ContainsKey("Thrill of the Hunt") && Me.CurrentFocus <= 68 && Me.Pet.HasAura("Beast Cleave") && DebuffTime("Beast Cleave", Me.Pet) > 1)))
+                    || (!Me.ActiveAuras.ContainsKey("The Beast Within") && !Me.ActiveAuras.ContainsKey("Thrill of the Hunt") && Me.CurrentFocus <= 68 && Me.Pet.HasAura("Beast Cleave") 
+                    && DebuffTime("Beast Cleave", Me.Pet) > 1)))
                 {
                     if (Me.Level >= 81)
                     {
