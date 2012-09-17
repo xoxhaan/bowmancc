@@ -15,7 +15,7 @@ namespace TheBeastMaster
 {
     internal class BeastMaster : CombatRoutine
     {
-        public override sealed string Name { get { return "The Beast Master PvE CC 1.5"; } }
+        public override sealed string Name { get { return "The Beast Master PvE CC 1.5.4"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -34,7 +34,7 @@ namespace TheBeastMaster
         #region Initialize
         public override void Initialize()
         {
-            Logging.Write(Colors.Crimson, "The Beast Master 1.5");
+            Logging.Write(Colors.Crimson, "The Beast Master 1.5.4");
             Logging.Write(Colors.Crimson, "A Beast Mastery Hunter Routine");
             Logging.Write(Colors.Crimson, "Made By FallDown");
             Logging.Write(Colors.Crimson, "For LazyRaider Only!");
@@ -585,8 +585,8 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Rapid Fire <<");
                     }
                 }
-                if (Me.GotAlivePet && BeastMasterSettings.Instance.BWR && (SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 10 
-                    || !SpellManager.Spells["Lynx Rush"].Cooldown || !BeastMasterSettings.Instance.TL4_LR) && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.ActiveAuras.ContainsKey("Rapid Fire") 
+                if (Me.GotAlivePet && BeastMasterSettings.Instance.BWR && (!BeastMasterSettings.Instance.TL4_LR || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 10 
+                    || !SpellManager.Spells["Lynx Rush"].Cooldown) && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.ActiveAuras.ContainsKey("Rapid Fire") 
                     && !Me.ActiveAuras.ContainsKey("The Beast Within") && !Me.ActiveAuras.ContainsKey("Bloodlust") && !Me.ActiveAuras.ContainsKey("Heroism") 
                     && !Me.ActiveAuras.ContainsKey("Ancient Hysteria") && !Me.ActiveAuras.ContainsKey("Time Warp") && (Me.CurrentTarget.MaxHealth > 200000 || Me.CurrentTarget.Name == "Training Dummy"))
                 {
@@ -666,7 +666,7 @@ namespace TheBeastMaster
                         }
                     }
                 }
-                else if (!BeastMasterSettings.Instance.TL2_AOTIH)
+                if (!BeastMasterSettings.Instance.TL2_AOTIH)
                 {
                     if (!Me.IsMoving && !Me.Auras.ContainsKey("Aspect of the Hawk"))
                     {
@@ -683,7 +683,6 @@ namespace TheBeastMaster
                         }
                     }
                 }
-
             }
             /////////////////////////////////////////////Beastmastery Rotation///////////////////////////////////////////////////////////////////////////////////////////
             if (Me.GotTarget && (addCount() < BeastMasterSettings.Instance.Mobs || (!BeastMasterSettings.Instance.MS && !BeastMasterSettings.Instance.TL))
@@ -748,7 +747,7 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Kill Command <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL4_LR && (SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 10 || !BeastMasterSettings.Instance.BWR)
+                if (BeastMasterSettings.Instance.TL4_LR && (!BeastMasterSettings.Instance.BWR || SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 10)
                     && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25 && Me.GotAlivePet 
                     && ((Me.CurrentTarget.MaxHealth > 250000 && Me.CurrentTarget.CurrentHealth > 75000) || Me.CurrentTarget.Name == "Training Dummy"))
                 {
@@ -757,10 +756,9 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Lynx Rush <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL4_AMOC && (Me.CurrentFocus >= 59 || (Me.ActiveAuras.ContainsKey("The Beast Within") && Me.CurrentFocus >= 29)) 
-                    && ((Me.CurrentTarget.MaxHealth > Me.MaxHealth * 2 && Me.CurrentTarget.HealthPercent > 20) 
-                    || (Me.CurrentTarget.MaxHealth > Me.MaxHealth && Me.CurrentTarget.HealthPercent <= 20) 
-                    || Me.CurrentTarget.Name == "Training Dummy"))
+                if (BeastMasterSettings.Instance.TL4_AMOC && !IsMyAuraActive(Me.CurrentTarget, "A Murder of Crows") && (Me.CurrentFocus >= 59 
+                    || (Me.ActiveAuras.ContainsKey("The Beast Within") && Me.CurrentFocus >= 29)) && ((Me.CurrentTarget.MaxHealth > Me.MaxHealth * 2 && Me.CurrentTarget.HealthPercent > 20) 
+                    || (Me.CurrentTarget.MaxHealth > Me.MaxHealth && Me.CurrentTarget.HealthPercent <= 20) || Me.CurrentTarget.Name == "Training Dummy"))
                 {
                     if (CastSpell("A Murder of Crows"))
                     {
