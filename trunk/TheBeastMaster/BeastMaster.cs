@@ -15,11 +15,11 @@ namespace TheBeastMaster
 {
     internal class BeastMaster : CombatRoutine
     {
-        public override sealed string Name { get { return "The Beast Master PvE CC 1.5.4"; } }
+        public override sealed string Name { get { return "The Beast Master PvE CC 1.5.5"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        private static LocalPlayer Me { get { return ObjectManager.Me; } }
+        private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
 
         #region Log
@@ -34,7 +34,7 @@ namespace TheBeastMaster
         #region Initialize
         public override void Initialize()
         {
-            Logging.Write(Colors.Crimson, "The Beast Master 1.5.4");
+            Logging.Write(Colors.Crimson, "The Beast Master 1.5.5");
             Logging.Write(Colors.Crimson, "A Beast Mastery Hunter Routine");
             Logging.Write(Colors.Crimson, "Made By FallDown");
             Logging.Write(Colors.Crimson, "For LazyRaider Only!");
