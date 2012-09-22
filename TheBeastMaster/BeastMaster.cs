@@ -15,7 +15,7 @@ namespace TheBeastMaster
 {
     internal class BeastMaster : CombatRoutine
     {
-        public override sealed string Name { get { return "The Beast Master PvE CC 1.5.5"; } }
+        public override sealed string Name { get { return "The Beast Master PvE CC 1.5.6"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -34,7 +34,7 @@ namespace TheBeastMaster
         #region Initialize
         public override void Initialize()
         {
-            Logging.Write(Colors.Crimson, "The Beast Master 1.5.5");
+            Logging.Write(Colors.Crimson, "The Beast Master 1.5.6");
             Logging.Write(Colors.Crimson, "A Beast Mastery Hunter Routine");
             Logging.Write(Colors.Crimson, "Made By FallDown");
             Logging.Write(Colors.Crimson, "For LazyRaider Only!");
@@ -653,7 +653,7 @@ namespace TheBeastMaster
                 {
                     if (!Me.IsMoving && !Me.Auras.ContainsKey("Aspect of the Iron Hawk"))
                     {
-                        if (CastSpell("Aspect of the Iron Hawk"))
+                        if (CastSpell("Aspect of the Hawk"))
                         {
                             Logging.Write(Colors.Aqua, ">> Not moving - Aspect of the Iron Hawk <<");
                         }
