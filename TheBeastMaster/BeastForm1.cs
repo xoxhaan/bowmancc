@@ -154,6 +154,7 @@ namespace TheBeastMaster
             TL3_None.Checked = BeastMasterSettings.Instance.TL3_NO;
             TL4_None.Checked = BeastMasterSettings.Instance.TL4_NO;
             TL2_None.Checked = BeastMasterSettings.Instance.TL2_NO;
+            TL5_None.Checked = BeastMasterSettings.Instance.TL5_NO;
             TL1_Silence.Checked = BeastMasterSettings.Instance.TL1_SS;
             TL1_Wyvern.Checked = BeastMasterSettings.Instance.TL1_WS;
             TL1_Binding.Checked = BeastMasterSettings.Instance.TL1_BS;
@@ -166,6 +167,9 @@ namespace TheBeastMaster
             TL2_Exhilaration.Checked = BeastMasterSettings.Instance.TL2_EXH;
             TL2_IronHawk.Checked = BeastMasterSettings.Instance.TL2_AOTIH;
             TL2_SpiritBond.Checked = BeastMasterSettings.Instance.TL2_SB;
+            TL5_Glaive.Checked = BeastMasterSettings.Instance.TL5_GLV;
+            TL5_Power.Checked = BeastMasterSettings.Instance.TL5_PWR;
+            TL5_Barrage.Checked = BeastMasterSettings.Instance.TL5_BRG;
             CallPet.Checked = BeastMasterSettings.Instance.CP;
             FocusFire.Checked = BeastMasterSettings.Instance.FF;
             CallWild.Checked = BeastMasterSettings.Instance.CW;
@@ -313,6 +317,17 @@ namespace TheBeastMaster
                 BeastMasterSettings.Instance.TL2_NO = false;
             }
         }
+        private void TL5_None_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TL5_None.Checked == true)
+            {
+                BeastMasterSettings.Instance.TL5_NO = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.TL5_NO = false;
+            }
+        }
         private void TL1_Silence_CheckedChanged(object sender, EventArgs e)
         {
             if (TL1_Silence.Checked == true)
@@ -443,6 +458,39 @@ namespace TheBeastMaster
             else
             {
                 BeastMasterSettings.Instance.TL2_SB = false;
+            }
+        }
+        private void TL5_Glaive_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TL5_Glaive.Checked == true)
+            {
+                BeastMasterSettings.Instance.TL5_GLV = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.TL5_GLV = false;
+            }
+        }
+        private void TL5_Power_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TL5_Power.Checked == true)
+            {
+                BeastMasterSettings.Instance.TL5_PWR = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.TL5_PWR = false;
+            }
+        }
+        private void TL5_Barrage_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TL5_Barrage.Checked == true)
+            {
+                BeastMasterSettings.Instance.TL5_BRG = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.TL5_BRG = false;
             }
         }
         private void CallPet_CheckedChanged(object sender, EventArgs e)
