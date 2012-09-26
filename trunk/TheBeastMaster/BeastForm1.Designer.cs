@@ -88,7 +88,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.SaveButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -100,6 +99,12 @@
             this.label6 = new System.Windows.Forms.Label();
             this.DSLFR = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.TL5_None = new System.Windows.Forms.RadioButton();
+            this.TL5_Barrage = new System.Windows.Forms.RadioButton();
+            this.TL5_Glaive = new System.Windows.Forms.RadioButton();
+            this.TL5_Power = new System.Windows.Forms.RadioButton();
+            this.label3 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.TL2_None = new System.Windows.Forms.RadioButton();
             this.TL2_SpiritBond = new System.Windows.Forms.RadioButton();
@@ -124,6 +129,7 @@
             this.TL4_Crows = new System.Windows.Forms.RadioButton();
             this.TL4_Blink = new System.Windows.Forms.RadioButton();
             this.label18 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -139,6 +145,7 @@
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -743,9 +750,9 @@
             this.CallWild.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CallWild.Location = new System.Drawing.Point(6, 112);
             this.CallWild.Name = "CallWild";
-            this.CallWild.Size = new System.Drawing.Size(97, 17);
+            this.CallWild.Size = new System.Drawing.Size(74, 17);
             this.CallWild.TabIndex = 25;
-            this.CallWild.Text = "Call of the Wild";
+            this.CallWild.Text = "Stampede";
             this.CallWild.UseVisualStyleBackColor = true;
             this.CallWild.CheckedChanged += new System.EventHandler(this.CallWild_CheckedChanged);
             // 
@@ -840,10 +847,10 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.label10);
             this.tabPage1.Controls.Add(this.label12);
-            this.tabPage1.Controls.Add(this.label11);
             this.tabPage1.Controls.Add(this.linkLabel1);
             this.tabPage1.Controls.Add(this.SaveButton);
             this.tabPage1.Controls.Add(this.label4);
@@ -861,42 +868,30 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(26, 341);
+            this.label14.Location = new System.Drawing.Point(30, 344);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(242, 13);
+            this.label14.Size = new System.Drawing.Size(155, 13);
             this.label14.TabIndex = 25;
-            this.label14.Text = "Recommended Glyphs: Marked For Death";
+            this.label14.Text = "Glyphs: Marked For Death";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(26, 319);
+            this.label10.Location = new System.Drawing.Point(30, 327);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(426, 13);
+            this.label10.Size = new System.Drawing.Size(414, 13);
             this.label10.TabIndex = 24;
-            this.label10.Text = "Recommended Talents: Silencing Shot, Iron Hawk, Dire Beast, Lynx Rush";
+            this.label10.Text = "Talents: Silencing Shot, Iron Hawk, Dire Beast, Lynx Rush, Glaive Toss";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(26, 299);
+            this.label12.Location = new System.Drawing.Point(192, 311);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(247, 13);
             this.label12.TabIndex = 23;
             this.label12.Text = "Hit = Exp (to cap) > Agility > Mastery>= Crit > Haste";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label11.Font = new System.Drawing.Font("Candara", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.label11.Location = new System.Drawing.Point(28, 272);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(110, 21);
-            this.label11.TabIndex = 20;
-            this.label11.Text = "Beast Mastery";
             // 
             // linkLabel1
             // 
@@ -1023,6 +1018,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.panel6);
             this.groupBox2.Controls.Add(this.panel5);
             this.groupBox2.Controls.Add(this.panel2);
             this.groupBox2.Controls.Add(this.panel3);
@@ -1030,10 +1026,85 @@
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(20, 75);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(439, 190);
+            this.groupBox2.Size = new System.Drawing.Size(439, 233);
             this.groupBox2.TabIndex = 22;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Talents";
+            // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.TL5_None);
+            this.panel6.Controls.Add(this.TL5_Barrage);
+            this.panel6.Controls.Add(this.TL5_Glaive);
+            this.panel6.Controls.Add(this.TL5_Power);
+            this.panel6.Controls.Add(this.label3);
+            this.panel6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.panel6.Location = new System.Drawing.Point(11, 191);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(422, 37);
+            this.panel6.TabIndex = 38;
+            // 
+            // TL5_None
+            // 
+            this.TL5_None.AutoSize = true;
+            this.TL5_None.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL5_None.Checked = true;
+            this.TL5_None.Location = new System.Drawing.Point(3, 3);
+            this.TL5_None.Name = "TL5_None";
+            this.TL5_None.Size = new System.Drawing.Size(37, 30);
+            this.TL5_None.TabIndex = 34;
+            this.TL5_None.TabStop = true;
+            this.TL5_None.Text = "None";
+            this.TL5_None.UseVisualStyleBackColor = true;
+            this.TL5_None.CheckedChanged += new System.EventHandler(this.TL5_None_CheckedChanged);
+            // 
+            // TL5_Barrage
+            // 
+            this.TL5_Barrage.AutoSize = true;
+            this.TL5_Barrage.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL5_Barrage.Location = new System.Drawing.Point(347, 3);
+            this.TL5_Barrage.Name = "TL5_Barrage";
+            this.TL5_Barrage.Size = new System.Drawing.Size(48, 30);
+            this.TL5_Barrage.TabIndex = 36;
+            this.TL5_Barrage.TabStop = true;
+            this.TL5_Barrage.Text = "Barrage";
+            this.TL5_Barrage.UseVisualStyleBackColor = true;
+            this.TL5_Barrage.CheckedChanged += new System.EventHandler(this.TL5_Barrage_CheckedChanged);
+            // 
+            // TL5_Glaive
+            // 
+            this.TL5_Glaive.AutoSize = true;
+            this.TL5_Glaive.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL5_Glaive.Location = new System.Drawing.Point(93, 3);
+            this.TL5_Glaive.Name = "TL5_Glaive";
+            this.TL5_Glaive.Size = new System.Drawing.Size(67, 30);
+            this.TL5_Glaive.TabIndex = 35;
+            this.TL5_Glaive.TabStop = true;
+            this.TL5_Glaive.Text = "Glaive Toss";
+            this.TL5_Glaive.UseVisualStyleBackColor = true;
+            this.TL5_Glaive.CheckedChanged += new System.EventHandler(this.TL5_Glaive_CheckedChanged);
+            // 
+            // TL5_Power
+            // 
+            this.TL5_Power.AutoSize = true;
+            this.TL5_Power.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.TL5_Power.Location = new System.Drawing.Point(224, 3);
+            this.TL5_Power.Name = "TL5_Power";
+            this.TL5_Power.Size = new System.Drawing.Size(61, 30);
+            this.TL5_Power.TabIndex = 34;
+            this.TL5_Power.TabStop = true;
+            this.TL5_Power.Text = "Powershot";
+            this.TL5_Power.UseVisualStyleBackColor = true;
+            this.TL5_Power.CheckedChanged += new System.EventHandler(this.TL5_Power_CheckedChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(-3, -16);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(391, 13);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "________________________________________________________________";
             // 
             // panel5
             // 
@@ -1335,6 +1406,16 @@
             this.label18.TabIndex = 14;
             this.label18.Text = "________________________________________________________________";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(27, 310);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(114, 13);
+            this.label7.TabIndex = 26;
+            this.label7.Text = "Recommendations:";
+            // 
             // BeastForm1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1366,6 +1447,8 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.panel6.ResumeLayout(false);
+            this.panel6.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel2.ResumeLayout(false);
@@ -1429,7 +1512,6 @@
 		private System.Windows.Forms.CheckBox KillShot;
         private System.Windows.Forms.CheckBox BWrath;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown MendHealth;
         private System.Windows.Forms.CheckBox CallWild;
@@ -1476,6 +1558,13 @@
         private System.Windows.Forms.RadioButton TL2_Exhilaration;
         private System.Windows.Forms.RadioButton TL2_IronHawk;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.RadioButton TL5_None;
+        private System.Windows.Forms.RadioButton TL5_Barrage;
+        private System.Windows.Forms.RadioButton TL5_Glaive;
+        private System.Windows.Forms.RadioButton TL5_Power;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label7;
     }
 }
 

@@ -41,6 +41,9 @@ namespace TheBeastMaster
         public bool TL2_NO { get; set; }
 
         [Setting, DefaultValue(true)]
+        public bool TL5_NO { get; set; }
+
+        [Setting, DefaultValue(true)]
         public bool TL4_NO { get; set; }
 
         [Setting, DefaultValue(false)]
@@ -75,6 +78,15 @@ namespace TheBeastMaster
 
         [Setting, DefaultValue(false)]
         public bool TL2_AOTIH { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool TL5_GLV { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool TL5_PWR { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool TL5_BRG { get; set; }
         
         [Setting, DefaultValue(false)]
         public bool TL2_SB { get; set; }
