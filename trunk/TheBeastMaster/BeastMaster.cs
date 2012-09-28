@@ -15,7 +15,7 @@ namespace TheBeastMaster
 {
     internal class BeastMaster : CombatRoutine
     {
-        public override sealed string Name { get { return "The Beast Master PvE CC 1.6.1"; } }
+        public override sealed string Name { get { return "The Beast Master PvE CC 1.6.3"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -34,7 +34,7 @@ namespace TheBeastMaster
         #region Initialize
         public override void Initialize()
         {
-            Logging.Write(Colors.Crimson, "The Beast Master 1.6.1");
+            Logging.Write(Colors.Crimson, "The Beast Master 1.6.3");
             Logging.Write(Colors.Crimson, "A Beast Mastery Hunter Routine");
             Logging.Write(Colors.Crimson, "Made By FallDown");
             Logging.Write(Colors.Crimson, "For LazyRaider Only!");
@@ -166,30 +166,27 @@ namespace TheBeastMaster
         #endregion
 
         #region CastSpell Method
-        public static bool CastSpell(string spellName, WoWUnit target)
+        public static bool CastSpell(string SpellName, WoWUnit target)
         {
-            if (SpellManager.CanCast(spellName, target))
+            if (SpellManager.HasSpell(SpellName) && SpellManager.Spells[SpellName].CooldownTimeLeft.TotalMilliseconds < 200 && Me.CurrentFocus >= SpellManager.Spells[SpellName].PowerCost)
             {
-                if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 500)
+                if (!BeastMasterSettings.Instance.TL5_BRG || Me.ChanneledCastingSpellId != 120360)
                 {
-                    SpellManager.Cast(spellName, target);
+                    SpellManager.Cast(SpellName, target);
                     return true;
                 }
             }
             return false;
         }
 
-        public static bool CastSpell(string spellName)
+        public static bool CastSpell(string SpellName)
         {
-            if (SpellManager.CanCast(spellName))
+            if (SpellManager.HasSpell(SpellName) && SpellManager.Spells[SpellName].CooldownTimeLeft.TotalMilliseconds < 200 && Me.CurrentFocus >= SpellManager.Spells[SpellName].PowerCost)
             {
-                if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 500)
+                if (!BeastMasterSettings.Instance.TL5_BRG || Me.ChanneledCastingSpellId != 120360)
                 {
-                    if (!BeastMasterSettings.Instance.TL5_BRG || Me.ChanneledCastingSpellId != 120360)
-                    {
-                        SpellManager.Cast(spellName);
-                        return true;
-                    }
+                    SpellManager.Cast(SpellName);
+                    return true;
                 }
             }
             return false;
@@ -251,15 +248,15 @@ namespace TheBeastMaster
 
         #region MyDebuffTime
         //Used for checking how the time left on "my" debuff
-        private int MyDebuffTime(String spellName, WoWUnit unit)
+        private int MyDebuffTime(String SpellName, WoWUnit unit)
         {
             {
-                if (unit.HasAura(spellName))
+                if (unit.HasAura(SpellName))
                 {
                     var auras = unit.GetAllAuras();
                     foreach (var a in auras)
                     {
-                        if (a.Name == spellName && a.CreatorGuid == Me.Guid)
+                        if (a.Name == SpellName && a.CreatorGuid == Me.Guid)
                         {
                             return a.TimeLeft.Seconds;
                         }
@@ -272,15 +269,15 @@ namespace TheBeastMaster
 
         #region DebuffTime
         //Used for checking debuff timers
-        private int DebuffTime(String spellName, WoWUnit unit)
+        private int DebuffTime(String SpellName, WoWUnit unit)
         {
             {
-                if (unit.HasAura(spellName))
+                if (unit.HasAura(SpellName))
                 {
                     var auras = unit.GetAllAuras();
                     foreach (var b in auras)
                     {
-                        if (b.Name == spellName)
+                        if (b.Name == SpellName)
                         {
                             return b.TimeLeft.Seconds;
                         }
@@ -498,8 +495,8 @@ namespace TheBeastMaster
                     }
                 }
                 if (BeastMasterSettings.Instance.TL2_EXH && (Me.HealthPercent < 70 
-                    || (Me.Pet.HealthPercent < 10 && SpellManager.HasSpell("Heart of the Phoenix") && SpellManager.Spells["Heart of the Phoenix"].CooldownTimeLeft.TotalSeconds > 5)
-                    || (Me.Pet.HealthPercent < 10 && !SpellManager.HasSpell("Heart of the Phoenix"))))
+                    || (Me.Pet.HealthPercent < 15 && SpellManager.HasSpell("Heart of the Phoenix") && SpellManager.Spells["Heart of the Phoenix"].CooldownTimeLeft.TotalSeconds > 5)
+                    || (Me.Pet.HealthPercent < 15 && !SpellManager.HasSpell("Heart of the Phoenix"))))
                 {
                     if (CastSpell("Exhilaration"))
                     {
@@ -514,7 +511,7 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Misdirection on Pet <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.DTS && Me.GotAlivePet && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !SpellManager.Spells["Distracting Shot"].Cooldown && !IsMyAuraActive(Me.CurrentTarget, "Distracting Shot"))
+                if (BeastMasterSettings.Instance.DTS && Me.GotAlivePet && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !IsMyAuraActive(Me.CurrentTarget, "Distracting Shot"))
                 {
                     if (CastSpell("Distracting Shot"))
                     {
@@ -530,7 +527,7 @@ namespace TheBeastMaster
                     }
                 }
                 ///////////////////////////////////////////Close Combat and Defense Mechanisms//////////////////////////////////////////////////////////////////////////////////////
-                if (BeastMasterSettings.Instance.SMend && Me.CurrentHealth < Me.MaxHealth - 20000 && !WoWSpell.FromId(90361).Cooldown)
+                if (BeastMasterSettings.Instance.SMend && Me.CurrentHealth < Me.MaxHealth - 30000 && !WoWSpell.FromId(90361).Cooldown)
                 {
                     Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
                     {
@@ -665,14 +662,14 @@ namespace TheBeastMaster
                     && !Me.ActiveAuras.ContainsKey("Rapid Fire") && !Me.ActiveAuras.ContainsKey("The Beast Within") 
                     && !Me.ActiveAuras.ContainsKey("Bloodlust") && !Me.ActiveAuras.ContainsKey("Heroism") 
                     && !Me.ActiveAuras.ContainsKey("Ancient Hysteria") && !Me.ActiveAuras.ContainsKey("Time Warp") 
-                    && (Me.CurrentTarget.CurrentHealth > 300000 || CalculateTimeToDeath(Me.CurrentTarget) > 14) && (IsTargetBoss() || Me.CurrentTarget.Name.Contains("Training Dummy")))
+                    && (Me.CurrentTarget.CurrentHealth > 400000 || CalculateTimeToDeath(Me.CurrentTarget) > 14) && (IsTargetBoss() || Me.CurrentTarget.Name.Contains("Training Dummy")))
                 {
                     if (CastSpell("Rapid Fire"))
                     {
                         Logging.Write(Colors.Aqua, ">> Rapid Fire <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.CW && IsTargetBoss() && (Me.CurrentTarget.CurrentHealth > 400000 || CalculateTimeToDeath(Me.CurrentTarget) > 20))
+                if (BeastMasterSettings.Instance.CW && IsTargetBoss() && (Me.CurrentTarget.CurrentHealth > 500000 || CalculateTimeToDeath(Me.CurrentTarget) > 20))
                 {
                     if (CastSpell("Stampede"))
                     {
@@ -682,7 +679,7 @@ namespace TheBeastMaster
                 if (Me.GotAlivePet && BeastMasterSettings.Instance.BWR && (!BeastMasterSettings.Instance.TL4_LR || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 10 
                     || !SpellManager.Spells["Lynx Rush"].Cooldown) && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.ActiveAuras.ContainsKey("Rapid Fire") 
                     && !Me.ActiveAuras.ContainsKey("The Beast Within") && !Me.ActiveAuras.ContainsKey("Bloodlust") && !Me.ActiveAuras.ContainsKey("Heroism")
-                    && !Me.ActiveAuras.ContainsKey("Ancient Hysteria") && !Me.ActiveAuras.ContainsKey("Time Warp") && (Me.CurrentTarget.CurrentHealth > 75000 || CalculateTimeToDeath(Me.CurrentTarget) > 8) && (Me.CurrentTarget.MaxHealth > 400000 || Me.CurrentTarget.Name.Contains("Training Dummy")))
+                    && !Me.ActiveAuras.ContainsKey("Ancient Hysteria") && !Me.ActiveAuras.ContainsKey("Time Warp") && (Me.CurrentTarget.CurrentHealth > 100000 || CalculateTimeToDeath(Me.CurrentTarget) > 8) && (Me.CurrentTarget.MaxHealth > 400000 || Me.CurrentTarget.Name.Contains("Training Dummy")))
                 {
                     if (CastSpell("Bestial Wrath"))
                     {
@@ -800,7 +797,7 @@ namespace TheBeastMaster
                     }
                 }
                 if (BeastMasterSettings.Instance.SerpentBox == "Sometimes" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1)
-                    && Me.CurrentTarget.MaxHealth > Me.MaxHealth && (Me.CurrentTarget.CurrentHealth > 400000 || CalculateTimeToDeath(Me.CurrentTarget) > 14))
+                    && (Me.CurrentTarget.CurrentHealth > 400000 || CalculateTimeToDeath(Me.CurrentTarget) > 14))
                 {
                     if (CastSpell("Serpent Sting"))
                     {
@@ -845,21 +842,21 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Lynx Rush <<");
                     }
                 }
-                if (Me.Level >= 90 && BeastMasterSettings.Instance.TL5_GLV)
+                if (Me.Level >= 90 && BeastMasterSettings.Instance.TL5_GLV && (!SpellManager.CanCast("Kill Command") || !BeastMasterSettings.Instance.KCO))
                 {
                     if (CastSpell("Glaive Toss"))
                     {
                         Logging.Write(Colors.Aqua, ">> Glaive Toss <<");
                     }
                 }
-                if (Me.Level >= 90 && BeastMasterSettings.Instance.TL5_PWR)
+                if (Me.Level >= 90 && BeastMasterSettings.Instance.TL5_PWR && (!SpellManager.CanCast("Kill Command") || !BeastMasterSettings.Instance.KCO))
                 {
                     if (CastSpell("Powershot"))
                     {
                         Logging.Write(Colors.Aqua, ">> Powershot <<");
                     }
                 }
-                if (Me.Level >= 90 && BeastMasterSettings.Instance.TL5_BRG)
+                if (Me.Level >= 90 && BeastMasterSettings.Instance.TL5_BRG && (!SpellManager.CanCast("Kill Command") || !BeastMasterSettings.Instance.KCO))
                 {
                     if (CastSpell("Barrage"))
                     {
@@ -921,13 +918,17 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Focus Fire: Running out of time <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.ARC)
+                if (BeastMasterSettings.Instance.ARC
+                    && (!BeastMasterSettings.Instance.KSH || !SpellManager.CanCast("Kill Shot")) 
+                    && (!BeastMasterSettings.Instance.TL5_GLV ||!SpellManager.CanCast("Glaive Toss"))
+                    && (!BeastMasterSettings.Instance.TL5_BRG || !SpellManager.CanCast("Barrage"))
+                    && (!BeastMasterSettings.Instance.TL5_PWR || !SpellManager.CanCast("Powershot")))
                 {
                     if (BeastMasterSettings.Instance.KCO)
                     {
                         if (!Me.ActiveAuras.ContainsKey("Thrill of the Hunt"))
                         {
-                            if (Me.GotAlivePet && SpellManager.Spells["Kill Command"].Cooldown && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 700)
+                            if (Me.GotAlivePet && SpellManager.Spells["Kill Command"].Cooldown && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 500)
                             {
                                 if (!Me.ActiveAuras.ContainsKey("The Beast Within"))
                                 {
@@ -1016,7 +1017,7 @@ namespace TheBeastMaster
                         }
                     }
                 }
-                if (Me.CurrentFocus > 100 && Me.IsCasting && (Me.CastingSpell.Name == "Cobra Shot" || Me.CastingSpell.Name == "Steady Shot") && Me.CurrentCastTimeLeft.TotalMilliseconds > 700)
+                if (Me.CurrentFocus > 106 && Me.IsCasting && (Me.CastingSpell.Name == "Cobra Shot" || Me.CastingSpell.Name == "Steady Shot") && Me.CurrentCastTimeLeft.TotalMilliseconds > 700)
                 {
                     SpellManager.StopCasting();
                     Logging.Write(Colors.Red, ">> Stop Cobra Shot <<");
@@ -1038,7 +1039,7 @@ namespace TheBeastMaster
                     }
                     else if (Me.Level < 81)
                     {
-                        if ((Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.ActiveAuras.ContainsKey("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots * 0.5)))
+                        if (Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.ActiveAuras.ContainsKey("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots * 0.5))
                         {
                             Lua.DoString("RunMacroText('/cast Steady Shot');");
                             {
