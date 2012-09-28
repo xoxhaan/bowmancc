@@ -156,6 +156,9 @@ namespace TheBeastMaster
 		
 		[Setting, DefaultValue(true)]
         public bool ARC { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool DTS { get; set; }
 		
 		[Setting, DefaultValue(false)]
         public bool RDN { get; set; }

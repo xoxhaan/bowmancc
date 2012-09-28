@@ -189,6 +189,7 @@ namespace TheBeastMaster
 			Arcane.Checked = BeastMasterSettings.Instance.ARC;
 			Readiness.Checked = BeastMasterSettings.Instance.RDN;
 			MDFocus.Checked = BeastMasterSettings.Instance.MDF;
+            Distract.Checked = BeastMasterSettings.Instance.DTS;
 			KillCom.Checked = BeastMasterSettings.Instance.KCO;
 			HMark.Checked = BeastMasterSettings.Instance.HM;
 			Concussive.Checked = BeastMasterSettings.Instance.CONC;
@@ -735,6 +736,17 @@ namespace TheBeastMaster
             else
             {
                 BeastMasterSettings.Instance.KCO = false;
+            }
+        }
+        private void Distract_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Distract.Checked == true)
+            {
+                BeastMasterSettings.Instance.DTS = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.DTS = false;
             }
         }
 		private void HMark_CheckedChanged(object sender, EventArgs e)

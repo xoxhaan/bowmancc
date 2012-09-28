@@ -40,6 +40,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.Distract = new System.Windows.Forms.CheckBox();
             this.ScatterShot = new System.Windows.Forms.Label();
             this.ScatBox = new System.Windows.Forms.ComboBox();
             this.IntiBox = new System.Windows.Forms.ComboBox();
@@ -85,6 +86,7 @@
             this.RevivePet = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
@@ -129,7 +131,6 @@
             this.TL4_Crows = new System.Windows.Forms.RadioButton();
             this.TL4_Blink = new System.Windows.Forms.RadioButton();
             this.label18 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -155,7 +156,7 @@
             // Arcane
             // 
             this.Arcane.AutoSize = true;
-            this.Arcane.Location = new System.Drawing.Point(169, 87);
+            this.Arcane.Location = new System.Drawing.Point(147, 85);
             this.Arcane.Name = "Arcane";
             this.Arcane.Size = new System.Drawing.Size(85, 17);
             this.Arcane.TabIndex = 24;
@@ -178,7 +179,7 @@
             // MDFocus
             // 
             this.MDFocus.AutoSize = true;
-            this.MDFocus.Location = new System.Drawing.Point(17, 111);
+            this.MDFocus.Location = new System.Drawing.Point(17, 108);
             this.MDFocus.Name = "MDFocus";
             this.MDFocus.Size = new System.Drawing.Size(115, 17);
             this.MDFocus.TabIndex = 24;
@@ -189,7 +190,7 @@
             // KillCom
             // 
             this.KillCom.AutoSize = true;
-            this.KillCom.Location = new System.Drawing.Point(17, 134);
+            this.KillCom.Location = new System.Drawing.Point(17, 130);
             this.KillCom.Name = "KillCom";
             this.KillCom.Size = new System.Drawing.Size(89, 17);
             this.KillCom.TabIndex = 24;
@@ -200,7 +201,7 @@
             // HMark
             // 
             this.HMark.AutoSize = true;
-            this.HMark.Location = new System.Drawing.Point(17, 87);
+            this.HMark.Location = new System.Drawing.Point(17, 85);
             this.HMark.Name = "HMark";
             this.HMark.Size = new System.Drawing.Size(92, 17);
             this.HMark.TabIndex = 24;
@@ -211,7 +212,7 @@
             // Concussive
             // 
             this.Concussive.AutoSize = true;
-            this.Concussive.Location = new System.Drawing.Point(17, 64);
+            this.Concussive.Location = new System.Drawing.Point(17, 63);
             this.Concussive.Name = "Concussive";
             this.Concussive.Size = new System.Drawing.Size(106, 17);
             this.Concussive.TabIndex = 24;
@@ -222,7 +223,7 @@
             // Deterrence
             // 
             this.Deterrence.AutoSize = true;
-            this.Deterrence.Location = new System.Drawing.Point(169, 41);
+            this.Deterrence.Location = new System.Drawing.Point(147, 41);
             this.Deterrence.Name = "Deterrence";
             this.Deterrence.Size = new System.Drawing.Size(79, 17);
             this.Deterrence.TabIndex = 24;
@@ -233,7 +234,7 @@
             // KillShot
             // 
             this.KillShot.AutoSize = true;
-            this.KillShot.Location = new System.Drawing.Point(169, 111);
+            this.KillShot.Location = new System.Drawing.Point(147, 108);
             this.KillShot.Name = "KillShot";
             this.KillShot.Size = new System.Drawing.Size(64, 17);
             this.KillShot.TabIndex = 24;
@@ -244,7 +245,7 @@
             // BWrath
             // 
             this.BWrath.AutoSize = true;
-            this.BWrath.Location = new System.Drawing.Point(169, 64);
+            this.BWrath.Location = new System.Drawing.Point(147, 63);
             this.BWrath.Name = "BWrath";
             this.BWrath.Size = new System.Drawing.Size(89, 17);
             this.BWrath.TabIndex = 24;
@@ -282,6 +283,7 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.Distract);
             this.groupBox6.Controls.Add(this.ScatterShot);
             this.groupBox6.Controls.Add(this.ScatBox);
             this.groupBox6.Controls.Add(this.IntiBox);
@@ -307,16 +309,27 @@
             this.groupBox6.Controls.Add(this.FocusShots);
             this.groupBox6.Controls.Add(this.linkLabel5);
             this.groupBox6.Controls.Add(this.SaveButton2);
-            this.groupBox6.Location = new System.Drawing.Point(151, 51);
+            this.groupBox6.Location = new System.Drawing.Point(167, 34);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(322, 330);
+            this.groupBox6.Size = new System.Drawing.Size(306, 347);
             this.groupBox6.TabIndex = 15;
             this.groupBox6.TabStop = false;
+            // 
+            // Distract
+            // 
+            this.Distract.AutoSize = true;
+            this.Distract.Location = new System.Drawing.Point(17, 151);
+            this.Distract.Name = "Distract";
+            this.Distract.Size = new System.Drawing.Size(101, 17);
+            this.Distract.TabIndex = 37;
+            this.Distract.Text = "Distracting Shot";
+            this.Distract.UseVisualStyleBackColor = true;
+            this.Distract.CheckedChanged += new System.EventHandler(this.Distract_CheckedChanged);
             // 
             // ScatterShot
             // 
             this.ScatterShot.AutoSize = true;
-            this.ScatterShot.Location = new System.Drawing.Point(139, 257);
+            this.ScatterShot.Location = new System.Drawing.Point(127, 257);
             this.ScatterShot.Name = "ScatterShot";
             this.ScatterShot.Size = new System.Drawing.Size(69, 13);
             this.ScatterShot.TabIndex = 36;
@@ -327,7 +340,7 @@
             this.ScatBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ScatBox.DropDownWidth = 95;
             this.ScatBox.FormattingEnabled = true;
-            this.ScatBox.Location = new System.Drawing.Point(216, 254);
+            this.ScatBox.Location = new System.Drawing.Point(204, 254);
             this.ScatBox.Name = "ScatBox";
             this.ScatBox.Size = new System.Drawing.Size(98, 21);
             this.ScatBox.TabIndex = 35;
@@ -338,7 +351,7 @@
             this.IntiBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.IntiBox.DropDownWidth = 95;
             this.IntiBox.FormattingEnabled = true;
-            this.IntiBox.Location = new System.Drawing.Point(201, 227);
+            this.IntiBox.Location = new System.Drawing.Point(189, 227);
             this.IntiBox.Name = "IntiBox";
             this.IntiBox.Size = new System.Drawing.Size(113, 21);
             this.IntiBox.TabIndex = 34;
@@ -347,7 +360,7 @@
             // Intimidate
             // 
             this.Intimidate.AutoSize = true;
-            this.Intimidate.Location = new System.Drawing.Point(141, 230);
+            this.Intimidate.Location = new System.Drawing.Point(129, 230);
             this.Intimidate.Name = "Intimidate";
             this.Intimidate.Size = new System.Drawing.Size(55, 13);
             this.Intimidate.TabIndex = 33;
@@ -358,7 +371,7 @@
             this.SerBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SerBox.DropDownWidth = 95;
             this.SerBox.FormattingEnabled = true;
-            this.SerBox.Location = new System.Drawing.Point(201, 198);
+            this.SerBox.Location = new System.Drawing.Point(189, 198);
             this.SerBox.Name = "SerBox";
             this.SerBox.Size = new System.Drawing.Size(113, 21);
             this.SerBox.TabIndex = 32;
@@ -367,7 +380,7 @@
             // Serpent
             // 
             this.Serpent.AutoSize = true;
-            this.Serpent.Location = new System.Drawing.Point(148, 201);
+            this.Serpent.Location = new System.Drawing.Point(136, 201);
             this.Serpent.Name = "Serpent";
             this.Serpent.Size = new System.Drawing.Size(47, 13);
             this.Serpent.TabIndex = 31;
@@ -376,7 +389,7 @@
             // SSStacks
             // 
             this.SSStacks.AutoSize = true;
-            this.SSStacks.Location = new System.Drawing.Point(238, 136);
+            this.SSStacks.Location = new System.Drawing.Point(216, 132);
             this.SSStacks.Name = "SSStacks";
             this.SSStacks.Size = new System.Drawing.Size(43, 13);
             this.SSStacks.TabIndex = 28;
@@ -384,7 +397,7 @@
             // 
             // FFS
             // 
-            this.FFS.Location = new System.Drawing.Point(283, 134);
+            this.FFS.Location = new System.Drawing.Point(261, 130);
             this.FFS.Maximum = new decimal(new int[] {
             5,
             0,
@@ -409,7 +422,7 @@
             // 
             this.FocusFire.AutoSize = true;
             this.FocusFire.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.FocusFire.Location = new System.Drawing.Point(169, 134);
+            this.FocusFire.Location = new System.Drawing.Point(147, 130);
             this.FocusFire.Name = "FocusFire";
             this.FocusFire.Size = new System.Drawing.Size(75, 17);
             this.FocusFire.TabIndex = 27;
@@ -420,7 +433,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(151, 174);
+            this.label9.Location = new System.Drawing.Point(139, 174);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(68, 13);
             this.label9.TabIndex = 26;
@@ -431,7 +444,7 @@
             this.FDBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.FDBox.DropDownWidth = 95;
             this.FDBox.FormattingEnabled = true;
-            this.FDBox.Location = new System.Drawing.Point(219, 171);
+            this.FDBox.Location = new System.Drawing.Point(207, 171);
             this.FDBox.Name = "FDBox";
             this.FDBox.Size = new System.Drawing.Size(95, 21);
             this.FDBox.TabIndex = 25;
@@ -457,7 +470,7 @@
             this.groupBox4.Controls.Add(this.AoELynx);
             this.groupBox4.Controls.Add(this.MultiShot);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.groupBox4.Location = new System.Drawing.Point(6, 169);
+            this.groupBox4.Location = new System.Drawing.Point(6, 187);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(117, 126);
             this.groupBox4.TabIndex = 2;
@@ -541,13 +554,13 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(72, 16);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(235, 13);
+            this.label13.Size = new System.Drawing.Size(185, 13);
             this.label13.TabIndex = 23;
-            this.label13.Text = "No Steady/Cobra shot over this amount of focus";
+            this.label13.Text = "No Steady/Cobra shot over this focus";
             // 
             // FocusShots
             // 
-            this.FocusShots.Location = new System.Drawing.Point(14, 14);
+            this.FocusShots.Location = new System.Drawing.Point(16, 14);
             this.FocusShots.Name = "FocusShots";
             this.FocusShots.Size = new System.Drawing.Size(52, 20);
             this.FocusShots.TabIndex = 22;
@@ -561,7 +574,7 @@
             this.linkLabel5.Font = new System.Drawing.Font("Cambria", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel5.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel5.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel5.Location = new System.Drawing.Point(10, 301);
+            this.linkLabel5.Location = new System.Drawing.Point(10, 317);
             this.linkLabel5.Name = "linkLabel5";
             this.linkLabel5.Size = new System.Drawing.Size(156, 24);
             this.linkLabel5.TabIndex = 16;
@@ -571,7 +584,7 @@
             // 
             // SaveButton2
             // 
-            this.SaveButton2.Location = new System.Drawing.Point(242, 302);
+            this.SaveButton2.Location = new System.Drawing.Point(227, 319);
             this.SaveButton2.Name = "SaveButton2";
             this.SaveButton2.Size = new System.Drawing.Size(75, 23);
             this.SaveButton2.TabIndex = 12;
@@ -584,7 +597,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Candara", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.label5.Location = new System.Drawing.Point(185, 9);
+            this.label5.Location = new System.Drawing.Point(185, 1);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(255, 39);
             this.label5.TabIndex = 14;
@@ -612,7 +625,7 @@
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
             this.groupBox5.Location = new System.Drawing.Point(11, 218);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(134, 163);
+            this.groupBox5.Size = new System.Drawing.Size(150, 163);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "CD options";
@@ -704,7 +717,7 @@
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(11, 15);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(134, 197);
+            this.groupBox3.Size = new System.Drawing.Size(150, 197);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Pet options";
@@ -863,6 +876,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Beast Master";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(27, 310);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(114, 13);
+            this.label7.TabIndex = 26;
+            this.label7.Text = "Recommendations:";
             // 
             // label14
             // 
@@ -1406,16 +1429,6 @@
             this.label18.TabIndex = 14;
             this.label18.Text = "________________________________________________________________";
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(27, 310);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(114, 13);
-            this.label7.TabIndex = 26;
-            this.label7.Text = "Recommendations:";
-            // 
             // BeastForm1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1565,6 +1578,7 @@
         private System.Windows.Forms.RadioButton TL5_Power;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox Distract;
     }
 }
 
