@@ -10,12 +10,13 @@ using Styx.CommonBot.Routines;
 using Styx.Helpers;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
+using System.Diagnostics;
 
 namespace TheBeastMaster
 {
     internal class BeastMaster : CombatRoutine
     {
-        public override sealed string Name { get { return "The Beast Master PvE CC 1.6.3"; } }
+        public override sealed string Name { get { return "The Beast Master PvE CC 1.6.7"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -34,7 +35,7 @@ namespace TheBeastMaster
         #region Initialize
         public override void Initialize()
         {
-            Logging.Write(Colors.Crimson, "The Beast Master 1.6.3");
+            Logging.Write(Colors.Crimson, "The Beast Master 1.6.7");
             Logging.Write(Colors.Crimson, "A Beast Mastery Hunter Routine");
             Logging.Write(Colors.Crimson, "Made By FallDown");
             Logging.Write(Colors.Crimson, "For LazyRaider Only!");
@@ -158,7 +159,7 @@ namespace TheBeastMaster
         private bool IsTargetEasyBoss()
         {
             if (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
-               (Me.CurrentTarget.Level >= 90 && Me.CurrentTarget.Elite && Me.CurrentTarget.MaxHealth > 700000))
+               (Me.CurrentTarget.Level >= 90 && Me.CurrentTarget.Elite && Me.CurrentTarget.MaxHealth > 1000000))
                 return true;
 
             else return false;
@@ -304,80 +305,55 @@ namespace TheBeastMaster
 
         private static uint _firstLife;
         private static uint _firstLifeMax;
-        private static int _firstTime;
+        public static Stopwatch deathTimer = new Stopwatch();
         private static uint _currentLife;
-        private static int _currentTime;
         private static ulong _guid;
-
-        private static int ConvDate2Timestam(DateTime time)
-        {
-            var date1 = new DateTime(1970, 1, 1); // Refernzdatum (festgelegt)
-            DateTime date2 = time; // jetztiges Datum / Uhrzeit
-            var ts = new TimeSpan(date2.Ticks - date1.Ticks); // das Delta ermitteln
-            // Das Delta als gesammtzahl der sekunden ist der Timestamp
-            return (Convert.ToInt32(ts.TotalSeconds));
-        }
 
         public static long CalculateTimeToDeath(WoWUnit target)
         {
-            if (Me.CurrentTarget.Name.Contains("Training Dummy"))
+            if (target.Name.Contains("Training Dummy"))
             {
                 return 111;
             }
-
             if (target.CurrentHealth == 0 || target.IsDead || !target.IsValid || !target.IsAlive)
             {
-                //Logging.Write("TimeToDeath: {0} (GUID: {1}, Entry: {2}) is dead!", target.Name, target.Guid, target.Entry);
                 return 0;
             }
-            //Fill variables on new target or on target switch, this will loose all calculations from last target
+            //Fill variables on new target or on target switch, this will lose all calculations from last target
             if (_guid != target.Guid || (_guid == target.Guid && target.CurrentHealth == _firstLifeMax))
             {
                 _guid = target.Guid;
                 _firstLife = target.CurrentHealth;
                 _firstLifeMax = target.MaxHealth;
-                _firstTime = ConvDate2Timestam(DateTime.Now);
-                //Lets do a little trick and calculate with seconds / u know Timestamp from unix? we'll do so too
+                deathTimer.Restart();
             }
             _currentLife = target.CurrentHealth;
-            _currentTime = ConvDate2Timestam(DateTime.Now);
-            int timeDiff = _currentTime - _firstTime;
+            int timeDiff = deathTimer.Elapsed.Seconds;
             uint hpDiff = _firstLife - _currentLife;
             if (hpDiff > 0)
             {
-                /*
-                * Rule of three (Dreisatz):
-                * If in a given timespan a certain value of damage is done, what timespan is needed to do 100% damage?
-                * The longer the timespan the more precise the prediction
-                * time_diff/hp_diff = x/first_life_max
-                * x = time_diff*first_life_max/hp_diff
-                */
                 long fullTime = timeDiff * _firstLifeMax / hpDiff;
                 long pastFirstTime = (_firstLifeMax - _firstLife) * timeDiff / hpDiff;
-                long calcTime = _firstTime - pastFirstTime + fullTime - _currentTime;
-                if (calcTime < 1) calcTime = 1;
-                //calc_time is a int value for time to die (seconds) so there's no need to do SecondsToTime(calc_time)
-                long timeToDie = calcTime;
-                //Logging.Write("TimeToDeath: {0} (GUID: {1}, Entry: {2}) dies in {3}, you are dpsing with {4} dps", target.Name, target.Guid, target.Entry, timeToDie, dps);
+                long timeToDie = fullTime - pastFirstTime - timeDiff;
+
+                if (timeToDie < 1) timeToDie = 1;
                 return timeToDie;
             }
             if (hpDiff <= 0)
             {
-                //unit was healed,resetting the initial values
+                // Target was healed, reset to initial values
                 _guid = target.Guid;
                 _firstLife = target.CurrentHealth;
                 _firstLifeMax = target.MaxHealth;
-                _firstTime = ConvDate2Timestam(DateTime.Now);
-                //Lets do a little trick and calculate with seconds / u know Timestamp from unix? we'll do so too
-                //Logging.Write("TimeToDeath: {0} (GUID: {1}, Entry: {2}) was healed, resetting data.", target.Name, target.Guid, target.Entry);
+                deathTimer.Restart();
                 return -1;
             }
+            // Target is at full health
             if (_currentLife == _firstLifeMax)
             {
-                //Logging.Write("TimeToDeath: {0} (GUID: {1}, Entry: {2}) is at full health.", target.Name, target.Guid, target.Entry);
                 return -1;
             }
-            //Logging.Write("TimeToDeath: {0} (GUID: {1}, Entry: {2}) no damage done, nothing to calculate.", target.Name, target.Guid, target.Entry);
+            // No damage done, nothing to calculate
             return -1;
         }
 
@@ -797,14 +773,14 @@ namespace TheBeastMaster
                     }
                 }
                 if (BeastMasterSettings.Instance.SerpentBox == "Sometimes" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1)
-                    && (Me.CurrentTarget.CurrentHealth > 400000 || CalculateTimeToDeath(Me.CurrentTarget) > 14))
+                    && (Me.CurrentTarget.CurrentHealth > 600000 || CalculateTimeToDeath(Me.CurrentTarget) > 15))
                 {
                     if (CastSpell("Serpent Sting"))
                     {
                         Logging.Write(Colors.Aqua, ">> Serpent Sting <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL3_DB && ((Me.CurrentTarget.Level >= Me.Level && (Me.CurrentTarget.CurrentHealth > 75000 || CalculateTimeToDeath(Me.CurrentTarget) > 10))
+                if (BeastMasterSettings.Instance.TL3_DB && ((Me.CurrentTarget.Level >= Me.Level && (Me.CurrentTarget.CurrentHealth > 90000 || CalculateTimeToDeath(Me.CurrentTarget) > 10))
                     || Me.CurrentFocus < 20) || Me.CurrentTarget.Name.Contains("Training Dummy"))
                 {
                     if (CastSpell("Dire Beast"))
@@ -835,7 +811,7 @@ namespace TheBeastMaster
                 }
                 if (BeastMasterSettings.Instance.TL4_LR && (!BeastMasterSettings.Instance.BWR || SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 10)
                     && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25 && Me.GotAlivePet 
-                    && ((Me.CurrentTarget.MaxHealth > 450000 && (Me.CurrentTarget.CurrentHealth > 75000 || CalculateTimeToDeath(Me.CurrentTarget) > 4)) || Me.CurrentTarget.Name.Contains("Training Dummy")))
+                    && ((Me.CurrentTarget.MaxHealth > 500000 && (Me.CurrentTarget.CurrentHealth > 90000 || CalculateTimeToDeath(Me.CurrentTarget) > 4)) || Me.CurrentTarget.Name.Contains("Training Dummy")))
                 {
                     if (CastSpell("Lynx Rush"))
                     {
@@ -1186,7 +1162,7 @@ namespace TheBeastMaster
                     }
                 }
                 if (BeastMasterSettings.Instance.AOELR && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && Me.CurrentFocus < 40 && !Me.ActiveAuras.ContainsKey("The Beast Within")
-                    && ((Me.CurrentTarget.MaxHealth > 250000 && (Me.CurrentTarget.CurrentHealth > 75000 || CalculateTimeToDeath(Me.CurrentTarget) > 4)) || Me.CurrentTarget.Name.Contains("Training Dummy")))
+                    && ((Me.CurrentTarget.MaxHealth > 30000 && (Me.CurrentTarget.CurrentHealth > 90000 || CalculateTimeToDeath(Me.CurrentTarget) > 4)) || Me.CurrentTarget.Name.Contains("Training Dummy")))
                 {
                     if (CastSpell("Lynx Rush"))
                     {
