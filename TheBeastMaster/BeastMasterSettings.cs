@@ -145,7 +145,7 @@ namespace TheBeastMaster
         [Setting, DefaultValue(5)]
         public int FFS { get; set; }
 
-        [Setting, DefaultValue(60)]
+        [Setting, DefaultValue(75)]
         public int FocusShots { get; set; }
 
         [Setting, DefaultValue(50)]
