@@ -16,7 +16,7 @@ namespace TheBeastMaster
 {
     internal class BeastMaster : CombatRoutine
     {
-        public override sealed string Name { get { return "The Beast Master PvE CC 1.6.8"; } }
+        public override sealed string Name { get { return "The Beast Master PvE CC 1.6.9"; } }
 
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
@@ -35,7 +35,7 @@ namespace TheBeastMaster
         #region Initialize
         public override void Initialize()
         {
-            Logging.Write(Colors.Crimson, "The Beast Master 1.6.8");
+            Logging.Write(Colors.Crimson, "The Beast Master 1.6.9");
             Logging.Write(Colors.Crimson, "A Beast Mastery Hunter Routine");
             Logging.Write(Colors.Crimson, "Made By FallDown");
             Logging.Write(Colors.Crimson, "For LazyRaider Only!");
@@ -643,7 +643,13 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Intimidation Stranger Danger! <<");
                     }
                 }
-                
+                if (BeastMasterSettings.Instance.TL3_FV && (Me.CurrentFocus < 60 || (Me.HasAura("The Beast within") && Me.CurrentFocus < 40)))
+                {
+                    if (CastSpell("Fervor"))
+                    {
+                        Logging.Write(Colors.Aqua, ">> Fervor <<");
+                    }
+                }
                 /////////////////////////////////////////////////////Cooldowns/////////////////////////////////////////////////////////////////////////////////////////////////           
                 if (BeastMasterSettings.Instance.RF && (SpellManager.Spells["Bestial Wrath"].Cooldown || !BeastMasterSettings.Instance.BWR) 
                     && !Me.HasAura("Rapid Fire") && !Me.HasAura("The Beast Within") 
@@ -799,13 +805,6 @@ namespace TheBeastMaster
                         Logging.Write(Colors.Aqua, ">> Dire Beast <<");
                     }
                 }
-                if (BeastMasterSettings.Instance.TL3_FV && Me.CurrentFocus < 40)
-                {
-                    if (CastSpell("Fervor"))
-                    {
-                        Logging.Write(Colors.Aqua, ">> Fervor <<");
-                    }
-                }
                 if (BeastMasterSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40)
                 {
                     if (CastSpell("Blink Strike"))
@@ -915,7 +914,7 @@ namespace TheBeastMaster
                     {
                         if (!Me.HasAura("Thrill of the Hunt"))
                         {
-                            if (Me.GotAlivePet && SpellManager.Spells["Kill Command"].Cooldown && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 500)
+                            if (Me.GotAlivePet && SpellManager.Spells["Kill Command"].Cooldown && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 250)
                             {
                                 if (!Me.HasAura("The Beast Within"))
                                 {
@@ -942,25 +941,15 @@ namespace TheBeastMaster
                             }
                             else if (!Me.GotAlivePet)
                             {
-                                if (!Me.HasAura("The Beast Within") && Me.CurrentFocus > 20)
+                                if (CastSpell("Arcane Shot"))
                                 {
-                                    if (CastSpell("Arcane Shot"))
-                                    {
-                                        Logging.Write(Colors.Aqua, ">> Arcane Shot <<");
-                                    }
-                                }
-                                else if (Me.HasAura("The Beast Within") && Me.CurrentFocus > 10)
-                                {
-                                    if (CastSpell("Arcane Shot"))
-                                    {
-                                        Logging.Write(Colors.Aqua, ">> Arcane Shot <<");
-                                    }
+                                    Logging.Write(Colors.Aqua, ">> Arcane Shot <<");
                                 }
                             }
                         }
                         else if (Me.HasAura("Thrill of the Hunt"))
                         {
-                            if (Me.GotAlivePet && SpellManager.Spells["Kill Command"].Cooldown && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 500)
+                            if (Me.GotAlivePet && SpellManager.Spells["Kill Command"].Cooldown && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 250)
                             { 
                                 if (CastSpell("Arcane Shot"))
                                 {
@@ -978,45 +967,29 @@ namespace TheBeastMaster
                     }
                     else if (!BeastMasterSettings.Instance.KCO)
                     {
-                        if (!Me.HasAura("Thrill of the Hunt"))
+                        if (CastSpell("Arcane Shot"))
                         {
-                            if (!Me.HasAura("The Beast Within") && Me.CurrentFocus > 20)
-                            {
-                                if (CastSpell("Arcane Shot"))
-                                {
-                                    Logging.Write(Colors.Aqua, ">> Arcane Shot <<");
-                                }
-                            }
-                            else if (Me.HasAura("The Beast Within") && Me.CurrentFocus > 10)
-                            {
-                                if (CastSpell("Arcane Shot"))
-                                {
-                                    Logging.Write(Colors.Aqua, ">> Arcane Shot <<");
-                                }
-                            }
-                        }
-                        else if (Me.HasAura("Thrill of the Hunt"))
-                        {
-                            if (CastSpell("Arcane Shot"))
-                            {
-                                Logging.Write(Colors.Aqua, ">> Arcane Shot <<");
-                            }
+                            Logging.Write(Colors.Aqua, ">> Arcane Shot <<");
                         }
                     }
                 }
-                if (Me.CurrentFocus > 106 && Me.IsCasting && (Me.CastingSpell.Name == "Cobra Shot" || Me.CastingSpell.Name == "Steady Shot") && Me.CurrentCastTimeLeft.TotalMilliseconds > 700)
+                if (Me.CurrentFocus > 105 && Me.IsCasting && (Me.CastingSpell.Name == "Cobra Shot" || Me.CastingSpell.Name == "Steady Shot") && Me.CurrentCastTimeLeft.TotalMilliseconds > 700)
                 {
                     SpellManager.StopCasting();
                     Logging.Write(Colors.Red, ">> Stop Cobra Shot <<");
                 }
-                if (!Me.IsCasting && ((!SpellManager.CanCast("Kill Shot") && SpellManager.Spells["Kill Shot"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentTarget.HealthPercent > 20) 
-                    && ((!Me.HasAura("The Beast Within") && (Me.CurrentFocus >= 40 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 39)
-                    || (Me.HasAura("The Beast Within") && (Me.CurrentFocus >= 20 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 19)))
+                if (!Me.IsCasting && (!BeastMasterSettings.Instance.KSH || !SpellManager.CanCast("Kill Shot")) 
+                    && (!BeastMasterSettings.Instance.TL5_GLV ||!SpellManager.CanCast("Glaive Toss"))
+                    && (!BeastMasterSettings.Instance.TL3_FV || !SpellManager.CanCast("Fervor"))
+                    && (!BeastMasterSettings.Instance.TL5_BRG || !SpellManager.CanCast("Barrage"))
+                    && (!BeastMasterSettings.Instance.TL5_PWR || !SpellManager.CanCast("Powershot")) 
+                    && ((!Me.HasAura("The Beast Within") && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 39)
+                    || (Me.HasAura("The Beast Within") && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 19)))
                 {
                     if (Me.Level >= 81)
                     {
-                        if ((Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots * 0.5))
-                            || (MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 9 && Me.CurrentFocus < 90))
+                        if ((Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots / 2))
+                            || (MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 9 && Me.CurrentFocus < 60))
                         {
                             Lua.DoString("RunMacroText('/cast Cobra Shot');");
                             {
@@ -1026,7 +999,7 @@ namespace TheBeastMaster
                     }
                     else if (Me.Level < 81)
                     {
-                        if (Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots * 0.5))
+                        if (Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots / 2))
                         {
                             Lua.DoString("RunMacroText('/cast Steady Shot');");
                             {
@@ -1163,13 +1136,6 @@ namespace TheBeastMaster
                     if (CastSpell("Dire Beast"))
                     {
                         Logging.Write(Colors.Crimson, ">> Dire Beast, AoE <<");
-                    }
-                }
-                if (BeastMasterSettings.Instance.TL3_FV && Me.CurrentFocus < 50)
-                {
-                    if (CastSpell("Fervor"))
-                    {
-                        Logging.Write(Colors.Crimson, ">> AoE Fervor <<");
                     }
                 }
                 if (BeastMasterSettings.Instance.AOELR && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && Me.CurrentFocus < 40 && !Me.HasAura("The Beast Within")

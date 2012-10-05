@@ -881,7 +881,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(27, 310);
+            this.label7.Location = new System.Drawing.Point(29, 309);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(114, 13);
             this.label7.TabIndex = 26;
@@ -891,7 +891,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(30, 344);
+            this.label14.Location = new System.Drawing.Point(31, 344);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(155, 13);
             this.label14.TabIndex = 25;
@@ -901,16 +901,16 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(30, 327);
+            this.label10.Location = new System.Drawing.Point(29, 326);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(414, 13);
+            this.label10.Size = new System.Drawing.Size(391, 13);
             this.label10.TabIndex = 24;
-            this.label10.Text = "Talents: Silencing Shot, Iron Hawk, Dire Beast, Lynx Rush, Glaive Toss";
+            this.label10.Text = "Talents: Silencing Shot, Iron Hawk, Fervor, Lynx Rush, Glaive Toss";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(192, 311);
+            this.label12.Location = new System.Drawing.Point(147, 309);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(247, 13);
             this.label12.TabIndex = 23;
@@ -922,7 +922,7 @@
             this.linkLabel1.Font = new System.Drawing.Font("Franklin Gothic Medium", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.SystemColors.Highlight;
-            this.linkLabel1.Location = new System.Drawing.Point(189, 354);
+            this.linkLabel1.Location = new System.Drawing.Point(197, 354);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(109, 30);
             this.linkLabel1.TabIndex = 19;
@@ -944,7 +944,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(11, 357);
+            this.label4.Location = new System.Drawing.Point(17, 358);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(182, 26);
             this.label4.TabIndex = 5;
@@ -954,7 +954,7 @@
             // 
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(20, 6);
+            this.groupBox1.Location = new System.Drawing.Point(20, 4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(439, 66);
             this.groupBox1.TabIndex = 21;
@@ -1047,7 +1047,7 @@
             this.groupBox2.Controls.Add(this.panel3);
             this.groupBox2.Controls.Add(this.panel4);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(20, 75);
+            this.groupBox2.Location = new System.Drawing.Point(20, 73);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(439, 233);
             this.groupBox2.TabIndex = 22;
