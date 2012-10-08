@@ -191,6 +191,9 @@ namespace TheBeastMaster
         public bool BRA { get; set; }
 
         [Setting, DefaultValue(false)]
+        public bool FSB { get; set; }
+
+        [Setting, DefaultValue(false)]
         public bool MDPet { get; set; }
 
         [Setting, DefaultValue("Never")]
