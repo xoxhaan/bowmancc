@@ -198,6 +198,7 @@ namespace TheBeastMaster
 			BWrath.Checked = BeastMasterSettings.Instance.BWR;
             SpiritMend.Checked = BeastMasterSettings.Instance.SMend;
             Burrow.Checked = BeastMasterSettings.Instance.BRA;
+            Frost.Checked = BeastMasterSettings.Instance.FSB;
             Misdirect.Checked = BeastMasterSettings.Instance.MDPet;      
         }
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -525,6 +526,17 @@ namespace TheBeastMaster
             else
             {
                 BeastMasterSettings.Instance.BRA = false;
+            }
+        }
+        private void Frost_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Frost.Checked == true)
+            {
+                BeastMasterSettings.Instance.FSB = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.FSB = false;
             }
         }
         private void FocusFire_CheckedChanged(object sender, EventArgs e)
