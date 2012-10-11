@@ -125,12 +125,6 @@ namespace PvPBeast
         public bool CW { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool SMend { get; set; }
-
-        [Setting, DefaultValue(false)]
-        public bool SSMend { get; set; }
-
-        [Setting, DefaultValue(false)]
         public bool RP { get; set; }
 
         [Setting, DefaultValue(false)]
@@ -187,8 +181,23 @@ namespace PvPBeast
         [Setting, DefaultValue(75)]
         public int FocusShots { get; set; }
 
-        [Setting, DefaultValue(50)]
+        [Setting, DefaultValue(75)]
         public int MendHealth { get; set; }
+
+        [Setting, DefaultValue(93)]
+        public int SpiritHealth_Me { get; set; }
+
+        [Setting, DefaultValue(30)]
+        public int SpiritHealth_Pet { get; set; }
+
+        [Setting, DefaultValue(70)]
+        public int SpiritHealth_Focus { get; set; }
+
+        [Setting, DefaultValue(60)]
+        public int StamHealth_Me { get; set; }
+
+        [Setting, DefaultValue(40)]
+        public int StamHealth_Focus { get; set; }
 
         [Setting, DefaultValue(true)]
         public bool AspectSwitching { get; set; }
@@ -226,7 +235,7 @@ namespace PvPBeast
         [Setting, DefaultValue("Never")]
         public string FDCBox { get; set; }
 
-        [Setting, DefaultValue("Always")]
+        [Setting, DefaultValue("Never")]
         public string SerpentBox { get; set; }
 
         [Setting, DefaultValue("2. Defense")]
@@ -234,6 +243,12 @@ namespace PvPBeast
 
         [Setting, DefaultValue("2. Defense")]
         public string IntimidateBox { get; set; }
+
+        [Setting, DefaultValue("Never")]
+        public string SpiritMendBox { get; set; }
+
+        [Setting, DefaultValue("Never")]
+        public string StampedeMendBox { get; set; }
 		
     }
 }
