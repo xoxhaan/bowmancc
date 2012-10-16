@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 0, 6);
+        public static readonly Version Version = new Version(2, 0, 7);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -660,13 +660,13 @@ namespace TheBeastMasterTree
                                 new Decorator(ret => BeastMasterSettings.Instance.TL2_AOTIH,
                                     new PrioritySelector(
                                         castSelfSpell("Aspect of the Hawk", ret => !Me.IsMoving && !Me.HasAura("Aspect of the Iron Hawk"), "Aspect of the Iron Hawk"),
-                                        castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && Me.HasAura("Aspect of the Iron Hawk"), "Aspect of the Fox")
+                                        castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && Me.HasAura("Aspect of the Iron Hawk") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots, "Aspect of the Fox")
                                     )
                                 ),
                                 new Decorator(ret => !BeastMasterSettings.Instance.TL2_AOTIH,
                                     new PrioritySelector(
                                         castSelfSpell("Aspect of the Hawk", ret => !Me.IsMoving && !Me.HasAura("Aspect of the Hawk"), "Aspect of the Hawk"),
-                                        castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && Me.HasAura("Aspect of the Hawk"), "Aspect of the Fox")
+                                        castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && Me.HasAura("Aspect of the Hawk") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots, "Aspect of the Fox")
                                     )
                                 )
                             )
@@ -846,8 +846,8 @@ namespace TheBeastMasterTree
 
                                 castSpell("Glaive Toss", ret => BeastMasterSettings.Instance.TL5_GLV, "Glaive Toss"),
 
-                                castSpell("Multi-Shot", ret => Me.CurrentPendingCursorSpell == null && BeastMasterSettings.Instance.MS && (!Me.Pet.HasAura("Beast Cleave") || DebuffTime("Beast Cleave", Me.Pet) < 1 
-                                || Me.CurrentFocus > 70 || Me.HasAura("The Beast Within") || Me.HasAura("Thrill of the Hunt")), "Multi-Shot"),
+                                castSpell("Multi-Shot", ret => BeastMasterSettings.Instance.MS && (!Me.Pet.HasAura("Beast Cleave") || MyDebuffTime("Beast Cleave", Me.Pet) < 1 
+                                || Me.CurrentFocus > 70 || Me.HasAura("The Beast Within") || Me.HasAura("Thrill of the Hunt") || (BeastMasterSettings.Instance.TL3_FV && !SpellManager.Spells["Fervor"].Cooldown)), "Multi-Shot"),
 
                                 castSpell("Dire Beast", ret => BeastMasterSettings.Instance.AOEDB && Me.CurrentFocus < 80, "Dire Beast, AoE"),
 
@@ -871,7 +871,7 @@ namespace TheBeastMasterTree
                                 )),
 
                                 new Decorator(ret => Me.CurrentFocus < 40 || ((Me.HasAura("The Beast Within") || Me.HasAura("Thrill of the Hunt")) && Me.CurrentFocus < 20) || (!Me.HasAura("The Beast Within")
-                                    && !Me.HasAura("Thrill of the Hunt") && Me.CurrentFocus <= 68 && Me.Pet.HasAura("Beast Cleave") && DebuffTime("Beast Cleave", Me.Pet) > 1),
+                                    && !Me.HasAura("Thrill of the Hunt") && Me.CurrentFocus <= 68 && Me.Pet.HasAura("Beast Cleave") && MyDebuffTime("Beast Cleave", Me.Pet) > 1),
                                     new PrioritySelector(
                                         new Decorator(ret => Me.Level >= 81,
                                             new Action(delegate

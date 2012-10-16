@@ -151,7 +151,7 @@ namespace TheBeastMasterTree
         [Setting, DefaultValue(5)]
         public int FFS { get; set; }
 
-        [Setting, DefaultValue(75)]
+        [Setting, DefaultValue(70)]
         public int FocusShots { get; set; }
 
         [Setting, DefaultValue(70)]
