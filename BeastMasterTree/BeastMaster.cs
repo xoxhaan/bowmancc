@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 0, 7);
+        public static readonly Version Version = new Version(2, 0, 8);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -273,9 +273,8 @@ namespace TheBeastMasterTree
                     && u.Attackable
                     && !u.IsTotem
                     && !u.IsCritter
-                    && u.GotTarget
                     && !u.IsNonCombatPet
-                    && u.IsTargetingMyPartyMember
+                    && u.GotTarget
                     && (u.Location.Distance(Me.CurrentTarget.Location) <= 10 || u.Location.Distance2D(Me.CurrentTarget.Location) <= 10))
                 {
                     count++;
