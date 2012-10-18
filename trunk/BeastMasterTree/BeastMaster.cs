@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 1, 6);
+        public static readonly Version Version = new Version(2, 1, 7);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -675,17 +675,17 @@ namespace TheBeastMasterTree
                                 || CalculateTimeToDeath(Me.CurrentTarget) > 8) && (Me.CurrentTarget.MaxHealth > 300000 || Me.CurrentTarget.Name.Contains("Training Dummy")), "Bestial Wrath"),
 
                                 castSelfSpell("Readiness", ret => BeastMasterSettings.Instance.RDN 
-                                && SpellManager.Spells["Rapid Fire"].CooldownTimeLeft.TotalSeconds > 1 
-                                && SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 1
-                                && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.KCO)
-                                && (SpellManager.HasSpell("Lynx Rush") && SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL4_LR)
-                                && (SpellManager.HasSpell("Glaive Toss") && SpellManager.Spells["Glaive Toss"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL5_GLV)
-                                && (SpellManager.HasSpell("Powershot") && SpellManager.Spells["Powershot"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL5_PWR)
-                                && (SpellManager.HasSpell("Barrage") && SpellManager.Spells["Barrage"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL5_BRG)
-                                && (SpellManager.HasSpell("Fervor") && SpellManager.Spells["Fervor"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL3_FV)
-                                && (SpellManager.HasSpell("A Murder of Crows") && SpellManager.Spells["A Murder of Crows"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL4_AMOC)
-                                && (SpellManager.HasSpell("Blink Strike") && SpellManager.Spells["Blink Strike"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL4_BSTRK)
-                                && (SpellManager.HasSpell("Dire Beast") && SpellManager.Spells["Dire Beast"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL3_DB), "Readiness"),
+                                && SpellManager.Spells["Rapid Fire"].CooldownTimeLeft.TotalSeconds > 2 
+                                && SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 2
+                                && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 2 || !BeastMasterSettings.Instance.KCO)
+                                && (SpellManager.HasSpell("Lynx Rush") && SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 2 || !BeastMasterSettings.Instance.TL4_LR)
+                                && (SpellManager.HasSpell("Glaive Toss") && SpellManager.Spells["Glaive Toss"].CooldownTimeLeft.TotalSeconds > 2 || !BeastMasterSettings.Instance.TL5_GLV)
+                                && (SpellManager.HasSpell("Powershot") && SpellManager.Spells["Powershot"].CooldownTimeLeft.TotalSeconds > 2 || !BeastMasterSettings.Instance.TL5_PWR)
+                                && (SpellManager.HasSpell("Barrage") && SpellManager.Spells["Barrage"].CooldownTimeLeft.TotalSeconds > 2 || !BeastMasterSettings.Instance.TL5_BRG)
+                                && (SpellManager.HasSpell("Fervor") && SpellManager.Spells["Fervor"].CooldownTimeLeft.TotalSeconds > 2 || !BeastMasterSettings.Instance.TL3_FV)
+                                && (SpellManager.HasSpell("A Murder of Crows") && SpellManager.Spells["A Murder of Crows"].CooldownTimeLeft.TotalSeconds > 2 || !BeastMasterSettings.Instance.TL4_AMOC)
+                                && (SpellManager.HasSpell("Blink Strike") && SpellManager.Spells["Blink Strike"].CooldownTimeLeft.TotalSeconds > 2 || !BeastMasterSettings.Instance.TL4_BSTRK)
+                                && (SpellManager.HasSpell("Dire Beast") && SpellManager.Spells["Dire Beast"].CooldownTimeLeft.TotalSeconds > 2 || !BeastMasterSettings.Instance.TL3_DB), "Readiness"),
 
                                 castSelfSpell("Lifeblood", ret => BeastMasterSettings.Instance.LB && IsTargetEasyBoss(), "Lifeblood"),
                                 
