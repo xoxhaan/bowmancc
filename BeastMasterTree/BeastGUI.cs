@@ -199,7 +199,6 @@ namespace TheBeastMasterTree
 			Deterrence.Checked = BeastMasterSettings.Instance.DETR;
 			BWrath.Checked = BeastMasterSettings.Instance.BWR;
             SpiritMend.Checked = BeastMasterSettings.Instance.SMend;
-            StampedeMend.Checked = BeastMasterSettings.Instance.SSMend;
             Burrow.Checked = BeastMasterSettings.Instance.BRA;
             Frost.Checked = BeastMasterSettings.Instance.FSB;
             Misdirect.Checked = BeastMasterSettings.Instance.MDPet;      
@@ -522,17 +521,6 @@ namespace TheBeastMasterTree
             else
             {
                 BeastMasterSettings.Instance.SMend = false;
-            }
-        }
-        private void StampedeMend_CheckedChanged(object sender, EventArgs e)
-        {
-            if (StampedeMend.Checked == true)
-            {
-                BeastMasterSettings.Instance.SSMend = true;
-            }
-            else
-            {
-                BeastMasterSettings.Instance.SSMend = false;
             }
         }
         private void Burrow_CheckedChanged(object sender, EventArgs e)
@@ -863,7 +851,7 @@ namespace TheBeastMasterTree
             BeastMasterSettings.Instance.ScatterBox = (string)ScatBox.SelectedItem;
             BeastMasterSettings.Instance.IntimidateBox = (string)IntiBox.SelectedItem;
             BeastMasterSettings.Instance.Save();
-            Logging.Write("Configuration Saved");
+            Logging.Write(Colors.Aquamarine, "Configuration Saved");
             Close();
         }
         private void SaveButton_Click_1(object sender, EventArgs e)
@@ -873,7 +861,7 @@ namespace TheBeastMasterTree
             BeastMasterSettings.Instance.ScatterBox = (string)ScatBox.SelectedItem;
             BeastMasterSettings.Instance.IntimidateBox = (string)IntiBox.SelectedItem;
             BeastMasterSettings.Instance.Save();
-            Logging.Write("Configuration Saved");
+            Logging.Write(Colors.Aquamarine, "Configuration Saved");
             Close();
         }
     }

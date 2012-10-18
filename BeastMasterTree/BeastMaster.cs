@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 0, 8);
+        public static readonly Version Version = new Version(2, 1, 0);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -522,17 +522,7 @@ namespace TheBeastMasterTree
 
                                 castSpell("Kill Command", ret => BeastMasterSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && IsMyAuraActive(Me.CurrentTarget, "Scatter Shot"), "Kill Command"),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.SMend && Me.CurrentHealth < Me.MaxHealth - 30000 && !WoWSpell.FromId(90361).Cooldown 
-                                    && ((SpellManager.Spells["Stampede"].CooldownTimeLeft.TotalSeconds < 280 && SpellManager.Spells["Stampede"].CooldownTimeLeft.TotalSeconds > 10) || !BeastMasterSettings.Instance.CW || !BeastMasterSettings.Instance.SSMend),
-                                new Action(delegate
-                                {
-                                    Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
-                                    Logging.Write(Colors.Aquamarine, "Pet: Spirit Mend");
-                                    return RunStatus.Failure;
-                                }
-                                )),
-
-                                new Decorator(ret => BeastMasterSettings.Instance.SSMend && Me.HealthPercent < 60 && !WoWSpell.FromId(90361).Cooldown && SpellManager.Spells["Stampede"].CooldownTimeLeft.TotalSeconds >= 280,
+                                new Decorator(ret => BeastMasterSettings.Instance.SMend && Me.CurrentHealth < Me.MaxHealth - 50000 && !WoWSpell.FromId(90361).Cooldown,
                                 new Action(delegate
                                 {
                                     Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
@@ -589,7 +579,7 @@ namespace TheBeastMasterTree
                                 && !Me.HasAura("Ancient Hysteria") && !Me.HasAura("Time Warp") 
                                 && (Me.CurrentTarget.CurrentHealth > 400000 || CalculateTimeToDeath(Me.CurrentTarget) > 14) && (IsTargetBoss() || Me.CurrentTarget.Name.Contains("Training Dummy")), "Rapid Fire"),
 
-                                castSpell("Stampede", ret => BeastMasterSettings.Instance.CW && ((IsTargetBoss() && (Me.CurrentTarget.CurrentHealth > 500000 || CalculateTimeToDeath(Me.CurrentTarget) > 20)) || (Me.HealthPercent < 55 && BeastMasterSettings.Instance.SSMend)), "Stampede"),
+                                castSpell("Stampede", ret => BeastMasterSettings.Instance.CW && IsTargetBoss() && (Me.CurrentTarget.CurrentHealth > 1000000 || CalculateTimeToDeath(Me.CurrentTarget) > 20), "Stampede"),
 
                                 castSelfSpell("Bestial Wrath", ret => Me.GotAlivePet && BeastMasterSettings.Instance.BWR && (!BeastMasterSettings.Instance.TL4_LR || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 10 
                                 || !SpellManager.Spells["Lynx Rush"].Cooldown) && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.HasAura("Rapid Fire") 
@@ -730,7 +720,7 @@ namespace TheBeastMasterTree
                                     )
                                 ),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.ARC,
+                                new Decorator(ret => BeastMasterSettings.Instance.ARC && (!BeastMasterSettings.Instance.TL5_GLV || SpellManager.Spells["Glaive Toss"].Cooldown),
                                     new PrioritySelector(
                                         new Decorator(ret => BeastMasterSettings.Instance.KCO,
                                             new PrioritySelector(
@@ -774,36 +764,10 @@ namespace TheBeastMasterTree
                                 }
                                 )),
 
-                                new Decorator(ret => !Me.IsCasting && ((!Me.HasAura("The Beast Within") && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 39)
-                                || (Me.HasAura("The Beast Within") && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 19)),
+                                new Decorator(ret => !Me.IsCasting && (!BeastMasterSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].Cooldown) && ((!Me.HasAura("The Beast Within") && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 40)
+                                || ((Me.HasAura("The Beast Within") && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 20),
                                     new PrioritySelector(
-                                        new Decorator(ret => Me.Level >= 81,
-                                            new PrioritySelector(
-                                                new Decorator(ret => (Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots / 2))
-                                                              || (MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 9 && Me.CurrentFocus < 60),
-                                                    new Action(delegate
-                                                    {
-                                                        Lua.DoString("RunMacroText('/cast Cobra Shot');");
-                                                        Logging.Write(Colors.Aquamarine, "Cobra Shot");
-                                                        return RunStatus.Failure;
-                                                    }
-                                                    )
-                                                )
-                                            )
-                                        ),
-                                        new Decorator(ret => Me.Level < 81,
-                                            new PrioritySelector(
-                                                new Decorator(ret => Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots / 2),
-                                                    new Action(delegate
-                                                    {
-                                                        Lua.DoString("RunMacroText('/cast Steady Shot Shot');");
-                                                        Logging.Write(Colors.Aquamarine, "Steady Shot");
-                                                        return RunStatus.Failure;
-                                                    }
-                                                    )
-                                                )
-                                            )
-                                        )       
+                                        castSpell("Steady Shot", ret => Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots / 2), "Cobra Shot")
                                     )
                                 ) 
                             )                     
@@ -872,24 +836,7 @@ namespace TheBeastMasterTree
                                 new Decorator(ret => Me.CurrentFocus < 40 || ((Me.HasAura("The Beast Within") || Me.HasAura("Thrill of the Hunt")) && Me.CurrentFocus < 20) || (!Me.HasAura("The Beast Within")
                                     && !Me.HasAura("Thrill of the Hunt") && Me.CurrentFocus <= 68 && Me.Pet.HasAura("Beast Cleave") && MyDebuffTime("Beast Cleave", Me.Pet) > 1),
                                     new PrioritySelector(
-                                        new Decorator(ret => Me.Level >= 81,
-                                            new Action(delegate
-                                            {
-                                                Lua.DoString("RunMacroText('/cast Cobra Shot');");
-                                                Logging.Write(Colors.Aquamarine, "Cobra Shot, AoE");
-                                                return RunStatus.Failure;
-                                            }
-                                            )
-                                        ),
-                                        new Decorator(ret => Me.Level < 81,
-                                            new Action(delegate
-                                            {
-                                                Lua.DoString("RunMacroText('/cast Steady Shot Shot');");
-                                                Logging.Write(Colors.Aquamarine, "Steady Shot, AoE");
-                                                return RunStatus.Failure;
-                                            }
-                                            )
-                                        )
+                                        castSpell("Steady Shot", ret => true, "Cobra Shot")
                                     )
                                 )
                             )
