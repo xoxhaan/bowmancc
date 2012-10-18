@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 1, 0);
+        public static readonly Version Version = new Version(2, 1, 6);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -179,7 +179,7 @@ namespace TheBeastMasterTree
 
         private bool IsTargetBoss()
         {
-            if (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
+            if (Me.CurrentTarget.Name.Contains("Dummy") || Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
                (Me.CurrentTarget.Level >= 90 && Me.CurrentTarget.Elite && Me.CurrentTarget.MaxHealth > 4500000))
                 return true;
 
@@ -187,7 +187,7 @@ namespace TheBeastMasterTree
         }
         private bool IsTargetEasyBoss()
         {
-            if (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
+            if (Me.CurrentTarget.Name.Contains("Dummy") || Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
                (Me.CurrentTarget.Level >= 90 && Me.CurrentTarget.Elite && Me.CurrentTarget.MaxHealth > 1000000))
                 return true;
 
@@ -231,6 +231,11 @@ namespace TheBeastMasterTree
             return castSpell(spellName, ret => Me.CurrentTarget, cond, label);
         }
 
+        public static Composite castTargetSpell(string spellName, WoWUnit target, CanRunDecoratorDelegate cond, string label)
+        {
+            return castSpell(spellName, ret => target, cond, label);
+        }
+
         public static Composite castSelfSpell(string spellName, CanRunDecoratorDelegate cond, string label)
         {
             return castSpell(spellName, ret => Me, cond, label);
@@ -257,6 +262,36 @@ namespace TheBeastMasterTree
         }
 
         #endregion
+
+        #region Use Items
+
+        public static Composite UseEquippedItem(uint slot)
+        {
+            return new PrioritySelector(
+                ctx => StyxWoW.Me.Inventory.GetItemBySlot(slot),
+                new Decorator(
+                    ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
+                    new Action(ctx => UseItem((WoWItem)ctx))));
+
+        }
+
+        private static bool CanUseEquippedItem(WoWItem item)
+        {
+            // Check for engineering tinkers!
+            string itemSpell = Lua.GetReturnVal<string>("return GetItemSpell(" + item.Entry + ")", 0);
+            if (string.IsNullOrEmpty(itemSpell))
+                return false;
+
+            return item.Usable && item.Cooldown <= 0;
+        }
+
+        private static void UseItem(WoWItem item)
+        {
+            standardLog("Using item: " + item.Name);
+            item.Use();
+        }
+
+        #endregion 
 
         #region Add Detection
 
@@ -396,6 +431,57 @@ namespace TheBeastMasterTree
 
         #endregion
 
+        #region Pet Management
+
+        public static Stopwatch reviveTimer = new Stopwatch();
+
+        public static Composite revivePet(UnitSelection onUnit, CanRunDecoratorDelegate cond, string label)
+        {
+            return (
+                new Decorator(delegate(object a)
+                {
+                    if (!cond(a))
+                        return false;
+                    if (!canCast("Revive Pet", onUnit(a)))
+                        return false;
+                    return onUnit(a) != null;
+                },
+                    new Sequence(
+                        new Action(a => reviveTimer.Start()),
+                        new Action(a => standardLog("[Casting] {0} on {1}", label, safeName(onUnit(a)))),
+                        new Action(a => SpellManager.Cast("Revive Pet", onUnit(a))))));
+        }
+
+        public static Composite revivePet(CanRunDecoratorDelegate cond, string label)
+        {
+            return revivePet(ret => Me, cond, label);
+        }
+
+        public static Composite callPet(string spellName, UnitSelection onUnit, CanRunDecoratorDelegate cond, string label)
+        {
+            return (
+                new Decorator(delegate(object a)
+                {
+                    if (!cond(a))
+                        return false;
+                    if (!canCast(spellName, onUnit(a)))
+                        return false;
+                    return onUnit(a) != null;
+                },
+                    new Sequence(
+                        new Action(a => reviveTimer.Reset()),
+                        new Action(a => standardLog("[Casting] {0} on {1}", label, safeName(onUnit(a)))),
+                        new Action(a => SpellManager.Cast(spellName, onUnit(a))))));
+        }
+
+        public static Composite callPet(string spellName, CanRunDecoratorDelegate cond, string label)
+        {
+            return callPet(spellName, ret => Me, cond, label);
+        }
+
+
+        #endregion
+
         #region rest
 
         public override Composite RestBehavior
@@ -405,14 +491,15 @@ namespace TheBeastMasterTree
                 return (
                     new Decorator(ret => HaltFeign() && StyxWoW.IsInWorld && !Me.IsGhost && Me.IsAlive && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport,
                         new PrioritySelector(
-                            castSelfSpell("Revive Pet", ret => BeastMasterSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"), "Reviving Pet"),
+                            new Decorator(ret => reviveTimer.ElapsedMilliseconds < 100,
+                                revivePet(ret => BeastMasterSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"), "Reviving Pet")),
                             new Decorator(ret => BeastMasterSettings.Instance.CP && Me.Pet == null && !Me.IsCasting,
                                 new PrioritySelector(
-                                    castSelfSpell("Call Pet 1", ret => BeastMasterSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"), "Calling Pet 1"),
-                                    castSelfSpell("Call Pet 2", ret => BeastMasterSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"), "Calling Pet 2"),
-                                    castSelfSpell("Call Pet 3", ret => BeastMasterSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"), "Calling Pet 3"),
-                                    castSelfSpell("Call Pet 4", ret => BeastMasterSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"), "Calling Pet 4"),
-                                    castSelfSpell("Call Pet 5", ret => BeastMasterSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"), "Calling Pet 5")
+                                    callPet("Call Pet 1", ret => BeastMasterSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"), "Calling Pet 1"),
+                                    callPet("Call Pet 2", ret => BeastMasterSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"), "Calling Pet 2"),
+                                    callPet("Call Pet 3", ret => BeastMasterSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"), "Calling Pet 3"),
+                                    callPet("Call Pet 4", ret => BeastMasterSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"), "Calling Pet 4"),
+                                    callPet("Call Pet 5", ret => BeastMasterSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"), "Calling Pet 5")
                                     )))));
             }
         }
@@ -601,30 +688,16 @@ namespace TheBeastMasterTree
                                 && (SpellManager.HasSpell("Dire Beast") && SpellManager.Spells["Dire Beast"].CooldownTimeLeft.TotalSeconds > 1 || !BeastMasterSettings.Instance.TL3_DB), "Readiness"),
 
                                 castSelfSpell("Lifeblood", ret => BeastMasterSettings.Instance.LB && IsTargetEasyBoss(), "Lifeblood"),
+                                
 
-                                new Decorator(ret => BeastMasterSettings.Instance.GE && IsTargetBoss() && StyxWoW.Me.Inventory.Equipped.Hands != null && StyxWoW.Me.Inventory.Equipped.Hands.Cooldown <= 0,
-                                new Action(delegate
-                                {
-                                    Lua.DoString("RunMacroText('/use 10');");
-                                    return RunStatus.Failure;
-                                }
-                                )),
+                                new Decorator(ret => BeastMasterSettings.Instance.GE && IsTargetBoss(),
+                                UseEquippedItem(9)),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.T1 && IsTargetBoss() && StyxWoW.Me.Inventory.Equipped.Trinket1 != null && StyxWoW.Me.Inventory.Equipped.Trinket1.Cooldown <= 0,
-                                new Action(delegate
-                                {
-                                    Lua.DoString("RunMacroText('/use 13');");
-                                    return RunStatus.Failure;
-                                }
-                                )),
+                                new Decorator(ret => BeastMasterSettings.Instance.T1 && IsTargetBoss(),
+                                UseEquippedItem(12)),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.T2 && IsTargetBoss() && StyxWoW.Me.Inventory.Equipped.Trinket2 != null && StyxWoW.Me.Inventory.Equipped.Trinket2.Cooldown <= 0,
-                                new Action(delegate
-                                {
-                                    Lua.DoString("RunMacroText('/use 14');");
-                                    return RunStatus.Failure;
-                                }
-                                )),
+                                new Decorator(ret => BeastMasterSettings.Instance.T2 && IsTargetBoss(),
+                                UseEquippedItem(13)),
 
                                 new Decorator(ret => BeastMasterSettings.Instance.RS && Me.Race == WoWRace.Troll && IsTargetBoss() && !SpellManager.Spells["Berserking"].Cooldown,
                                 new Action(delegate
@@ -646,18 +719,8 @@ namespace TheBeastMasterTree
                         ////////////////////////////// ASPECT SWITCHING /////////////////////////////////
                         new Decorator(ret => BeastMasterSettings.Instance.AspectSwitching && HaltFeign() && Me.CurrentTarget != null && Me.CurrentTarget.IsAlive && !Me.Mounted,
                             new PrioritySelector(
-                                new Decorator(ret => BeastMasterSettings.Instance.TL2_AOTIH,
-                                    new PrioritySelector(
-                                        castSelfSpell("Aspect of the Hawk", ret => !Me.IsMoving && !Me.HasAura("Aspect of the Iron Hawk"), "Aspect of the Iron Hawk"),
-                                        castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && Me.HasAura("Aspect of the Iron Hawk") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots, "Aspect of the Fox")
-                                    )
-                                ),
-                                new Decorator(ret => !BeastMasterSettings.Instance.TL2_AOTIH,
-                                    new PrioritySelector(
-                                        castSelfSpell("Aspect of the Hawk", ret => !Me.IsMoving && !Me.HasAura("Aspect of the Hawk"), "Aspect of the Hawk"),
-                                        castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && Me.HasAura("Aspect of the Hawk") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots, "Aspect of the Fox")
-                                    )
-                                )
+                                castSelfSpell("Aspect of the Hawk", ret => !Me.IsMoving && !Me.HasAura("Aspect of the Iron Hawk") && !Me.HasAura("Aspect of the Hawk"), "Aspect of the Hawk"),
+                                castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && !Me.HasAura("Aspect of the Fox") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots, "Aspect of the Fox")   
                             )
                         ),
                         //////////////////////////////// SINGLE TARGET ROTATION ////////////////////////////////////
@@ -671,7 +734,7 @@ namespace TheBeastMasterTree
                                 castSpell("Serpent Sting", ret => BeastMasterSettings.Instance.SerpentBox == "Always" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1), "Serpent Sting"),
 
                                 castSpell("Serpent Sting", ret => BeastMasterSettings.Instance.SerpentBox == "Sometimes" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1)
-                                                                  && (Me.CurrentTarget.CurrentHealth > 600000 || CalculateTimeToDeath(Me.CurrentTarget) > 15), "Serpent Sting"),
+                                                                  && (Me.CurrentTarget.CurrentHealth > 600000 || CalculateTimeToDeath(Me.CurrentTarget) >= 15), "Serpent Sting"),
 
                                 castSpell("Dire Beast", ret => BeastMasterSettings.Instance.TL3_DB && ((Me.CurrentTarget.Level >= Me.Level && (Me.CurrentTarget.CurrentHealth > 90000 || CalculateTimeToDeath(Me.CurrentTarget) > 10))
                                                                || Me.CurrentFocus < 20) || Me.CurrentTarget.Name.Contains("Training Dummy"), "Dire Beast"),
@@ -810,10 +873,13 @@ namespace TheBeastMasterTree
                                 castSpell("Glaive Toss", ret => BeastMasterSettings.Instance.TL5_GLV, "Glaive Toss"),
 
                                 castSpell("Multi-Shot", ret => BeastMasterSettings.Instance.MS && (!Me.Pet.HasAura("Beast Cleave") || MyDebuffTime("Beast Cleave", Me.Pet) < 1 
-                                || Me.CurrentFocus > 70 || Me.HasAura("The Beast Within") || Me.HasAura("Thrill of the Hunt") || (BeastMasterSettings.Instance.TL3_FV && !SpellManager.Spells["Fervor"].Cooldown)), "Multi-Shot"),
+                                || Me.CurrentFocus >= 70 || Me.HasAura("The Beast Within") || Me.HasAura("Thrill of the Hunt") || (BeastMasterSettings.Instance.TL3_FV && !SpellManager.Spells["Fervor"].Cooldown)), "Multi-Shot"),
 
                                 castSpell("Dire Beast", ret => BeastMasterSettings.Instance.AOEDB && Me.CurrentFocus < 80, "Dire Beast, AoE"),
 
+                                 castSpell("Blink Strike", ret => BeastMasterSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40 
+                                                           && (Me.CurrentFocus < 20 || (!Me.HasAura("The Beast Within") && Me.CurrentFocus < 40)), "Blink Strike"),
+                                
                                 castSpell("Lynx Rush", ret => BeastMasterSettings.Instance.AOELR && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && Me.CurrentFocus < 40 && !Me.HasAura("The Beast Within")
                                 && ((Me.CurrentTarget.MaxHealth > 30000 && (Me.CurrentTarget.CurrentHealth > 90000 || CalculateTimeToDeath(Me.CurrentTarget) > 4)) || Me.CurrentTarget.Name.Contains("Training Dummy")), "Lynx Rush, AoE"),
 
@@ -833,10 +899,10 @@ namespace TheBeastMasterTree
                                 }
                                 )),
 
-                                new Decorator(ret => Me.CurrentFocus < 40 || ((Me.HasAura("The Beast Within") || Me.HasAura("Thrill of the Hunt")) && Me.CurrentFocus < 20) || (!Me.HasAura("The Beast Within")
-                                    && !Me.HasAura("Thrill of the Hunt") && Me.CurrentFocus <= 68 && Me.Pet.HasAura("Beast Cleave") && MyDebuffTime("Beast Cleave", Me.Pet) > 1),
+                                new Decorator(ret => ((!Me.HasAura("The Beast Within") && !Me.HasAura("Thrill of the Hunt")) && Me.CurrentFocus < 40) || Me.CurrentFocus < 20 || (!Me.HasAura("The Beast Within")
+                                    && !Me.HasAura("Thrill of the Hunt") && Me.CurrentFocus < 70 && Me.Pet.HasAura("Beast Cleave") && MyDebuffTime("Beast Cleave", Me.Pet) > 1),
                                     new PrioritySelector(
-                                        castSpell("Steady Shot", ret => true, "Cobra Shot")
+                                        castSpell("Steady Shot", ret => !BeastMasterSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].Cooldown, "Cobra Shot")
                                     )
                                 )
                             )
