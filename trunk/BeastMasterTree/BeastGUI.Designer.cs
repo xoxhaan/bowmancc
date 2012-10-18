@@ -134,7 +134,6 @@
             this.TL4_Crows = new System.Windows.Forms.RadioButton();
             this.TL4_Blink = new System.Windows.Forms.RadioButton();
             this.label18 = new System.Windows.Forms.Label();
-            this.StampedeMend = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -173,7 +172,7 @@
             // 
             this.Readiness.AutoSize = true;
             this.Readiness.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Readiness.Location = new System.Drawing.Point(7, 140);
+            this.Readiness.Location = new System.Drawing.Point(7, 146);
             this.Readiness.Name = "Readiness";
             this.Readiness.Size = new System.Drawing.Size(76, 17);
             this.Readiness.TabIndex = 24;
@@ -651,18 +650,18 @@
             this.groupBox5.Controls.Add(this.Trinket1);
             this.groupBox5.Controls.Add(this.Readiness);
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.groupBox5.Location = new System.Drawing.Point(11, 201);
+            this.groupBox5.Location = new System.Drawing.Point(11, 195);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(150, 180);
+            this.groupBox5.Size = new System.Drawing.Size(150, 186);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "CD options";
+            this.groupBox5.Text = "Cooldowns";
             // 
             // LifeBlood
             // 
             this.LifeBlood.AutoSize = true;
             this.LifeBlood.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.LifeBlood.Location = new System.Drawing.Point(7, 78);
+            this.LifeBlood.Location = new System.Drawing.Point(7, 81);
             this.LifeBlood.Name = "LifeBlood";
             this.LifeBlood.Size = new System.Drawing.Size(69, 17);
             this.LifeBlood.TabIndex = 5;
@@ -674,7 +673,7 @@
             // 
             this.Rapid.AutoSize = true;
             this.Rapid.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Rapid.Location = new System.Drawing.Point(7, 57);
+            this.Rapid.Location = new System.Drawing.Point(7, 59);
             this.Rapid.Name = "Rapid";
             this.Rapid.Size = new System.Drawing.Size(74, 17);
             this.Rapid.TabIndex = 4;
@@ -686,7 +685,7 @@
             // 
             this.Gloves.AutoSize = true;
             this.Gloves.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Gloves.Location = new System.Drawing.Point(7, 120);
+            this.Gloves.Location = new System.Drawing.Point(7, 125);
             this.Gloves.Name = "Gloves";
             this.Gloves.Size = new System.Drawing.Size(102, 17);
             this.Gloves.TabIndex = 3;
@@ -698,7 +697,7 @@
             // 
             this.CallWild.AutoSize = true;
             this.CallWild.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CallWild.Location = new System.Drawing.Point(7, 159);
+            this.CallWild.Location = new System.Drawing.Point(7, 166);
             this.CallWild.Name = "CallWild";
             this.CallWild.Size = new System.Drawing.Size(74, 17);
             this.CallWild.TabIndex = 25;
@@ -710,7 +709,7 @@
             // 
             this.Racial.AutoSize = true;
             this.Racial.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Racial.Location = new System.Drawing.Point(7, 99);
+            this.Racial.Location = new System.Drawing.Point(7, 103);
             this.Racial.Name = "Racial";
             this.Racial.Size = new System.Drawing.Size(78, 17);
             this.Racial.TabIndex = 2;
@@ -722,7 +721,7 @@
             // 
             this.Trinket2.AutoSize = true;
             this.Trinket2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Trinket2.Location = new System.Drawing.Point(7, 36);
+            this.Trinket2.Location = new System.Drawing.Point(7, 37);
             this.Trinket2.Name = "Trinket2";
             this.Trinket2.Size = new System.Drawing.Size(68, 17);
             this.Trinket2.TabIndex = 1;
@@ -744,7 +743,6 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.StampedeMend);
             this.groupBox3.Controls.Add(this.Frost);
             this.groupBox3.Controls.Add(this.Burrow);
             this.groupBox3.Controls.Add(this.SpiritMend);
@@ -756,9 +754,9 @@
             this.groupBox3.Controls.Add(this.MendPet);
             this.groupBox3.Controls.Add(this.RevivePet);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(11, 1);
+            this.groupBox3.Location = new System.Drawing.Point(11, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(150, 200);
+            this.groupBox3.Size = new System.Drawing.Size(150, 185);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Pet options";
@@ -767,7 +765,7 @@
             // 
             this.Frost.AutoSize = true;
             this.Frost.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Frost.Location = new System.Drawing.Point(6, 156);
+            this.Frost.Location = new System.Drawing.Point(6, 143);
             this.Frost.Name = "Frost";
             this.Frost.Size = new System.Drawing.Size(108, 17);
             this.Frost.TabIndex = 29;
@@ -779,7 +777,7 @@
             // 
             this.Burrow.AutoSize = true;
             this.Burrow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Burrow.Location = new System.Drawing.Point(6, 175);
+            this.Burrow.Location = new System.Drawing.Point(6, 163);
             this.Burrow.Name = "Burrow";
             this.Burrow.Size = new System.Drawing.Size(93, 17);
             this.Burrow.TabIndex = 28;
@@ -791,7 +789,7 @@
             // 
             this.SpiritMend.AutoSize = true;
             this.SpiritMend.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SpiritMend.Location = new System.Drawing.Point(6, 116);
+            this.SpiritMend.Location = new System.Drawing.Point(6, 123);
             this.SpiritMend.Name = "SpiritMend";
             this.SpiritMend.Size = new System.Drawing.Size(79, 17);
             this.SpiritMend.TabIndex = 27;
@@ -803,7 +801,7 @@
             // 
             this.Misdirect.AutoSize = true;
             this.Misdirect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Misdirect.Location = new System.Drawing.Point(6, 97);
+            this.Misdirect.Location = new System.Drawing.Point(6, 103);
             this.Misdirect.Name = "Misdirect";
             this.Misdirect.Size = new System.Drawing.Size(102, 17);
             this.Misdirect.TabIndex = 26;
@@ -815,7 +813,7 @@
             this.label2.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 76);
+            this.label2.Location = new System.Drawing.Point(6, 83);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 13);
             this.label2.TabIndex = 24;
@@ -824,7 +822,7 @@
             // MendHealth
             // 
             this.MendHealth.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MendHealth.Location = new System.Drawing.Point(76, 74);
+            this.MendHealth.Location = new System.Drawing.Point(76, 81);
             this.MendHealth.Name = "MendHealth";
             this.MendHealth.Size = new System.Drawing.Size(52, 20);
             this.MendHealth.TabIndex = 23;
@@ -870,7 +868,7 @@
             // 
             this.MendPet.AutoSize = true;
             this.MendPet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MendPet.Location = new System.Drawing.Point(6, 55);
+            this.MendPet.Location = new System.Drawing.Point(6, 61);
             this.MendPet.Name = "MendPet";
             this.MendPet.Size = new System.Drawing.Size(72, 17);
             this.MendPet.TabIndex = 2;
@@ -882,7 +880,7 @@
             // 
             this.RevivePet.AutoSize = true;
             this.RevivePet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RevivePet.Location = new System.Drawing.Point(6, 36);
+            this.RevivePet.Location = new System.Drawing.Point(6, 39);
             this.RevivePet.Name = "RevivePet";
             this.RevivePet.Size = new System.Drawing.Size(79, 17);
             this.RevivePet.TabIndex = 1;
@@ -1470,18 +1468,6 @@
             this.label18.TabIndex = 14;
             this.label18.Text = "________________________________________________________________";
             // 
-            // StampedeMend
-            // 
-            this.StampedeMend.AutoSize = true;
-            this.StampedeMend.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.StampedeMend.Location = new System.Drawing.Point(6, 136);
-            this.StampedeMend.Name = "StampedeMend";
-            this.StampedeMend.Size = new System.Drawing.Size(104, 17);
-            this.StampedeMend.TabIndex = 30;
-            this.StampedeMend.Text = "Stampede Mend";
-            this.StampedeMend.UseVisualStyleBackColor = true;
-            this.StampedeMend.CheckedChanged += new System.EventHandler(this.StampedeMend_CheckedChanged);
-            // 
             // BeastGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1636,7 +1622,6 @@
         private System.Windows.Forms.CheckBox Frost;
         private System.Windows.Forms.CheckBox StExplosive;
         private System.Windows.Forms.NumericUpDown DetHealth;
-        private System.Windows.Forms.CheckBox StampedeMend;
     }
 }
 
