@@ -92,7 +92,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.SaveButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -902,7 +901,6 @@
             this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.label10);
-            this.tabPage1.Controls.Add(this.label12);
             this.tabPage1.Controls.Add(this.linkLabel1);
             this.tabPage1.Controls.Add(this.SaveButton);
             this.tabPage1.Controls.Add(this.label4);
@@ -945,15 +943,6 @@
             this.label10.Size = new System.Drawing.Size(391, 13);
             this.label10.TabIndex = 24;
             this.label10.Text = "Talents: Silencing Shot, Iron Hawk, Fervor, Lynx Rush, Glaive Toss";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(147, 309);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(247, 13);
-            this.label12.TabIndex = 23;
-            this.label12.Text = "Hit = Exp (to cap) > Agility > Mastery>= Crit > Haste";
             // 
             // linkLabel1
             // 
@@ -1564,7 +1553,6 @@
 		private System.Windows.Forms.CheckBox Deterrence;
 		private System.Windows.Forms.CheckBox KillShot;
         private System.Windows.Forms.CheckBox BWrath;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown MendHealth;
         private System.Windows.Forms.CheckBox CallWild;
