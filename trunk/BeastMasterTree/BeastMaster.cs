@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 1, 7);
+        public static readonly Version Version = new Version(2, 1, 9);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -175,12 +175,12 @@ namespace TheBeastMasterTree
         }
         #endregion
 
-        #region Boss Check
+        #region Target Checks
 
         private bool IsTargetBoss()
         {
             if (Me.CurrentTarget.Name.Contains("Dummy") || Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
-               (Me.CurrentTarget.Level >= 90 && Me.CurrentTarget.Elite && Me.CurrentTarget.MaxHealth > 4500000))
+               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > Me.MaxHealth * 11))
                 return true;
 
             else return false;
@@ -188,9 +188,16 @@ namespace TheBeastMasterTree
         private bool IsTargetEasyBoss()
         {
             if (Me.CurrentTarget.Name.Contains("Dummy") || Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
-               (Me.CurrentTarget.Level >= 90 && Me.CurrentTarget.Elite && Me.CurrentTarget.MaxHealth > 1000000))
+               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > Me.MaxHealth * 5))
                 return true;
 
+            else return false;
+        }
+
+        private bool validTarget(WoWUnit unit)
+        {
+            if (Me.GotTarget && unit.IsAlive && unit.Attackable && unit.CanSelect && !unit.IsFriendly)
+                return true;
             else return false;
         }
         #endregion
@@ -199,13 +206,10 @@ namespace TheBeastMasterTree
 
         public static bool canCast(string spellName, WoWUnit target)
         {
-            if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 200 && Me.CurrentFocus >= SpellManager.Spells[spellName].PowerCost)
+            if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 200 && Me.CurrentFocus >= SpellManager.Spells[spellName].PowerCost && !Me.IsChanneling)
             {
-                if (!BeastMasterSettings.Instance.TL5_BRG || Me.ChanneledCastingSpellId != 120360)
-                {
-                    SpellManager.Cast(spellName, target);
-                    return true;
-                }
+                SpellManager.Cast(spellName, target);
+                return true;
             }
             return false;
         }
@@ -537,7 +541,7 @@ namespace TheBeastMasterTree
                                         return RunStatus.Failure;
                                     }
                                     )),
-                        new Decorator(ret => Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && HaltFeign(),
+                        new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign(),
                             new Action(delegate
                             {
                                 if (Ultra())
@@ -567,7 +571,7 @@ namespace TheBeastMasterTree
                                 return RunStatus.Failure;
                             }
                                     )),
-                        new Decorator(ret => Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && HaltFeign(),
+                        new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign(),
                             new PrioritySelector(
                                 castSelfSpell("Mend Pet", ret => BeastMasterSettings.Instance.MP && Me.GotAlivePet && Me.Pet.HealthPercent <= BeastMasterSettings.Instance.MendHealth 
                                     && !IsMyAuraActive(Me.Pet, "Mend Pet"), "Mend Pet"),
@@ -633,7 +637,7 @@ namespace TheBeastMasterTree
                                 castSelfSpell("Deterrence", ret => BeastMasterSettings.Instance.DETR && Me.HealthPercent < BeastMasterSettings.Instance.DetHealth && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && (Me.CurrentTarget.Distance < 10 || Me.CurrentTarget.IsCasting), "Deterrence")
 
                                 )),
-                        new Decorator(ret => Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && HaltFeign() && !SelfControl(Me.CurrentTarget),
+                        new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign() && !SelfControl(Me.CurrentTarget),
                             new PrioritySelector(
                                 castSpell("Scatter Shot", ret => BeastMasterSettings.Instance.ScatterBox == "1. Interrupt" && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast, "Scatter Shot"),
 
@@ -724,8 +728,8 @@ namespace TheBeastMasterTree
                             )
                         ),
                         //////////////////////////////// SINGLE TARGET ROTATION ////////////////////////////////////
-                        new Decorator(ret => Me.GotTarget && (addCount() < BeastMasterSettings.Instance.Mobs || (!BeastMasterSettings.Instance.MS && !BeastMasterSettings.Instance.TL))
-                                             && HaltFeign() && Me.CurrentTarget.IsAlive && !Me.Mounted && !SelfControl(Me.CurrentTarget),
+                        new Decorator(ret => validTarget(Me.CurrentTarget) && (addCount() < BeastMasterSettings.Instance.Mobs || (!BeastMasterSettings.Instance.MS && !BeastMasterSettings.Instance.TL))
+                                             && HaltFeign() && !Me.Mounted && !SelfControl(Me.CurrentTarget),
                             new PrioritySelector(
                                 castSpell("Hunter's Mark", ret => BeastMasterSettings.Instance.HM && Me.CurrentTarget.HealthPercent > 25 && !Me.CurrentTarget.HasAura("Hunter's Mark") && IsTargetEasyBoss(), "Hunter's Mark"),
 
@@ -836,7 +840,7 @@ namespace TheBeastMasterTree
                             )                     
                         ),
                         /////////////////////////////////// AOE ROTATION ///////////////////////////////
-                        new Decorator(ret => addCount() >= BeastMasterSettings.Instance.Mobs && HaltFeign() && Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && !SelfControl(Me.CurrentTarget) 
+                        new Decorator(ret => addCount() >= BeastMasterSettings.Instance.Mobs && HaltFeign() && validTarget(Me.CurrentTarget) && !Me.Mounted && !SelfControl(Me.CurrentTarget) 
                                       && (BeastMasterSettings.Instance.MS || BeastMasterSettings.Instance.TL),
                             new PrioritySelector(
                                 new Decorator(ret => Me.CurrentTarget.Distance >= 5 && BeastMasterSettings.Instance.TL && SpellManager.Spells["Explosive Trap"].CooldownTimeLeft.TotalSeconds < 1 && Me.CurrentTarget.InLineOfSight,
