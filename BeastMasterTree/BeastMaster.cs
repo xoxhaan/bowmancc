@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 1, 9);
+        public static readonly Version Version = new Version(2, 2, 0);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -724,7 +724,7 @@ namespace TheBeastMasterTree
                         new Decorator(ret => BeastMasterSettings.Instance.AspectSwitching && HaltFeign() && Me.CurrentTarget != null && Me.CurrentTarget.IsAlive && !Me.Mounted,
                             new PrioritySelector(
                                 castSelfSpell("Aspect of the Hawk", ret => !Me.IsMoving && !Me.HasAura("Aspect of the Iron Hawk") && !Me.HasAura("Aspect of the Hawk"), "Aspect of the Hawk"),
-                                castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && !Me.HasAura("Aspect of the Fox") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots, "Aspect of the Fox")   
+                                castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && !Me.HasAura("Aspect of the Fox") && Me.CurrentFocus < 40, "Aspect of the Fox")   
                             )
                         ),
                         //////////////////////////////// SINGLE TARGET ROTATION ////////////////////////////////////
