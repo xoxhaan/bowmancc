@@ -62,18 +62,8 @@ namespace PvPBeast
             SMendBox.Items.Clear();
             SMendBox.Items.Add("Never");
             SMendBox.Items.Add("1. Me");
-            SMendBox.Items.Add("2. Pet");
-            SMendBox.Items.Add("3. Focus");
+            SMendBox.Items.Add("2. Focus");
             SMendBox.Items.Add("1 + 2");
-            SMendBox.Items.Add("1 + 3");
-            SMendBox.Items.Add("2 + 3");
-            SMendBox.Items.Add("1 + 2 + 3");
-
-            SSMendBox.Items.Clear();
-            SSMendBox.Items.Add("Never");
-            SSMendBox.Items.Add("1. Me");
-            SSMendBox.Items.Add("2. Focus");
-            SSMendBox.Items.Add("1 + 2");
         }
 
         private void IntiBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -116,41 +106,11 @@ namespace PvPBeast
                 case "1. Me":
                     PvPBeastSettings.Instance.SpiritMendBox = (string)SMendBox.SelectedItem;
                     break;
-                case "2. Pet":
-                    PvPBeastSettings.Instance.SpiritMendBox = (string)SMendBox.SelectedItem;
-                    break;
-                case "3. Focus":
-                    PvPBeastSettings.Instance.SpiritMendBox = (string)SMendBox.SelectedItem;
-                    break;
-                case "1 + 2":
-                    PvPBeastSettings.Instance.SpiritMendBox = (string)SMendBox.SelectedItem;
-                    break;
-                case "1 + 3":
-                    PvPBeastSettings.Instance.SpiritMendBox = (string)SMendBox.SelectedItem;
-                    break;
-                case "2 + 3":
-                    PvPBeastSettings.Instance.SpiritMendBox = (string)SMendBox.SelectedItem;
-                    break;
-                case "1 + 2 + 3":
-                    PvPBeastSettings.Instance.SpiritMendBox = (string)SMendBox.SelectedItem;
-                    break;
-            }
-        }
-        private void SSMendBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch ((string)SSMendBox.SelectedItem)
-            {
-                case "Never":
-                    PvPBeastSettings.Instance.StampedeMendBox = (string)SSMendBox.SelectedItem;
-                    break;
-                case "1. Me":
-                    PvPBeastSettings.Instance.StampedeMendBox = (string)SSMendBox.SelectedItem;
-                    break;
                 case "2. Focus":
-                    PvPBeastSettings.Instance.StampedeMendBox = (string)SSMendBox.SelectedItem;
+                    PvPBeastSettings.Instance.SpiritMendBox = (string)SMendBox.SelectedItem;
                     break;
                 case "1 + 2":
-                    PvPBeastSettings.Instance.StampedeMendBox = (string)SSMendBox.SelectedItem;
+                    PvPBeastSettings.Instance.SpiritMendBox = (string)SMendBox.SelectedItem;
                     break;
             }
         }
@@ -223,22 +183,17 @@ namespace PvPBeast
             FDBox.SelectedItem = (string)PvPBeastSettings.Instance.FDCBox;
             IntiBox.SelectedItem = (string)PvPBeastSettings.Instance.IntimidateBox;
             SMendBox.SelectedItem = (string)PvPBeastSettings.Instance.SpiritMendBox;
-            SSMendBox.SelectedItem = (string)PvPBeastSettings.Instance.StampedeMendBox;
             SerBox.SelectedItem = (string)PvPBeastSettings.Instance.SerpentBox;
             ScatBox.SelectedItem = (string)PvPBeastSettings.Instance.ScatterBox;
 
             PvPBeastSettings.Instance.Load();
 
             PET.Value = new decimal(PvPBeastSettings.Instance.PET);
-            FFS.Value = new decimal(PvPBeastSettings.Instance.FFS);
             MendHealth.Value = new decimal(PvPBeastSettings.Instance.MendHealth);
             SpiritHealth_Me.Value = new decimal(PvPBeastSettings.Instance.SpiritHealth_Me);
-            SpiritHealth_Pet.Value = new decimal(PvPBeastSettings.Instance.SpiritHealth_Pet);
             SpiritHealth_Focus.Value = new decimal(PvPBeastSettings.Instance.SpiritHealth_Focus);
             TargetHealth.Value = new decimal(PvPBeastSettings.Instance.TargetHealth);
             FocusShots.Value = new decimal(PvPBeastSettings.Instance.FocusShots);
-            StamHealth_Me.Value = new decimal(PvPBeastSettings.Instance.StamHealth_Me);
-            StamHealth_Focus.Value = new decimal(PvPBeastSettings.Instance.StamHealth_Focus);
             Trinket1_None.Checked = PvPBeastSettings.Instance.T1NO;
             Trinket2_None.Checked = PvPBeastSettings.Instance.T2NO;
             Trinket1Mob.Checked = PvPBeastSettings.Instance.T1MOB;
@@ -269,7 +224,7 @@ namespace PvPBeast
             TL5_Barrage.Checked = PvPBeastSettings.Instance.TL5_BRG;
             CallPet.Checked = PvPBeastSettings.Instance.CP;
             FocusFire.Checked = PvPBeastSettings.Instance.FF;
-            CallWild.Checked = PvPBeastSettings.Instance.CW;
+            Stampede.Checked = PvPBeastSettings.Instance.STAM;
             RevivePet.Checked = PvPBeastSettings.Instance.RP;
             PetWeb.Checked = PvPBeastSettings.Instance.WEB;
             MendPet.Checked = PvPBeastSettings.Instance.MP;
@@ -288,6 +243,10 @@ namespace PvPBeast
 			HMark.Checked = PvPBeastSettings.Instance.HM;
             WVenom.Checked = PvPBeastSettings.Instance.WVE;
 			Concussive.Checked = PvPBeastSettings.Instance.CONC;
+            FConcussive.Checked = PvPBeastSettings.Instance.FCONC;
+            FScatter.Checked = PvPBeastSettings.Instance.FSCA;
+            FWyvern.Checked = PvPBeastSettings.Instance.FWVS;
+            FFreeze.Checked = PvPBeastSettings.Instance.FFZT;
 			KillShot.Checked = PvPBeastSettings.Instance.KSH;
 			Deterrence.Checked = PvPBeastSettings.Instance.DETR;
 			BWrath.Checked = PvPBeastSettings.Instance.BWR;
@@ -315,10 +274,6 @@ namespace PvPBeast
         {
             PvPBeastSettings.Instance.PET = (int)PET.Value;
         }
-        private void FFS_ValueChanged(object sender, EventArgs e)
-        {
-            PvPBeastSettings.Instance.FFS = (int)FFS.Value;
-        }
         private void FocusShots_ValueChanged(object sender, EventArgs e)
         {
             PvPBeastSettings.Instance.FocusShots = (int)FocusShots.Value;
@@ -331,21 +286,9 @@ namespace PvPBeast
         {
             PvPBeastSettings.Instance.SpiritHealth_Me = (int)SpiritHealth_Me.Value;
         }
-        private void SpiritHealth_Pet_ValueChanged(object sender, EventArgs e)
-        {
-            PvPBeastSettings.Instance.SpiritHealth_Pet = (int)SpiritHealth_Pet.Value;
-        }
         private void SpiritHealth_Focus_ValueChanged(object sender, EventArgs e)
         {
             PvPBeastSettings.Instance.SpiritHealth_Focus = (int)SpiritHealth_Focus.Value;
-        }
-        private void StamHealth_Me_ValueChanged(object sender, EventArgs e)
-        {
-            PvPBeastSettings.Instance.StamHealth_Me = (int)StamHealth_Me.Value;
-        }
-        private void StamHealth_Focus_ValueChanged(object sender, EventArgs e)
-        {
-            PvPBeastSettings.Instance.StamHealth_Focus = (int)StamHealth_Focus.Value;
         }
         private void TargetHealth_ValueChanged(object sender, EventArgs e)
         {
@@ -714,15 +657,15 @@ namespace PvPBeast
                 PvPBeastSettings.Instance.FF = false;
             }
         }
-        private void CallWild_CheckedChanged(object sender, EventArgs e)
+        private void Stampede_CheckedChanged(object sender, EventArgs e)
         {
-            if (CallWild.Checked == true)
+            if (Stampede.Checked == true)
             {
-                PvPBeastSettings.Instance.CW = true;
+                PvPBeastSettings.Instance.STAM = true;
             }
             else
             {
-                PvPBeastSettings.Instance.CW = false;
+                PvPBeastSettings.Instance.STAM = false;
             }
         }
         private void RevivePet_CheckedChanged(object sender, EventArgs e)
@@ -946,6 +889,50 @@ namespace PvPBeast
                 PvPBeastSettings.Instance.CONC = false;
             }
         }
+        private void FConcussive_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FConcussive.Checked == true)
+            {
+                PvPBeastSettings.Instance.FCONC = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.FCONC = false;
+            }
+        }
+        private void FScatter_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FScatter.Checked == true)
+            {
+                PvPBeastSettings.Instance.FSCA = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.FSCA = false;
+            }
+        }
+        private void FWyvern_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FWyvern.Checked == true)
+            {
+                PvPBeastSettings.Instance.FWVS = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.FWVS = false;
+            }
+        }
+        private void FFreeze_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FFreeze.Checked == true)
+            {
+                PvPBeastSettings.Instance.FFZT = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.FFZT = false;
+            }
+        }
 		private void Deterrence_CheckedChanged(object sender, EventArgs e)
         {
             if (Deterrence.Checked == true)
@@ -1030,7 +1017,6 @@ namespace PvPBeast
             PvPBeastSettings.Instance.ScatterBox = (string)ScatBox.SelectedItem;
             PvPBeastSettings.Instance.IntimidateBox = (string)IntiBox.SelectedItem;
             PvPBeastSettings.Instance.SpiritMendBox = (string)SMendBox.SelectedItem;
-            PvPBeastSettings.Instance.StampedeMendBox = (string)SSMendBox.SelectedItem;
             PvPBeastSettings.Instance.Save();
             Logging.Write(Colors.Aquamarine, "Configuration Saved");
             Close();

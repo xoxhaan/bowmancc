@@ -11,6 +11,10 @@ using Styx.Helpers;
 using Styx.WoWInternals;
 using Styx.WoWInternals.WoWObjects;
 using System.Diagnostics;
+using System.Text;
+using System.Threading.Tasks;
+using Styx.TreeSharp;
+using Action = Styx.TreeSharp.Action;
 
 namespace PvPBeast
 {
@@ -18,26 +22,38 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 0, 5);
+        public static readonly Version Version = new Version(2, 5, 7);
 
-        public override string Name { get { return "PvPBeast " + Version + " MoP Edition"; } }
+        public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
         private static LocalPlayer Me { get { return StyxWoW.Me; } }
 
-        #region Log
-        private static void slog(string format, params object[] args) //use for standard logging
+        public delegate WoWUnit UnitSelection(object unit);
+
+        public static string safeName(WoWUnit unit)
         {
-            if (format != null)
+            if (unit != null)
             {
-                Logging.Write(LogLevel.Normal, Colors.Aquamarine, format, args);
+                return (unit.Name == Me.Name) ? "Myself" : unit.Name;
+            }
+            return "No Target";
+        }
+
+        #region Log
+
+        public static void standardLog(string msg, params object[] args)
+        {
+            if (msg != null)
+            {
+                Logging.Write(LogLevel.Normal, Colors.Aquamarine, msg, args);
             }
         }
 
-        private static void tslog(string format, params object[] args) //use for troubleshoot logging
+        private static void tslog(string msg, params object[] args) //use for troubleshoot logging
         {
-            if (format != null)
+            if (msg != null)
             {
-                Logging.Write(LogLevel.Quiet, Colors.SeaGreen, format, args);
+                Logging.Write(LogLevel.Quiet, Colors.SeaGreen, msg, args);
             }
         }
 
@@ -49,7 +65,7 @@ namespace PvPBeast
 
         public override void OnButtonPress()
         {
-            slog("Configuration opened!");
+            standardLog("Configuration opened!");
             new PvPBeastGUI().ShowDialog();
         }
 
@@ -61,11 +77,11 @@ namespace PvPBeast
             tslog("Character Faction: {0}", Me.IsHorde ? "Horde" : "Allience");
             tslog("Character Level: {0}", Me.Level);
             tslog("Character Race: {0}", Me.Race);
-            slog("");
-            slog("You are using PvPBeast Combat Routine");
-            slog("Version: " + Version);
-            slog("Made by FallDown");
-            slog("For LazyRaider only!");
+            standardLog("");
+            standardLog("You are using PvPBeast Combat Routine");
+            standardLog("Version: " + Version);
+            standardLog("Made by FallDown");
+            standardLog("For LazyRaider only!");
         }
         #endregion
         #region Halt on Feign Death
@@ -140,7 +156,7 @@ namespace PvPBeast
         }
         #endregion
 
-        #region Alive Hostile Enemy
+        #region Target Checks
         public bool HostilePlayer(WoWUnit unit)
         {
             if (Me.GotTarget && unit.IsPlayer && unit.IsHostile && unit.IsAlive)
@@ -156,35 +172,152 @@ namespace PvPBeast
 
             else return false;
         }
+
+        private bool validTarget(WoWUnit unit)
+        {
+            if (Me.GotTarget && unit.IsAlive && unit.Attackable && !unit.IsFriendly)
+                return true;
+            else return false;
+        }
+
+        private bool validFocus()
+        {
+            if (Me.FocusedUnit != null && Me.FocusedUnit.IsAlive && !Me.FocusedUnit.IsFriendly)
+                return true;
+            else return false;
+        }
         #endregion
 
         #region CastSpell Method
-        public static bool CastSpell(string SpellName, WoWUnit target)
+
+        public static bool canCast(string spellName, WoWUnit target)
         {
-            if (SpellManager.HasSpell(SpellName) && SpellManager.Spells[SpellName].CooldownTimeLeft.TotalMilliseconds < 200 && Me.CurrentFocus >= SpellManager.Spells[SpellName].PowerCost)
+            if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 200 && Me.CurrentFocus >= SpellManager.Spells[spellName].PowerCost && !Me.IsChanneling && (!Me.IsCasting || Me.CurrentCastTimeLeft.TotalMilliseconds < 350))
             {
-                if (!PvPBeastSettings.Instance.TL5_BRG || Me.ChanneledCastingSpellId != 120360)
-                {
-                    SpellManager.Cast(SpellName, target);
-                    return true;
-                }
+                return true;
             }
             return false;
         }
 
-        public static bool CastSpell(string SpellName)
+        public static Composite castSpell(string spellName, UnitSelection onUnit, CanRunDecoratorDelegate cond, string label)
         {
-            if (SpellManager.HasSpell(SpellName) && SpellManager.Spells[SpellName].CooldownTimeLeft.TotalMilliseconds < 200 && Me.CurrentFocus >= SpellManager.Spells[SpellName].PowerCost)
-            {
-                if (!PvPBeastSettings.Instance.TL5_BRG || Me.ChanneledCastingSpellId != 120360)
+            return (
+                new Decorator(delegate(object a)
                 {
-                    SpellManager.Cast(SpellName);
-                    return true;
-                }
-            }
-            return false;
+                    if (!cond(a))
+                        return false;
+                    if (!canCast(spellName, onUnit(a)))
+                        return false;
+                    return onUnit(a) != null;
+                },
+                    new Sequence(
+                        new Action(a => standardLog("[Casting] {0} on {1}", label, safeName(onUnit(a)))),
+                        new Action(a => SpellManager.Cast(spellName, onUnit(a))))));
         }
 
+        public static Composite castSpell(string spellName, CanRunDecoratorDelegate cond, string label)
+        {
+            return castSpell(spellName, ret => Me.CurrentTarget, cond, label);
+        }
+
+        public static Composite castOnTarget(string spellName, UnitSelection onUnit, CanRunDecoratorDelegate cond, string label)
+        {
+            return new Decorator(
+                delegate(object a)
+                {
+                    if (!cond(a))
+                        return false;
+                    if (!canCast(spellName, onUnit(a)))
+                        return false;
+
+                    return onUnit(a) != null;
+                },
+            new Sequence(
+                new Action(a => standardLog("[Casting] {0} on {1}", label, safeName(onUnit(a)))),
+                new Action(a => SpellManager.Cast(spellName, onUnit(a)))));
+        }
+
+        public static Composite castSelfSpell(string spellName, CanRunDecoratorDelegate cond, string label)
+        {
+            return castSpell(spellName, ret => Me, cond, label);
+        }
+
+        public static Composite castOnUnitLocation(string name, UnitSelection onUnit, CanRunDecoratorDelegate cond, string label)
+        {
+            return (
+                new Decorator(delegate(object a)
+                {
+                    if (!cond(a))
+                        return false;
+                    return onUnit != null && canCast(name, onUnit(a));
+                },
+                    new Sequence(
+                    new Action(a => standardLog("[Casting at Location] {0} ", label)),
+                    new Action(a => SpellManager.Cast(name)),
+                    new Action(ret => SpellManager.ClickRemoteLocation(onUnit(ret).Location)))));
+        }
+
+        public static TimeSpan spellCooldown(string spell)
+        {
+            return SpellManager.HasSpell(spell) ? SpellManager.Spells[spell].CooldownTimeLeft : TimeSpan.MaxValue;
+        }
+
+        #endregion
+
+        #region Use Items
+
+        public static Composite UseEquippedItem(uint slot)
+        {
+            return new PrioritySelector(
+                ctx => StyxWoW.Me.Inventory.GetItemBySlot(slot),
+                new Decorator(
+                    ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
+                    new Action(ctx => UseItem((WoWItem)ctx))));
+
+        }
+
+        private static bool CanUseEquippedItem(WoWItem item)
+        {
+            // Check for engineering tinkers!
+            string itemSpell = Lua.GetReturnVal<string>("return GetItemSpell(" + item.Entry + ")", 0);
+            if (string.IsNullOrEmpty(itemSpell))
+                return false;
+
+            return item.Usable && item.Cooldown <= 0;
+        }
+
+        private static void UseItem(WoWItem item)
+        {
+            standardLog("Using item: " + item.Name);
+            item.Use();
+        }
+
+        #endregion
+
+        #region Add Detection
+
+        private int addCount()
+        {
+            int count = 0;
+            foreach (WoWUnit u in ObjectManager.GetObjectsOfType<WoWUnit>(true, true))
+            {
+                if (Me.GotTarget
+                    && u.IsAlive
+                    && u.Guid != Me.Guid
+                    && !u.IsFriendly
+                    && u.IsHostile
+                    && u.Attackable
+                    && !u.IsTotem
+                    && !u.IsCritter
+                    && !u.IsNonCombatPet
+                    && u.GotTarget
+                    && (u.Location.Distance(Me.CurrentTarget.Location) <= 10 || u.Location.Distance2D(Me.CurrentTarget.Location) <= 10))
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
         #endregion
 
         #region MyDebuffTime
@@ -376,1062 +509,523 @@ namespace PvPBeast
         }
         #endregion
 
+        #region Pet Management
+
+        public static Stopwatch reviveTimer = new Stopwatch();
+
+        public static Composite revivePet(UnitSelection onUnit, CanRunDecoratorDelegate cond, string label)
+        {
+            return (
+                new Decorator(delegate(object a)
+                {
+                    if (!cond(a))
+                        return false;
+                    if (!canCast("Revive Pet", onUnit(a)))
+                        return false;
+                    return onUnit(a) != null;
+                },
+                    new Sequence(
+                        new Action(a => reviveTimer.Start()),
+                        new Action(a => standardLog("[Casting] {0} on {1}", label, safeName(onUnit(a)))),
+                        new Action(a => SpellManager.Cast("Revive Pet", onUnit(a))))));
+        }
+
+        public static Composite revivePet(CanRunDecoratorDelegate cond, string label)
+        {
+            return revivePet(ret => Me, cond, label);
+        }
+
+        public static Composite callPet(string spellName, UnitSelection onUnit, CanRunDecoratorDelegate cond, string label)
+        {
+            return (
+                new Decorator(delegate(object a)
+                {
+                    if (!cond(a))
+                        return false;
+                    if (!canCast(spellName, onUnit(a)))
+                        return false;
+                    return onUnit(a) != null;
+                },
+                    new Sequence(
+                        new Action(a => reviveTimer.Reset()),
+                        new Action(a => standardLog("[Casting] {0} on {1}", label, safeName(onUnit(a)))),
+                        new Action(a => SpellManager.Cast(spellName, onUnit(a))))));
+        }
+
+        public static Composite callPet(string spellName, CanRunDecoratorDelegate cond, string label)
+        {
+            return callPet(spellName, ret => Me, cond, label);
+        }
+
+
+        #endregion
+
         #region rest
 
-        public override bool NeedRest
+        public override Composite RestBehavior
         {
             get
             {
-                if (HaltFeign() && StyxWoW.IsInWorld && !Me.IsGhost && Me.IsAlive && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport)
-                {
-                    if (PvPBeastSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"))
-                    {
-                        if (CastSpell("Revive Pet"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Reviving Pet <<");
-                            StyxWoW.SleepForLagDuration();
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.CP && Me.Pet == null && !Me.IsCasting)
-                    {
-                        if (PvPBeastSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"))
-                        {
-                            SpellManager.Cast("Call Pet 1");
-                            StyxWoW.SleepForLagDuration();
-                        }
-                        if (PvPBeastSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"))
-                        {
-                            SpellManager.Cast("Call Pet 2");
-                            StyxWoW.SleepForLagDuration();
-                        }
-                        if (PvPBeastSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"))
-                        {
-                            SpellManager.Cast("Call Pet 3");
-                            StyxWoW.SleepForLagDuration();
-                        }
-                        if (PvPBeastSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"))
-                        {
-                            SpellManager.Cast("Call Pet 4");
-                            StyxWoW.SleepForLagDuration();
-                        }
-                        if (PvPBeastSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"))
-                        {
-                            SpellManager.Cast("Call Pet 5");
-                            StyxWoW.SleepForLagDuration();
-                        }
-                        StyxWoW.SleepForLagDuration();
-                    }
-                }
-                return true;
+                return (
+                    new Decorator(ret => HaltFeign() && StyxWoW.IsInWorld && !Me.IsGhost && Me.IsAlive && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport,
+                        new PrioritySelector(
+                            new Decorator(ret => reviveTimer.ElapsedMilliseconds < 100,
+                                revivePet(ret => PvPBeastSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"), "Reviving Pet")),
+                            new Decorator(ret => PvPBeastSettings.Instance.CP && Me.Pet == null && !Me.IsCasting,
+                                new PrioritySelector(
+                                    callPet("Call Pet 1", ret => PvPBeastSettings.Instance.PET == 1 && SpellManager.HasSpell("Call Pet 1"), "Calling Pet 1"),
+                                    callPet("Call Pet 2", ret => PvPBeastSettings.Instance.PET == 2 && SpellManager.HasSpell("Call Pet 2"), "Calling Pet 2"),
+                                    callPet("Call Pet 3", ret => PvPBeastSettings.Instance.PET == 3 && SpellManager.HasSpell("Call Pet 3"), "Calling Pet 3"),
+                                    callPet("Call Pet 4", ret => PvPBeastSettings.Instance.PET == 4 && SpellManager.HasSpell("Call Pet 4"), "Calling Pet 4"),
+                                    callPet("Call Pet 5", ret => PvPBeastSettings.Instance.PET == 5 && SpellManager.HasSpell("Call Pet 5"), "Calling Pet 5")
+                                    )))));
             }
         }
-        #endregion
 
-        #region CombatStart
-
-        private void AutoAttack()
-        {
-            if (Me.GotTarget && Me.GotAlivePet && Me.Pet.CurrentTargetGuid != Me.CurrentTargetGuid && !SelfControl(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget))
-            {
-                Lua.DoString("PetAttack()");
-            }
-
-        }
         #endregion
 
         #region Combat
 
-        public override void Combat()
+        public override Composite CombatBehavior
         {
-            if (SelfControl(Me.CurrentTarget))
+            get
             {
-                Lua.DoString("StopAttack()");
-                {
-                    Logging.Write(Colors.Aquamarine, ">> Stop Everything! <<");
-                }
-                SpellManager.StopCasting();
-                {
-                    Logging.Write(Colors.Aquamarine, ">> Stop Everything! <<");
-                }
-            }
-            if (Me.GotAlivePet && IsMyAuraActive(Me.CurrentTarget, "Scatter Shot") && !DumbBear(Me.CurrentTarget))
-            {
-                Lua.DoString("PetAttack()");
-            }
-            if (PvPBeastSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && IsMyAuraActive(Me.CurrentTarget, "Scatter Shot") && !DumbBear(Me.CurrentTarget))
-            {
-                if (CastSpell("Kill Command"))
-                {
-                    Logging.Write(Colors.Aquamarine, ">> Kill Command <<");
-                }
-            }
-            if (!SelfControl(Me.CurrentTarget))
-            {
-                if (Me.GotTarget && Me.GotAlivePet && Me.Pet.CurrentTargetGuid != Me.CurrentTargetGuid && !SelfControl(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget))
-                {
-                    Lua.DoString("PetAttack()");
-                }
-                if (!Me.Mounted && HaltFeign() && !Me.IsDead)
-                {
-                    if (PvPBeastSettings.Instance.MP && Me.GotAlivePet && !Me.Pet.HasAura("Mend Pet") && (isStunned(Me.Pet).TotalSeconds > 0 || isForsaken(Me.Pet).TotalSeconds > 0 || isRooted(Me.Pet).TotalMilliseconds > 0 || isSlowed(Me.Pet) || isControlled(Me.Pet).TotalSeconds > 0 || Me.Pet.HealthPercent < PvPBeastSettings.Instance.MendHealth))
-                    {
-                        if (CastSpell("Mend Pet"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Mend Pet <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Draenei && Me.HealthPercent < 30 && !SpellManager.Spells["Gift of the Naaru"].Cooldown)
-                    {
-                        if (CastSpell("Gift of the Naaru"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Gift of the Naaru <<");
-                        }
-                    }
-
-                }
-                if (Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && HaltFeign() && !Me.IsDead)
-                {
-                    //////////////////////////////// Trinkets ///////////////////////////////////////
-                    if (PvPBeastSettings.Instance.T1MOB && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0 && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2))
-                    {
-                        Lua.DoString("RunMacroText('/use 13');");
-                    }
-                    if (PvPBeastSettings.Instance.T1DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 15 && Me.CurrentTarget.Distance > 6 && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0)
-                    {
-                        Lua.DoString("RunMacroText('/use 13');");
-                    }
-                    if (PvPBeastSettings.Instance.T1DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting))
-                    {
-                        Lua.DoString("RunMacroText('/use 13');");
-                    }
-                    if (PvPBeastSettings.Instance.T2MOB && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0 && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2))
-                    {
-                        Lua.DoString("RunMacroText('/use 14');");
-                    }
-                    if (PvPBeastSettings.Instance.T2DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 15 && Me.CurrentTarget.Distance > 9 && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0)
-                    {
-                        Lua.DoString("RunMacroText('/use 14');");
-                    }
-                    if (PvPBeastSettings.Instance.T2DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting))
-                    {
-                        Lua.DoString("RunMacroText('/use 14');");
-                    }
-                    /////////////////////// Defense stuff, to make sure we don't QQ when all the bad kids beat us. Also hi, thanks for reading my code :> ////////////////////////////////////////////
-                    if (PvPBeastSettings.Instance.TL2_EXH && (Me.HealthPercent < 70
-                        || (Me.Pet.HealthPercent < 15 && SpellManager.HasSpell("Heart of the Phoenix") && SpellManager.Spells["Heart of the Phoenix"].CooldownTimeLeft.TotalSeconds > 5)
-                        || (Me.Pet.HealthPercent < 15 && !SpellManager.HasSpell("Heart of the Phoenix"))))
-                    {
-                        if (CastSpell("Exhilaration"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Exhilaration <<");
-                        }
-                    }
-                    if (isSlowed(Me) || isRooted(Me).TotalMilliseconds > 0)
-                    {
-                        if (CastSpell("Master's Call"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Master's Call <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.MDPet && Me.GotAlivePet && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Me.CurrentTarget.IsPlayer && !IsMyAuraActive(Me, "Misdirection")
-                        && !WoWSpell.FromId(34477).Cooldown && !SpellManager.Spells["Misdirection"].Cooldown)
-                    {
-                        Lua.DoString("RunMacroText('/cast [@pet,exists] Misdirection');");
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Misdirection on Pet <<");
-                        }
-                    }
-                    if (Me.GotAlivePet && IsMyAuraActive(Me.CurrentTarget, "Scatter Shot"))
-                    {
-                        Lua.DoString("PetAttack()");
-                    }
-                    if (PvPBeastSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && IsMyAuraActive(Me.CurrentTarget, "Scatter Shot"))
-                    {
-                        if (CastSpell("Kill Command"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Kill Command <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.IntimidateBox == "1. Interrupt" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast)
-                    {
-                        if (CastSpell("Intimidation"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Intimidation Interrupt <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.IntimidateBox == "2. Low Health" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth)
-                    {
-                        if (CastSpell("Intimidation"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Intimidation Target Low on Health <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.IntimidateBox == "3. Protection" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget))
-                    {
-                        if (CastSpell("Intimidation"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Intimidation Stranger Danger <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.IntimidateBox == "1 + 2" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast) || Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth))
-                    {
-                        if (CastSpell("Intimidation"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Intimidation Interrupt <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.IntimidateBox == "1 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast) || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget))))
-                    {
-                        if (CastSpell("Intimidation"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Intimidation Interrupt <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.IntimidateBox == "2 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && (Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget))))
-                    {
-                        if (CastSpell("Intimidation"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Intimidation Interrupt <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.IntimidateBox == "1 + 2 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast) || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget)) || (Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth)))
-                    {
-                        if (CastSpell("Intimidation"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Intimidation Interrupt <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Human && !SpellManager.Spells["Every Man for Himself"].Cooldown && !PvPBeastSettings.Instance.T2MOB && !PvPBeastSettings.Instance.T1MOB && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2))
-                    {
-                        if (CastSpell("Every Man for Himself"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Every Man for Himself <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Gnome && !SpellManager.Spells["Escape Artist"].Cooldown && isSlowed(Me) || isRooted(Me).TotalMilliseconds > 0)
-                    {
-                        if (CastSpell("Escape Artist"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Escape Artist <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Undead && !SpellManager.Spells["Will of The Forsaken"].Cooldown && isForsaken(Me).TotalMilliseconds > 0)
-                    {
-                        if (CastSpell("Will of The Forsaken"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Will of The Forsaken <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Dwarf && !SpellManager.Spells["Stoneform"].Cooldown && StyxWoW.Me.GetAllAuras().Any(a => a.Spell.Mechanic == WoWSpellMechanic.Bleeding || a.Spell.DispelType == WoWDispelType.Disease || a.Spell.DispelType == WoWDispelType.Poison))
-                    {
-                        if (CastSpell("Stoneform"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Stoneform <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.INT && Me.Race == WoWRace.Tauren && PvPBeastSettings.Instance.RS && Me.CurrentTarget.Distance < 8 && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && (SpellManager.Spells["Silencing Shot"].CooldownTimeLeft.TotalSeconds > 1 || Me.CurrentTarget.Distance < 5))
-                    {
-                        if (CastSpell("War Stomp"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> War Stomp, Interrupt <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Tauren && (Me.CurrentTarget.Distance < 8 || Me.CurrentTarget.Pet.Distance < 8) && (Me.CurrentTarget.CurrentTargetGuid == Me.Guid || Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid) && (NeedSnare(Me.CurrentTarget) || NeedSnare(Me.CurrentTarget.Pet)) && (!Invulnerable(Me.CurrentTarget) || Me.CurrentTarget.Pet.Distance < 8))
-                    {
-                        if (CastSpell("War Stomp"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> War Stomp, Evade <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.INT && PvPBeastSettings.Instance.RS && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && Me.CurrentTarget.Distance >= 5)
-                    {
-                        if (CastSpell("Arcane Torrent"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Arcane Torrent <<");
-                        }
-                    }
-                    if (Me.GotAlivePet && SpellManager.Spells["Stampede"].CooldownTimeLeft.TotalSeconds > 10 && SpellManager.Spells["Stampede"].CooldownTimeLeft.TotalSeconds < 280 && !WoWSpell.FromId(90361).Cooldown) 
-                    {
-                        if (PvPBeastSettings.Instance.SpiritMendBox == "1. Me" && Me.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Me)
-                        {
-                            Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Spirit Mend on <<");
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.SpiritMendBox == "2. Pet" && Me.Pet.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Pet)
-                        {
-                            Lua.DoString("RunMacroText(\"/cast [@Pet] Spirit Mend\")");
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Spirit Mend on <<");
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.SpiritMendBox == "3. Focus" && Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Focus)
-                        {
-                            Lua.DoString("RunMacroText(\"/cast [@Focus] Spirit Mend\")");
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Spirit Mend on <<");
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.SpiritMendBox == "1 + 2")
-                        {
-                            if (Me.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Me)
-                            {
-                                Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Spirit Mend on <<");
-                                }
-                            }
-                            if (Me.Pet.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Pet)
-                            {
-                                Lua.DoString("RunMacroText(\"/cast [@Pet] Spirit Mend\")");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Pet <<");
-                                }
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.SpiritMendBox == "1 + 3")
-                        {
-                            if (Me.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Me)
-                            {
-                                Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Me <<");
-                                }
-                            }
-                            if (Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Focus)
-                            {
-                                Lua.DoString("RunMacroText(\"/cast [@Focus] Spirit Mend\")");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Focus <<");
-                                }
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.SpiritMendBox == "2 + 3")
-                        {
-                            if (Me.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Pet)
-                            {
-                                Lua.DoString("RunMacroText(\"/cast [@Pet] Spirit Mend\")");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Pet <<");
-                                }
-                            }
-                            if (Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Focus)
-                            {
-                                Lua.DoString("RunMacroText(\"/cast [@Focus] Spirit Mend\")");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Focus <<");
-                                }
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.SpiritMendBox == "1 + 2 + 3")
-                        {
-                            if (Me.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Me)
-                            {
-                                Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Me <<");
-                                }
-                            }
-                            if (Me.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Pet)
-                            {
-                                Lua.DoString("RunMacroText(\"/cast [@Pet] Spirit Mend\")");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Pet <<");
-                                }
-                            }
-                            if (Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Focus)
-                            {
-                                Lua.DoString("RunMacroText(\"/cast [@Focus] Spirit Mend\")");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Focus <<");
-                                }
-                            }
-                        }
-                    }
-                    if (Me.GotAlivePet && SpellManager.Spells["Stampede"].CooldownTimeLeft.TotalSeconds > 280 && !WoWSpell.FromId(90361).Cooldown)
-                    {
-                        if (PvPBeastSettings.Instance.StampedeMendBox == "1. Me" && Me.HealthPercent < PvPBeastSettings.Instance.StamHealth_Me)
-                        {
-                            Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Me<<");
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.StampedeMendBox == "2. Focus" && Me.HealthPercent < PvPBeastSettings.Instance.StamHealth_Me)
-                        {
-                            Lua.DoString("RunMacroText(\"/cast [@Focus] Spirit Mend\")");
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Focus<<");
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.StampedeMendBox == "1 + 2")
-                        {
-                            if (Me.HealthPercent < PvPBeastSettings.Instance.StamHealth_Me)
-                            {
-                                Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Me<<");
-                                }
-                            }
-                            if (Me.HealthPercent < PvPBeastSettings.Instance.StamHealth_Me)
-                            {
-                                Lua.DoString("RunMacroText(\"/cast [@Focus] Spirit Mend\")");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Focus<<");
-                                }
-                            }
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.WEB && NeedSnare(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !WoWSpell.FromId(54706).Cooldown && Me.CurrentTarget.Distance <= 30)
-                    {
-                        Lua.DoString("RunMacroText('/cast Venom Web Spray');");
-                        {
-                            Logging.Write(Colors.Crimson, ">> Pet: Silithid Web <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.FDCBox == "1. Pet Near" && Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5)
-                    {
-                        if (CastSpell("Feign Death"))
-                        {
-                            System.Threading.Thread.Sleep(1000);
-                            Logging.Write(Colors.Aquamarine, ">> Feign Death Enemy Pet Near <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.FDCBox == "2. Target Casting" && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal)
-                    {
-                        if (CastSpell("Feign Death"))
-                        {
-                            System.Threading.Thread.Sleep(1000);
-                            Logging.Write(Colors.Aquamarine, ">> Feign Death Target Is Casting <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.FDCBox == "1 + 2" && ((Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5) || (Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal)))
-                    {
-                        if (CastSpell("Feign Death"))
-                        {
-                            System.Threading.Thread.Sleep(1000);
-                            Logging.Write(Colors.Aquamarine, ">> Feign Death Enemy Pet Near or Target is Casting <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.FDCBox == "3. Low Health" && Me.HealthPercent < 10)
-                    {
-                        if (CastSpell("Feign Death"))
-                        {
-                            System.Threading.Thread.Sleep(1000);
-                            Logging.Write(Colors.Aquamarine, ">> Feign Death: Low Health <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.FDCBox == "1 + 2 + 3" && ((Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5) || (Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal) || Me.HealthPercent < 10))
-                    {
-                        if (CastSpell("Feign Death"))
-                        {
-                            System.Threading.Thread.Sleep(1000);
-                            Logging.Write(Colors.Aquamarine, ">> Feign Death: Enemy pet is near us or Target is casting a harmful spell or We're low on health.<<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.FDCBox == "1 + 3" && ((Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5) || Me.HealthPercent < 10))
-                    {
-                        if (CastSpell("Feign Death"))
-                        {
-                            System.Threading.Thread.Sleep(1000);
-                            Logging.Write(Colors.Aquamarine, ">> Feign Death: Enemy pet is near us or We're low on health.<<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.FDCBox == "2 + 3" && ((Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal) || Me.HealthPercent < 10))
-                    {
-                        if (CastSpell("Feign Death"))
-                        {
-                            System.Threading.Thread.Sleep(1000);
-                            Logging.Write(Colors.Aquamarine, ">> Feign Death: Target is casting a harmful spell or We're low on health.<<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.DETR && Me.HealthPercent < 15 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid)
-                    {
-                        if (CastSpell("Deterrence"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Deterrence <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.ScatterBox == "1. Interrupt" && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && !Invulnerable(Me.CurrentTarget))
-                    {
-                        if (CastSpell("Scatter Shot"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Scatter Shot, Interrupt <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.ScatterBox == "2. Defense" && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Invulnerable(Me.CurrentTarget))
-                    {
-                        if (CastSpell("Scatter Shot"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Scatter Shot, Evade <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.ScatterBox == "1 + 2" && ((Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Invulnerable(Me.CurrentTarget))
-                        || (Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast)))
-                    {
-                        if (CastSpell("Scatter Shot"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Scatter Shot <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.TL1_SS && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast)
-                    {
-                        if (CastSpell("Silencing Shot"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Silencing Shot <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.TL1_WS && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast)
-                    {
-                        if (CastSpell("Wyvern Sting"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Wyvern Sting, Interrupt <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.TL1_BS && Me.CurrentTarget.Distance < 15 && MeleeClass(Me.CurrentTarget))
-                    {
-                        if (CastSpell("Binding Shot"))
-                        {
-                            SpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
-                            Logging.Write(Colors.Aquamarine, ">> Binding Shot Launched! <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.CONC && NeedSnare(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && MyDebuffTime("Concussive Shot", Me.CurrentTarget) <= 1 && Me.CurrentTarget.Distance <= 40 && (Me.CurrentTarget.CurrentTargetGuid == Me.Guid || Me.CurrentTarget.IsMoving))
-                    {
-                        if (CastSpell("Concussive Shot"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Concussive Shot <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.TL3_FV && (Me.CurrentFocus < 60 || (Me.HasAura("The Beast within") && Me.CurrentFocus < 40)))
-                    {
-                        if (CastSpell("Fervor"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Fervor <<");
-                        }
-                    }
-                    /////////////////////////////////////////////////////Cooldowns/////////////////////////////////////////////////////////////////////////////////////////////////           
-                    if (PvPBeastSettings.Instance.RF && (SpellManager.Spells["Bestial Wrath"].Cooldown || !PvPBeastSettings.Instance.BWR)
-                        && !Me.HasAura("Rapid Fire") && !Me.HasAura("The Beast Within")
-                        && !Me.HasAura("Bloodlust") && !Me.HasAura("Heroism") && !Me.HasAura("Ancient Hysteria") && !Me.HasAura("Time Warp")
-                        && Me.CurrentTarget.CurrentHealth > 25000 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget))
-                    {
-                        if (CastSpell("Rapid Fire"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Rapid Fire <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.CW && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget)
-                        && ((((PvPBeastSettings.Instance.SpiritMendBox == "1. Me" && Me.HealthPercent < PvPBeastSettings.Instance.StamHealth_Me - 2) 
-                        || (PvPBeastSettings.Instance.SpiritMendBox == "2. Focus" && Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.StamHealth_Focus - 2) 
-                        || (PvPBeastSettings.Instance.SpiritMendBox == "1 + 2" && (Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.StamHealth_Focus - 2 ||  Me.HealthPercent < PvPBeastSettings.Instance.StamHealth_Me - 2))) 
-                        && WoWSpell.FromId(90361).CooldownTimeLeft.TotalSeconds < 5) || PvPBeastSettings.Instance.SpiritMendBox == "Never"))
-                    {
-                        if (CastSpell("Stampede"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Stampede <<");
-                        }
-                    }
-                    if (Me.GotAlivePet && PvPBeastSettings.Instance.BWR && (!PvPBeastSettings.Instance.TL4_LR || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 10
-                        || !SpellManager.Spells["Lynx Rush"].Cooldown) && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.HasAura("Rapid Fire")
-                        && !Me.HasAura("The Beast Within") && !Me.HasAura("Bloodlust") && !Me.HasAura("Heroism") && !Me.HasAura("Ancient Hysteria") && !Me.HasAura("Time Warp")
-                        && HostilePlayer(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && !Invulnerable(Me.Pet.CurrentTarget))
-                    {
-                        if (CastSpell("Bestial Wrath"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Bestial Wrath <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.RDN
-                        && SpellManager.Spells["Rapid Fire"].CooldownTimeLeft.TotalSeconds > 1
-                        && SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 1
-                        && (!PvPBeastSettings.Instance.KCO || SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1)
-                        && (!PvPBeastSettings.Instance.TL1_SS || !PvPBeastSettings.Instance.ARN || SpellManager.Spells["Silencing Shot"].CooldownTimeLeft.TotalSeconds > 1)
-                        && (!PvPBeastSettings.Instance.TL1_WS || !PvPBeastSettings.Instance.ARN || SpellManager.Spells["Wyvern Sting"].CooldownTimeLeft.TotalSeconds > 1)
-                        && (!PvPBeastSettings.Instance.TL1_BS || !PvPBeastSettings.Instance.ARN || SpellManager.Spells["Binding Shot"].CooldownTimeLeft.TotalSeconds > 1)
-                        && (!PvPBeastSettings.Instance.TL3_DB || SpellManager.Spells["Dire Beast"].CooldownTimeLeft.TotalSeconds > 1)
-                        && (!PvPBeastSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].CooldownTimeLeft.TotalSeconds > 1)
-                        && (!PvPBeastSettings.Instance.TL4_AMOC || SpellManager.Spells["A Murder of Crows"].CooldownTimeLeft.TotalSeconds > 1)
-                        && (!PvPBeastSettings.Instance.TL4_BSTRK || SpellManager.Spells["Blink Strike"].CooldownTimeLeft.TotalSeconds > 1)
-                        && (!PvPBeastSettings.Instance.TL4_LR || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 1)
-                        && (!PvPBeastSettings.Instance.TL5_GLV || SpellManager.Spells["Glaive Toss"].CooldownTimeLeft.TotalSeconds > 1)
-                        && (!PvPBeastSettings.Instance.TL5_PWR || SpellManager.Spells["Powershot"].CooldownTimeLeft.TotalSeconds > 1)
-                        && (!PvPBeastSettings.Instance.TL5_BRG || SpellManager.Spells["Barrage"].CooldownTimeLeft.TotalSeconds > 1)
-                        && (PvPBeastSettings.Instance.IntimidateBox == "Never" || !PvPBeastSettings.Instance.ARN || SpellManager.Spells["Intimidation"].CooldownTimeLeft.TotalSeconds > 1))
-                    {
-                        if (CastSpell("Readiness"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Readiness <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.LB && SpellManager.HasSpell("Lifeblood") && !SpellManager.Spells["Lifeblood"].Cooldown && Me.HealthPercent < 99)
-                    {
-                        if (CastSpell("Lifeblood"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Lifeblood <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.GE && !Invulnerable(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.Inventory.Equipped.Hands != null 
-                        && Me.Inventory.Equipped.Hands.Usable && Me.Inventory.Equipped.Hands.CooldownTimeLeft.TotalSeconds == 0)
-                    {
-                        Lua.DoString("RunMacroText('/use 10');");
-                    }
-                    //////////////////////////////////////////////////Racial Skills/////////////////////////////////////////////////////////////////////////////////////////
-                    if (PvPBeastSettings.Instance.RS && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && Me.Race == WoWRace.Troll && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 15 && !SpellManager.Spells["Berserking"].Cooldown)
-                    {
-                        Lua.DoString("RunMacroText('/Cast Berserking');");
-                    }
-                    if (PvPBeastSettings.Instance.RS && !Invulnerable(Me.CurrentTarget) && Me.Race == WoWRace.Orc && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 15 && !SpellManager.Spells["Blood Fury"].Cooldown)
-                    {
-                        Lua.DoString("RunMacroText('/Cast Blood Fury');");
-                    }
-                }
-                ////////////////////////////////// Traps and Launchers ////////////////////////////////////////////////
-                if (Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && HaltFeign() && !Me.IsDead)
-                {
-                    if (Me.CurrentTarget.Distance > 5 && Me.CurrentTarget.Distance < 40 && HostilePlayer(Me.CurrentTarget)
-                        && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.InLineOfSpellSight && !Me.CurrentTarget.IsMoving)
-                    {
-                        if (PvPBeastSettings.Instance.TL && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Ice Trap"].Cooldown)
-                        {
-                            if (!Me.HasAura("Trap Launcher"))
-                            {
-                                if (CastSpell("Trap Launcher"))
-                                {
-                                    Logging.Write(Colors.Crimson, ">> Trap Launcher Activated! <<");
-                                }
-                            }
-                            else if (Me.HasAura("Trap Launcher"))
-                            {
-                                Lua.DoString("CastSpellByName('Ice Trap');");
-                                {
-                                    SpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
-                                    Logging.Write(Colors.Crimson, ">> Ice Trap Launched! <<");
-                                }
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.TL2 && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Snake Trap"].Cooldown && !DumbBear(Me.CurrentTarget))
-                        {
-                            if (!Me.HasAura("Trap Launcher"))
-                            {
-                                if (CastSpell("Trap Launcher"))
-                                {
-                                    Logging.Write(Colors.Crimson, ">> Trap Launcher Activated! <<");
-                                }
-                            }
-                            else if (Me.HasAura("Trap Launcher"))
-                            {
-                                Lua.DoString("CastSpellByName('Snake Trap');");
-                                {
-                                    SpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
-                                    Logging.Write(Colors.Crimson, ">> Snake Trap Launched! <<");
-                                }
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.TL3 && RangedClass(Me.CurrentTarget) && !SpellManager.Spells["Freezing Trap"].Cooldown)
-                        {
-                            if (!Me.HasAura("Trap Launcher"))
-                            {
-                                if (CastSpell("Trap Launcher"))
-                                {
-                                    Logging.Write(Colors.Crimson, ">> Trap Launcher Activated! <<");
-                                }
-                            }
-                            else if (Me.HasAura("Trap Launcher"))
-                            {
-                                Lua.DoString("CastSpellByName('Freezing Trap');");
-                                {
-                                    SpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
-                                    Logging.Write(Colors.Crimson, ">> Freezing Trap Launched! <<");
-                                }
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.TL4 && !SpellManager.Spells["Explosive Trap"].Cooldown && !DumbBear(Me.CurrentTarget))
-                        {
-                            if (!Me.HasAura("Trap Launcher"))
-                            {
-                                if (CastSpell("Trap Launcher"))
-                                {
-                                    Logging.Write(Colors.Crimson, ">> Trap Launcher Activated! <<");
-                                }
-                            }
-                            else if (Me.HasAura("Trap Launcher"))
-                            {
-                                Lua.DoString("CastSpellByName('Explosive Trap');");
-                                {
-                                    SpellManager.ClickRemoteLocation(StyxWoW.Me.CurrentTarget.Location);
-                                    Logging.Write(Colors.Crimson, ">> Explosive Trap Launched! <<");
-                                }
-                            }
-                        }
-                    }
-                    if (Me.CurrentTarget.Distance <= 5 && !Invulnerable(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.CurrentTargetGuid == Me.Guid)
-                    {
-                        if (PvPBeastSettings.Instance.ICET)
-                        {
-                            if (Me.HasAura("Trap Launcher"))
-                            {
-                                if (CastSpell("Trap Launcher"))
-                                {
-                                    Logging.Write(Colors.Crimson, ">> Trap Launcher Deactivated! <<");
-                                }
-                            }
-
-                            else if (!Me.HasAura("Trap Launcher"))
-                            {
-                                if (CastSpell("Ice Trap"))
-                                {
-                                    Logging.Write(Colors.Crimson, ">> Dropping Ice Trap <<");
-                                }
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.SNAT)
-                        {
-                            if (Me.HasAura("Trap Launcher"))
-                            {
-                                if (CastSpell("Trap Launcher"))
-                                {
-                                    Logging.Write(Colors.Crimson, ">> Trap Launcher Deactivated! <<");
-                                }
-                            }
-
-                            else if (!Me.HasAura("Trap Launcher"))
-                            {
-                                if (CastSpell("Snake Trap"))
-                                {
-                                    Logging.Write(Colors.Crimson, ">> Dropping Snake Trap <<");
-                                }
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.FRET)
-                        {
-                            if (Me.HasAura("Trap Launcher"))
-                            {
-                                if (CastSpell("Trap Launcher"))
-                                {
-                                    Logging.Write(Colors.Crimson, ">> Trap Launcher Deactivated! <<");
-                                }
-                            }
-
-                            else if (!Me.HasAura("Trap Launcher"))
-                            {
-                                if (CastSpell("Freezing Trap"))
-                                {
-                                    Logging.Write(Colors.Crimson, ">> Dropping Freezing Trap <<");
-                                }
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.EXPT && !DumbBear(Me.CurrentTarget))
-                        {
-                            if (Me.HasAura("Trap Launcher"))
-                            {
-                                if (CastSpell("Trap Launcher"))
-                                {
-                                    Logging.Write(Colors.Crimson, ">> Trap Launcher Deactivated! <<");
-                                }
-                            }
-
-                            else if (!Me.HasAura("Trap Launcher"))
-                            {
-                                if (CastSpell("Explosive Trap"))
-                                {
-                                    Logging.Write(Colors.Crimson, ">> Dropping Explosive Trap <<");
-                                }
-                            }
-                        }
-                    }
-                }
-                ///////////////////////////////////////////////Aspect Switching////////////////////////////////////////////////////////////////////////////////////////////
-                if (PvPBeastSettings.Instance.AspectSwitching && HaltFeign() && Me.GotTarget && Me.CurrentTarget.IsAlive && !Me.Mounted && !Me.IsDead)
-                {
-                    if (PvPBeastSettings.Instance.TL2_AOTIH)
-                    {
-                        if (!Me.IsMoving && !Me.Auras.ContainsKey("Aspect of the Iron Hawk"))
-                        {
-                            if (CastSpell("Aspect of the Hawk"))
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Not moving - Aspect of the Iron Hawk <<");
-                            }
-                        }
-                        if (Me.IsMoving && Me.Auras.ContainsKey("Aspect of the Iron Hawk") && Me.CurrentFocus < 60)
-                        {
-                            if (CastSpell("Aspect of the Fox"))
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Moving - Aspect of the Fox <<");
-                            }
-                        }
-                    }
-                    if (!PvPBeastSettings.Instance.TL2_AOTIH)
-                    {
-                        if (!Me.IsMoving && !Me.Auras.ContainsKey("Aspect of the Hawk"))
-                        {
-                            if (CastSpell("Aspect of the Hawk"))
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Not moving - Aspect of the Hawk <<");
-                            }
-                        }
-                        if (Me.IsMoving && Me.Auras.ContainsKey("Aspect of the Hawk") && Me.CurrentFocus < 60)
-                        {
-                            if (CastSpell("Aspect of the Fox"))
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Moving - Aspect of the Fox <<");
-                            }
-                        }
-                    }
-                }
-                /////////////////////////////////////////////Beastmastery Rotation///////////////////////////////////////////////////////////////////////////////////////////
-                if (Me.GotTarget && HaltFeign() && Me.CurrentTarget.IsAlive && !Me.Mounted && !Me.IsDead && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget))
-                {
-                    if (PvPBeastSettings.Instance.HM && !Me.CurrentTarget.HasAura("Hunter's Mark"))
-                    {
-                        if (CastSpell("Hunter's Mark"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Hunter's Mark <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.KSH && Me.CurrentTarget.HealthPercent <= 20)
-                    {
-                        if (CastSpell("Kill Shot"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Kill Shot <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.SerpentBox == "Always" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1))
-                    {
-                        if (CastSpell("Serpent Sting"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Serpent Sting <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.SerpentBox == "Sometimes" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1)
-                        && Me.CurrentTarget.HealthPercent > 50)
-                    {
-                        if (CastSpell("Serpent Sting"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Serpent Sting <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.WVE && Me.CurrentFocus > 53 && HostilePlayer(Me.CurrentTarget) && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1 && (!IsMyAuraActive(Me.CurrentTarget, "Widow Venom") || MyDebuffTime("Widow Venom", Me.CurrentTarget) <= 1))
-                    {
-                        if (CastSpell("Widow Venom"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Widow Venom <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.TL3_DB)
-                    {
-                        if (CastSpell("Dire Beast"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Dire Beast <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40)
-                    {
-                        if (CastSpell("Blink Strike"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Blink Strike <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25)
-                    {
-                        if (CastSpell("Kill Command"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Kill Command <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.TL4_LR && (!PvPBeastSettings.Instance.BWR || SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 10)
-                        && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25 && Me.GotAlivePet)
-                    {
-                        if (CastSpell("Lynx Rush"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Lynx Rush <<");
-                        }
-                    }
-                    if (Me.Level >= 90 && PvPBeastSettings.Instance.TL5_GLV && (!SpellManager.CanCast("Kill Command") || !PvPBeastSettings.Instance.KCO))
-                    {
-                        if (CastSpell("Glaive Toss"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Glaive Toss <<");
-                        }
-                    }
-                    if (Me.Level >= 90 && PvPBeastSettings.Instance.TL5_PWR && (!SpellManager.CanCast("Kill Command") || !PvPBeastSettings.Instance.KCO))
-                    {
-                        if (CastSpell("Powershot"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Powershot <<");
-                        }
-                    }
-                    if (Me.Level >= 90 && PvPBeastSettings.Instance.TL5_BRG && (!SpellManager.CanCast("Kill Command") || !PvPBeastSettings.Instance.KCO))
-                    {
-                        if (CastSpell("Barrage"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Barrage <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.TL4_AMOC && !IsMyAuraActive(Me.CurrentTarget, "A Murder of Crows") && ((Me.CurrentTarget.MaxHealth > Me.MaxHealth * 2 && Me.CurrentTarget.HealthPercent > 20)
-                        || (Me.CurrentTarget.MaxHealth > Me.MaxHealth && Me.CurrentTarget.HealthPercent <= 20) || Me.CurrentTarget.Name.Contains("Training Dummy")))
-                    {
-                        if (CastSpell("A Murder of Crows"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> A Murder of Crows <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.FF && Me.GotAlivePet && Me.Pet.Auras.ContainsKey("Frenzy") && !Me.HasAura("The Beast Within")
-                        && ((SpellManager.Spells["Bestial Wrath"].Cooldown && SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 9)
-                        || (!SpellManager.Spells["Bestial Wrath"].Cooldown && (Me.CurrentTarget.MaxHealth <= 200000 || Me.HasAura("Rapid Fire")))))
-                    {
-                        if (PvPBeastSettings.Instance.FFS == 5 && Me.Pet.Auras["Frenzy"].StackCount >= 5)
-                        {
-                            if (CastSpell("Focus Fire"))
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Focus Fire: 5 Stacks <<");
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.FFS == 4 && Me.Pet.Auras["Frenzy"].StackCount >= 4)
-                        {
-                            if (CastSpell("Focus Fire"))
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Focus Fire: 4 Stacks <<");
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.FFS == 3 && Me.Pet.Auras["Frenzy"].StackCount >= 3)
-                        {
-                            if (CastSpell("Focus Fire"))
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Focus Fire: 3 Stacks <<");
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.FFS == 2 && Me.Pet.Auras["Frenzy"].StackCount >= 2)
-                        {
-                            if (CastSpell("Focus Fire"))
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Focus Fire: 2 Stacks <<");
-                            }
-                        }
-                        if (PvPBeastSettings.Instance.FFS == 1 && Me.Pet.Auras["Frenzy"].StackCount >= 1)
-                        {
-                            if (CastSpell("Focus Fire"))
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Focus Fire: 1 Stack <<");
-                            }
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.FF && Me.GotAlivePet && Me.Pet.HasAura("Frenzy") && Me.Pet.Auras["Frenzy"].StackCount >= 1 && DebuffTime("Frenzy", Me.Pet) < 2)
-                    {
-                        if (CastSpell("Focus Fire"))
-                        {
-                            Logging.Write(Colors.Aquamarine, ">> Focus Fire: Running out of time <<");
-                        }
-                    }
-                    if (PvPBeastSettings.Instance.ARC
-                        && (!PvPBeastSettings.Instance.KSH || !SpellManager.CanCast("Kill Shot"))
-                        && (!PvPBeastSettings.Instance.TL5_GLV || !SpellManager.CanCast("Glaive Toss"))
-                        && (!PvPBeastSettings.Instance.TL5_BRG || !SpellManager.CanCast("Barrage"))
-                        && (!PvPBeastSettings.Instance.TL5_PWR || !SpellManager.CanCast("Powershot")))
-                    {
-                        if (PvPBeastSettings.Instance.KCO)
-                        {
-                            if (!Me.HasAura("Thrill of the Hunt"))
-                            {
-                                if (Me.GotAlivePet && SpellManager.Spells["Kill Command"].Cooldown && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 250)
-                                {
-                                    if (!Me.HasAura("The Beast Within"))
+                return (
+                    new PrioritySelector(
+                        new Decorator(ret => SelfControl(Me.CurrentTarget),
+                                new Action(delegate
                                     {
-                                        if ((Me.CurrentFocus > 60 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds <= 2)
-                                            || (Me.CurrentFocus > 40 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 2))
+                                        Lua.DoString("StopAttack()");
+                                        SpellManager.StopCasting();
+                                        standardLog("Stop everything!");
+                                        return RunStatus.Failure;
+                                    }
+                                    )),
+                        new Decorator(ret => validTarget(Me.CurrentTarget) && Me.GotAlivePet && Me.Pet.CurrentTargetGuid != Me.CurrentTargetGuid && !SelfControl(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget),
+                                new Action(delegate
+                                    {
+                                         Lua.DoString("PetAttack()");
+                                        standardLog("Send pet on my current Target");
+                                        return RunStatus.Failure;
+                                    }
+                                    )),
+                        new Decorator(ret => Me.GotAlivePet && Me.GotTarget && IsMyAuraActive(Me.CurrentTarget, "Scatter Shot") && !DumbBear(Me.CurrentTarget),
+                                new Action(delegate
+                                    {
+                                         Lua.DoString("PetAttack()");
+                                        standardLog("Target Scattered, Send in pet");
+                                        return RunStatus.Failure;
+                                    }
+                                    )),
+                                castSelfSpell("Mend Pet", ret => PvPBeastSettings.Instance.MP && Me.GotAlivePet && !Me.Pet.HasAura("Mend Pet") && (isStunned(Me.Pet).TotalSeconds > 0 || isForsaken(Me.Pet).TotalSeconds > 0 || isRooted(Me.Pet).TotalMilliseconds > 0 || isSlowed(Me.Pet) || isControlled(Me.Pet).TotalSeconds > 0 || Me.Pet.HealthPercent < PvPBeastSettings.Instance.MendHealth), "Mend Pet"),
+
+                                castSelfSpell("Exhilaration", ret => PvPBeastSettings.Instance.TL2_EXH && (Me.HealthPercent < 70 || (Me.GotAlivePet && Me.Pet.HealthPercent < 15 
+                                && SpellManager.HasSpell("Heart of the Phoenix") && SpellManager.Spells["Heart of the Phoenix"].CooldownTimeLeft.TotalSeconds > 5)
+                                || (Me.GotAlivePet && Me.Pet.HealthPercent < 15 && !SpellManager.HasSpell("Heart of the Phoenix"))), "Exhilaration"),
+
+                                castSelfSpell("Gift of the Naaru", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Draenei && Me.HealthPercent < 30 && !SpellManager.Spells["Gift of the Naaru"].Cooldown, "Gift of the Naaru"),
+
+                                new Decorator(ret => PvPBeastSettings.Instance.SpiritMendBox != "Never" && Me.GotAlivePet && !WoWSpell.FromId(90361).Cooldown,
+                                new Action(delegate
+                                {
+                                    if (PvPBeastSettings.Instance.SpiritMendBox == "1. Me" && Me.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Me)
+                                    {
+                                        Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
                                         {
-                                            if (CastSpell("Arcane Shot"))
+                                            Logging.Write(Colors.Aquamarine, ">> Spirit Mend on <<");
+                                        }
+                                    }
+                                    if (PvPBeastSettings.Instance.SpiritMendBox == "2. Focus" && Me.FocusedUnit != null && Me.FocusedUnit.IsFriendly && Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Focus)
+                                    {
+                                        Lua.DoString("RunMacroText(\"/cast [@Focus] Spirit Mend\")");
+                                        {
+                                            Logging.Write(Colors.Aquamarine, ">> Spirit Mend on <<");
+                                        }
+                                    }
+                                    if (PvPBeastSettings.Instance.SpiritMendBox == "1 + 2")
+                                    {
+                                        if (Me.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Me)
+                                        {
+                                            Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
                                             {
-                                                Logging.Write(Colors.Aquamarine, ">> Arcane Shot <<");
+                                                Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Me<<");
+                                            }
+                                        }
+                                        if (Me.FocusedUnit != null && Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Focus && Me.FocusedUnit.IsFriendly)
+                                        {
+                                            Lua.DoString("RunMacroText(\"/cast [@Focus] Spirit Mend\")");
+                                            {
+                                                Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Pet <<");
                                             }
                                         }
                                     }
-                                    else if (Me.HasAura("The Beast Within"))
-                                    {
-                                        if ((Me.CurrentFocus > 50 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds <= 2)
-                                            || (Me.CurrentFocus > 30 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 2))
-                                        {
-                                            if (CastSpell("Arcane Shot"))
-                                            {
-                                                Logging.Write(Colors.Aquamarine, ">> Arcane Shot <<");
-                                            }
-                                        }
-                                    }
+                                    return RunStatus.Failure;
                                 }
-                                else if (!Me.GotAlivePet)
-                                {
-                                    if (CastSpell("Arcane Shot"))
-                                    {
-                                        Logging.Write(Colors.Aquamarine, ">> Arcane Shot <<");
-                                    }
-                                }
-                            }
-                            else if (Me.HasAura("Thrill of the Hunt"))
-                            {
-                                if (Me.GotAlivePet && SpellManager.Spells["Kill Command"].Cooldown && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 250)
-                                {
-                                    if (CastSpell("Arcane Shot"))
-                                    {
-                                        Logging.Write(Colors.Aquamarine, ">> Arcane Shot <<");
-                                    }
-                                }
-                                else if (!Me.GotAlivePet)
-                                {
-                                    if (CastSpell("Arcane Shot"))
-                                    {
-                                        Logging.Write(Colors.Aquamarine, ">> Arcane Shot <<");
-                                    }
-                                }
-                            }
-                        }
-                        else if (!PvPBeastSettings.Instance.KCO)
-                        {
-                            if (CastSpell("Arcane Shot"))
-                            {
-                                Logging.Write(Colors.Aquamarine, ">> Arcane Shot <<");
-                            }
-                        }
-                    }
-                    if ((Me.CurrentFocus > 105 || (Me.CurrentTarget.HealthPercent < 5 && SpellManager.CanCast("Kill Shot"))) && Me.IsCasting && (Me.CastingSpell.Name == "Cobra Shot" || Me.CastingSpell.Name == "Steady Shot") && Me.CurrentCastTimeLeft.TotalMilliseconds > 700)
-                    {
-                        SpellManager.StopCasting();
-                        Logging.Write(Colors.Red, ">> Stop Cobra Shot <<");
-                    }
-                    if (!Me.IsCasting && (!PvPBeastSettings.Instance.KSH || !SpellManager.CanCast("Kill Shot"))
-                        && (!PvPBeastSettings.Instance.TL5_GLV || !SpellManager.CanCast("Glaive Toss"))
-                        && (!PvPBeastSettings.Instance.TL3_FV || !SpellManager.CanCast("Fervor"))
-                        && (!PvPBeastSettings.Instance.TL5_BRG || !SpellManager.CanCast("Barrage"))
-                        && (!PvPBeastSettings.Instance.TL5_PWR || !SpellManager.CanCast("Powershot"))
-                        && ((!Me.HasAura("The Beast Within") && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 39)
-                        || (Me.HasAura("The Beast Within") && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 19)))
-                    {
-                        if (Me.Level >= 81)
-                        {
-                            if ((Me.CurrentFocus < PvPBeastSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < PvPBeastSettings.Instance.FocusShots / 2))
-                                || (MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 9 && Me.CurrentFocus < 60))
-                            {
-                                Lua.DoString("RunMacroText('/cast Cobra Shot');");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Cobra Shot <<");
-                                }
-                            }
-                        }
-                        else if (Me.Level < 81)
-                        {
-                            if (Me.CurrentFocus < PvPBeastSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < PvPBeastSettings.Instance.FocusShots / 2))
-                            {
-                                Lua.DoString("RunMacroText('/cast Steady Shot');");
-                                {
-                                    Logging.Write(Colors.Aquamarine, ">> Steady Shot <<");
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+                                )),
 
+                        new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign() && !Me.IsDead,
+                            new PrioritySelector(
+                                castSpell("Kill Command", ret => PvPBeastSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && IsMyAuraActive(Me.CurrentTarget, "Scatter Shot") && !DumbBear(Me.CurrentTarget), "Kill Command"),
+
+                                castSelfSpell("Master's Call", ret => isSlowed(Me) || isRooted(Me).TotalMilliseconds > 0, "Master's Call"),
+
+                             //////////////////////////////// Trinkets ///////////////////////////////////////
+                             /*
+                                new Decorator(ret => PvPBeastSettings.Instance.T1MOB && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0 && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2),
+                                UseEquippedItem(12)),
+
+                                new Decorator(ret => PvPBeastSettings.Instance.T2MOB && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0 && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2),
+                                UseEquippedItem(13)),
+
+                                new Decorator(ret => PvPBeastSettings.Instance.T1DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 15 && Me.CurrentTarget.Distance > 6 && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0,
+                                UseEquippedItem(12)),
+
+                                new Decorator(ret => PvPBeastSettings.Instance.T1DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
+                                UseEquippedItem(12)),                            
+
+                                new Decorator(ret => PvPBeastSettings.Instance.T2DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 15 && Me.CurrentTarget.Distance > 9 && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0,
+                                UseEquippedItem(13)),
+
+                                new Decorator(ret => PvPBeastSettings.Instance.T2DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
+                                UseEquippedItem(13)),      
+                          */
+                                new Decorator(ret => PvPBeastSettings.Instance.T1MOB && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0 && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2),
+                                new Action(delegate
+                                    {
+                                        Lua.DoString("RunMacroText('/use 13');");
+                                        {
+                                            Logging.Write(Colors.Aquamarine, "Trinket 1 Mobility");
+                                        }
+                                        return RunStatus.Failure;
+                                    }
+                                )),
+                                new Decorator(ret => PvPBeastSettings.Instance.T1DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 15 && Me.CurrentTarget.Distance > 6 && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0,
+                                new Action(delegate
+                                    {
+                                        Lua.DoString("RunMacroText('/use 13');");
+                                        {
+                                            Logging.Write(Colors.Aquamarine, "Trinket 1 Damage");
+                                        }
+                                        return RunStatus.Failure;
+                                    }
+                                )),
+                                new Decorator(ret => PvPBeastSettings.Instance.T1DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
+                                new Action(delegate
+                                    {
+                                        Lua.DoString("RunMacroText('/use 13');");
+                                        {
+                                            Logging.Write(Colors.Aquamarine, "Trinket 1 Defense");
+                                        }
+                                        return RunStatus.Failure;
+                                    }
+                                )),
+                                new Decorator(ret => PvPBeastSettings.Instance.T2MOB && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0 && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2),
+                                new Action(delegate
+                                    {
+                                        Lua.DoString("RunMacroText('/use 14');");
+                                        {
+                                            Logging.Write(Colors.Aquamarine, "Trinket 2 Mobility");
+                                        }
+                                        return RunStatus.Failure;
+                                    }
+                                )),
+                                new Decorator(ret => PvPBeastSettings.Instance.T2DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 15 && Me.CurrentTarget.Distance > 9 && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0,
+                                new Action(delegate
+                                    {
+                                        Lua.DoString("RunMacroText('/use 14');");
+                                        {
+                                            Logging.Write(Colors.Aquamarine, "Trinket 2 Damage");
+                                        }
+                                        return RunStatus.Failure;
+                                    }
+                                )),
+                                new Decorator(ret => PvPBeastSettings.Instance.T2DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
+                                new Action(delegate
+                                    {
+                                        Lua.DoString("RunMacroText('/use 14');");
+                                        {
+                                            Logging.Write(Colors.Aquamarine, "Trinket 2 Defense");
+                                        }
+                                        return RunStatus.Failure;
+                                    }
+                                )),
+
+                                new Decorator(ret => PvPBeastSettings.Instance.MDPet && Me.GotAlivePet && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Me.CurrentTarget.IsPlayer && !IsMyAuraActive(Me, "Misdirection")
+                                    && !WoWSpell.FromId(34477).Cooldown && !SpellManager.Spells["Misdirection"].Cooldown,
+                                new Action(delegate
+                                    {
+                                        Lua.DoString("RunMacroText('/cast [@pet,exists] Misdirection');");
+                                        Logging.Write(Colors.Aquamarine, "Misdirection on Pet");
+                                        return RunStatus.Failure;
+                                    }
+                                ))
+                            )),
+            new Decorator(ret => !SelfControl(Me.CurrentTarget),
+                new PrioritySelector(
+                        new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign() && !Me.IsDead,
+                            new PrioritySelector(
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1. Interrupt" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast, "Intimidation"),
+
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "2. Low Health" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth, "Intimidation"),
+
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "3. Protection" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget), "Intimidation"),
+
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 2" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast) || Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth), "Intimidation"),
+
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast) || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget))), "Intimidation"),
+
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "2 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && (Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget))), "Intimidation"),
+
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 2 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast) || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget)) || (Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth)), "Intimidation"),
+
+                                castSelfSpell("Every Man for Himself", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Human && !SpellManager.Spells["Every Man for Himself"].Cooldown && !PvPBeastSettings.Instance.T2MOB && !PvPBeastSettings.Instance.T1MOB && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2), "Every Man for Himself"),
+
+                                castSelfSpell("Escape Artist", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Gnome && !SpellManager.Spells["Escape Artist"].Cooldown && isSlowed(Me) || isRooted(Me).TotalMilliseconds > 0, "Escape Artist"),
+
+                                castSelfSpell("Will of The Forsaken", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Undead && !SpellManager.Spells["Will of The Forsaken"].Cooldown && isForsaken(Me).TotalMilliseconds > 0, "Will of The Forsaken"),
+
+                                castSelfSpell("Stoneform", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Dwarf && !SpellManager.Spells["Stoneform"].Cooldown && StyxWoW.Me.GetAllAuras().Any(a => a.Spell.Mechanic == WoWSpellMechanic.Bleeding || a.Spell.DispelType == WoWDispelType.Disease || a.Spell.DispelType == WoWDispelType.Poison), "Stoneform"),
+
+                                castSelfSpell("War Stomp", ret => PvPBeastSettings.Instance.INT && Me.Race == WoWRace.Tauren && PvPBeastSettings.Instance.RS && Me.CurrentTarget.Distance < 8 && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && (SpellManager.Spells["Silencing Shot"].CooldownTimeLeft.TotalSeconds > 1 || Me.CurrentTarget.Distance < 5), "War Stomp"),
+
+                                castSelfSpell("War Stomp", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Tauren && (Me.CurrentTarget.Distance < 8 || Me.CurrentTarget.Pet.Distance < 8) && (Me.CurrentTarget.CurrentTargetGuid == Me.Guid || Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid) && (NeedSnare(Me.CurrentTarget) || NeedSnare(Me.CurrentTarget.Pet)) && (!Invulnerable(Me.CurrentTarget) || Me.CurrentTarget.Pet.Distance < 8), "War Stomp"),
+
+                                castSpell("Arcane Torrent", ret => PvPBeastSettings.Instance.INT && PvPBeastSettings.Instance.RS && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && Me.CurrentTarget.Distance >= 5, "Arcane Torrent"),
+
+                                new Decorator(ret => PvPBeastSettings.Instance.WEB && NeedSnare(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !WoWSpell.FromId(54706).Cooldown && Me.CurrentTarget.Distance <= 30,
+                                new Action(delegate
+                                    {
+                                        Lua.DoString("RunMacroText('/cast Venom Web Spray');");
+                                        Logging.Write(Colors.Aquamarine, ">> Pet: Silithid Web <<");
+                                        return RunStatus.Failure;
+                                    }
+                                )),
+
+                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "1. Pet Near" && Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5, "Feign Death"),
+
+                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "2. Target Casting" && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal, "Feign Death"),
+
+                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "3. Low Health" && Me.HealthPercent < 10, "Feign Death"),
+
+                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "1 + 2" && ((Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5) || (Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal)), "Feign Death"),
+
+                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "1 + 3" && ((Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5) || Me.HealthPercent < 10), "Feign Death"),
+
+                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "2 + 3" && ((Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal) || Me.HealthPercent < 10), "Feign Death"),
+
+                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "1 + 2 + 3" && ((Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5) || (Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal) || Me.HealthPercent < 10), "Feign Death"),
+
+                                castSelfSpell("Deterrence", ret => PvPBeastSettings.Instance.DETR && Me.HealthPercent < 15 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid, "Deterrence"),
+
+                                castSpell("Scatter Shot", ret => PvPBeastSettings.Instance.ScatterBox == "1. Interrupt" && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && !Invulnerable(Me.CurrentTarget), "Scatter Shot"),
+
+                                castSpell("Scatter Shot", ret => PvPBeastSettings.Instance.ScatterBox == "2. Defense" && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Invulnerable(Me.CurrentTarget), "Scatter Shot"),
+
+                                castSpell("Scatter Shot", ret => PvPBeastSettings.Instance.ScatterBox == "1 + 2" && ((Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Invulnerable(Me.CurrentTarget))
+                                || (Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast)), "Scatter Shot"),
+
+                                castOnTarget("Concussive Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FCONC && validFocus() && !SelfControl(Me.FocusedUnit) && NeedSnare(Me.FocusedUnit) && !Invulnerable(Me.FocusedUnit) && MyDebuffTime("Concussive Shot", Me.FocusedUnit) <= 1 && Me.FocusedUnit.Distance <= 40, "Concussive Shot"),
+
+                                castOnTarget("Scatter Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FSCA && validFocus() && !SelfControl(Me.FocusedUnit) && Me.FocusedUnit.Distance <= 20 && !Invulnerable(Me.FocusedUnit), "Scatter Shot"),
+
+                                castSpell("Silencing Shot", ret => PvPBeastSettings.Instance.TL1_SS && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && (WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType == WoWSpellEffectType.Heal || Me.HealthPercent < 50), "Silencing Shot"),
+
+                                castOnTarget("Wyvern Sting", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FWVS && validFocus() && !Invulnerable(Me.FocusedUnit) && !Me.FocusedUnit.HasAura("Freezing Trap") && Me.FocusedUnit.Distance <= 40, "Wyvern Sting"),
+
+                                castOnUnitLocation("Binding Shot", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL1_BS && Me.CurrentTarget.Distance < 15 && MeleeClass(Me.CurrentTarget), "Binding Shot"),
+
+                                castSpell("Concussive Shot", ret => PvPBeastSettings.Instance.CONC && NeedSnare(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && MyDebuffTime("Concussive Shot", Me.CurrentTarget) <= 1 && Me.CurrentTarget.Distance <= 40, "Concussive Shot"),
+
+                                new Decorator(ret => PvPBeastSettings.Instance.FFZT && validFocus() && !SpellManager.Spells["Freezing Trap"].Cooldown && Me.FocusedUnit.Distance < 40 && (!Me.FocusedUnit.IsMoving || Me.FocusedUnit.HasAura("Scatter Shot") || Me.FocusedUnit.HasAura("Wyvern Sting")),
+                                    new PrioritySelector(
+                                        castSelfSpell("Trap Launcher", ret => !Me.HasAura("Trap Launcher"), "Trap Launcher Activated"),
+                                        castOnUnitLocation("Freezing Trap", ret => Me.FocusedUnit, ret => Me.HasAura("Trap Launcher"), "Freezing Trap Launched")
+                                    )
+                                ),
+
+                                castSpell("Fervor", ret => PvPBeastSettings.Instance.TL3_FV && (Me.CurrentFocus < 60 || (Me.HasAura("The Beast within") && Me.CurrentFocus < 40)), "Fervor"),
+
+                                castSpell("Rapid Fire", ret => PvPBeastSettings.Instance.RF && (SpellManager.Spells["Bestial Wrath"].Cooldown || !PvPBeastSettings.Instance.BWR)
+                                && !Me.HasAura("Rapid Fire") && !Me.HasAura("The Beast Within")
+                                && !Me.HasAura("Bloodlust") && !Me.HasAura("Heroism") && !Me.HasAura("Ancient Hysteria") && !Me.HasAura("Time Warp")
+                                && Me.CurrentTarget.CurrentHealth > 25000 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget), "Rapid Fire"),
+
+                                castSpell("Stampede", ret => PvPBeastSettings.Instance.STAM && Me.GotTarget && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && Me.CurrentTarget.Distance <= 30, "Stampede"),
+
+                                castSelfSpell("Bestial Wrath", ret => Me.GotAlivePet && PvPBeastSettings.Instance.BWR && (!PvPBeastSettings.Instance.TL4_LR || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 5
+                                || !SpellManager.Spells["Lynx Rush"].Cooldown) && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.HasAura("Rapid Fire")
+                                && !Me.HasAura("The Beast Within") && HostilePlayer(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget), "Bestial Wrath"),
+
+                                castSelfSpell("Readiness", ret => PvPBeastSettings.Instance.RDN
+                                && SpellManager.Spells["Rapid Fire"].CooldownTimeLeft.TotalSeconds > 2
+                                && SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 2
+                                && (!PvPBeastSettings.Instance.KCO || SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (!PvPBeastSettings.Instance.TL1_SS || !PvPBeastSettings.Instance.ARN || SpellManager.Spells["Silencing Shot"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (!PvPBeastSettings.Instance.TL1_WS || !PvPBeastSettings.Instance.ARN || SpellManager.Spells["Wyvern Sting"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (!PvPBeastSettings.Instance.TL1_BS || !PvPBeastSettings.Instance.ARN || SpellManager.Spells["Binding Shot"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (!PvPBeastSettings.Instance.TL2_EXH || !PvPBeastSettings.Instance.ARN || SpellManager.Spells["Exhilaration"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (!PvPBeastSettings.Instance.TL3_DB || SpellManager.Spells["Dire Beast"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (!PvPBeastSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (!PvPBeastSettings.Instance.TL4_AMOC || SpellManager.Spells["A Murder of Crows"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (!PvPBeastSettings.Instance.TL4_BSTRK || SpellManager.Spells["Blink Strike"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (!PvPBeastSettings.Instance.TL4_LR || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (!PvPBeastSettings.Instance.TL5_GLV || SpellManager.Spells["Glaive Toss"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (!PvPBeastSettings.Instance.TL5_PWR || SpellManager.Spells["Powershot"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (!PvPBeastSettings.Instance.TL5_BRG || SpellManager.Spells["Barrage"].CooldownTimeLeft.TotalSeconds > 2)
+                                && (PvPBeastSettings.Instance.IntimidateBox == "Never" || !PvPBeastSettings.Instance.ARN || SpellManager.Spells["Intimidation"].CooldownTimeLeft.TotalSeconds > 2), "Readiness"),
+
+                                castSelfSpell("Lifeblood", ret => PvPBeastSettings.Instance.LB && SpellManager.HasSpell("Lifeblood") && !SpellManager.Spells["Lifeblood"].Cooldown && Me.HealthPercent < 99, "Lifeblood"),
+                                
+                                new Decorator(ret => PvPBeastSettings.Instance.GE,
+                                UseEquippedItem(9)),
+                             
+                                /////////////////////////////////////////Racial Skills///////////////////////////////////////////
+                                new Decorator(ret => PvPBeastSettings.Instance.RS && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && Me.Race == WoWRace.Troll && HostilePlayer(Me.CurrentTarget) && (Me.CurrentTarget.HealthPercent > 15 || PvPBeastSettings.Instance.ARN) && !SpellManager.Spells["Berserking"].Cooldown,
+                                new Action(delegate
+                                {
+                                    Lua.DoString("RunMacroText('/Cast Berserking');");
+                                    return RunStatus.Failure;
+                                }
+                                )),
+
+                                new Decorator(ret => PvPBeastSettings.Instance.RS && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && Me.Race == WoWRace.Orc && HostilePlayer(Me.CurrentTarget) && (Me.CurrentTarget.HealthPercent > 15 || PvPBeastSettings.Instance.ARN) && !SpellManager.Spells["Blood Fury"].Cooldown,
+                                new Action(delegate
+                                {
+                                    Lua.DoString("RunMacroText('/Cast Blood Fury');");
+                                    return RunStatus.Failure;
+                                }
+                                )),
+                        
+                                new Decorator(ret => Me.CurrentTarget.Distance >= 5 && Me.CurrentTarget.Distance < 40 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.InLineOfSpellSight && !Me.CurrentTarget.IsMoving,
+                                    new PrioritySelector(
+                                        castSelfSpell("Trap Launcher", ret => !Me.HasAura("Trap Launcher"), "Trap Launcher Activated"),
+                                        new Decorator(ret => Me.HasAura("Trap Launcher"),
+                                            new PrioritySelector(
+                                                castOnUnitLocation("Ice Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Ice Trap"].Cooldown, "Ice Trap Launched"),
+                                                castOnUnitLocation("Snake Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL2 && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Snake Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Snake Trap Launched"),
+                                                castOnUnitLocation("Freezing Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL3 && RangedClass(Me.CurrentTarget) && !SpellManager.Spells["Freezing Trap"].Cooldown, "Freezing Trap Launched"),
+                                                castOnUnitLocation("Explosive Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL4 && !SpellManager.Spells["Explosive Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Explosive Trap Launched")
+                                            )
+                                        )
+                                    )
+                                ),
+                                new Decorator(ret => Me.CurrentTarget.Distance < 5 && !Invulnerable(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.CurrentTargetGuid == Me.Guid,
+                                    new PrioritySelector(
+                                        castSelfSpell("Trap Launcher", ret => Me.HasAura("Trap Launcher"), "Trap Launcher Deactivated"),
+                                        new Decorator(ret => Me.HasAura("Trap Launcher"),
+                                            new PrioritySelector(
+                                                castSelfSpell("Ice Trap", ret => PvPBeastSettings.Instance.ICET && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Ice Trap"].Cooldown, "Ice Trap Launched"),
+                                                castSelfSpell("Snake Trap", ret => PvPBeastSettings.Instance.SNAT && !SpellManager.Spells["Snake Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Snake Trap Launched"),
+                                                castSelfSpell("Freezing Trap", ret => PvPBeastSettings.Instance.FRET && RangedClass(Me.CurrentTarget) && !SpellManager.Spells["Freezing Trap"].Cooldown, "Freezing Trap Launched"),
+                                                castSelfSpell("Explosive Trap", ret => PvPBeastSettings.Instance.EXPT && !SpellManager.Spells["Explosive Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Explosive Trap Launched")
+                                            )
+                                        )
+                                    )
+                                ),
+
+                        ////////////////////////////// ASPECT SWITCHING /////////////////////////////////
+                        new Decorator(ret => PvPBeastSettings.Instance.AspectSwitching,
+                            new PrioritySelector(
+                                castSelfSpell("Aspect of the Hawk", ret => !Me.IsMoving && !Me.HasAura("Aspect of the Iron Hawk") && !Me.HasAura("Aspect of the Hawk"), "Aspect of the Hawk"),
+                                castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && !Me.HasAura("Aspect of the Fox") && Me.CurrentFocus < 50, "Aspect of the Fox")   
+                            )
+                        ),
+
+                        //////////////////////////////// SINGLE TARGET ROTATION ////////////////////////////////////
+                        new Decorator(ret => !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget),
+                            new PrioritySelector(
+                                castSpell("Hunter's Mark", ret => PvPBeastSettings.Instance.HM && !Me.CurrentTarget.HasAura("Hunter's Mark"), "Hunter's Mark"),
+
+                                castSpell("Kill Shot", ret => PvPBeastSettings.Instance.KSH && Me.CurrentTarget.HealthPercent <= 20, "Kill Shot"),
+
+                                castSpell("Serpent Sting", ret => PvPBeastSettings.Instance.SerpentBox == "Always" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1), "Serpent Sting"),
+
+                                castSpell("Serpent Sting", ret => PvPBeastSettings.Instance.SerpentBox == "Sometimes" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1) && Me.CurrentTarget.HealthPercent > 50, "Serpent Sting"),
+
+                                castSpell("Dire Beast", ret => PvPBeastSettings.Instance.TL3_DB, "Dire Beast"),
+
+                                castSpell("Widow Venom", ret => PvPBeastSettings.Instance.WVE && Me.CurrentFocus > 53 && HostilePlayer(Me.CurrentTarget) && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1 && (!IsMyAuraActive(Me.CurrentTarget, "Widow Venom") || MyDebuffTime("Widow Venom", Me.CurrentTarget) <= 1), "Widow Venom"),
+
+                                castSpell("Blink Strike", ret => PvPBeastSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40, "Blink Strike"),
+
+                                castSpell("Kill Command", ret => PvPBeastSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25, "Kill Command"),
+
+                                castSpell("Lynx Rush", ret => PvPBeastSettings.Instance.TL4_LR && Me.GotAlivePet && (!PvPBeastSettings.Instance.BWR || SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 5 || Me.HasAura("Bestial Wrath"))
+                                && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25, "Lynx Rush"),
+
+                                castSpell("Glaive Toss", ret => PvPBeastSettings.Instance.TL5_GLV, "Glaive Toss"),
+
+                                castSpell("Powershot", ret => PvPBeastSettings.Instance.TL5_PWR, "Powershot"),
+
+                                castSpell("Barrage", ret => PvPBeastSettings.Instance.TL5_BRG, "Barrage"),
+
+                                castSpell("A Murder of Crows", ret => PvPBeastSettings.Instance.TL4_AMOC && !IsMyAuraActive(Me.CurrentTarget, "A Murder of Crows"), "A Murder of Crows"),
+
+                                new Decorator(ret => PvPBeastSettings.Instance.FF && Me.HasAura("Frenzy") && !Me.HasAura("The Beast Within") && SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds >= 10,
+                                    new PrioritySelector(
+                                        castSpell("Focus Fire", ret => Me.Auras["Frenzy"].StackCount >= 5, "Focus Fire: 5 Stacks")
+                                    )
+                                ),
+
+                                castSpell("Focus Fire", ret => PvPBeastSettings.Instance.FF && Me.HasAura("Frenzy") && Me.Auras["Frenzy"].StackCount >= 1 && DebuffTime("Frenzy", Me) < 2, " Focus Fire: Running out of time"),
+
+                                new Decorator(ret => PvPBeastSettings.Instance.ARC && (!PvPBeastSettings.Instance.TL5_GLV || SpellManager.Spells["Glaive Toss"].Cooldown),
+                                    new PrioritySelector(
+                                        new Decorator(ret => PvPBeastSettings.Instance.KCO,
+                                            new PrioritySelector(
+                                                new Decorator(ret => !Me.HasAura("Thrill of the Hunt"),
+                                                    new PrioritySelector(
+                                                        new Decorator(ret => Me.GotAlivePet && SpellManager.Spells["Kill Command"].Cooldown && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 300,
+                                                            new PrioritySelector(
+                                                                new Decorator(ret => !Me.HasAura("The Beast Within"),
+                                                                    new PrioritySelector(
+                                                                        castSpell("Arcane Shot", ret => (Me.CurrentFocus > 60 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds <= 2) 
+                                                                        || (Me.CurrentFocus > 40 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 2), "Arcane Shot")
+                                                                    )
+                                                                ),
+                                                                new Decorator(ret => Me.HasAura("The Beast Within"),
+                                                                    new PrioritySelector(
+                                                                        castSpell("Arcane Shot", ret => (Me.CurrentFocus > 50 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds <= 2) 
+                                                                        || (Me.CurrentFocus > 30 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 2), "Arcane Shot")
+                                                                    )
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                ),
+                                                new Decorator(ret => Me.HasAura("Thrill of the Hunt"),
+                                                    new PrioritySelector(
+                                                        castSpell("Arcane Shot", ret => Me.GotAlivePet && SpellManager.Spells["Kill Command"].Cooldown && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 300, "Arcane Shot")
+                                                    )
+                                                )
+                                            )
+                                        ),
+                                        castSpell("Arcane Shot", ret => !PvPBeastSettings.Instance.KCO || !Me.GotAlivePet, "Arcane Shot")
+                                    )
+                                ),
+
+                                new Decorator(ret => Me.CurrentFocus > 105 && Me.IsCasting && (Me.CastingSpell.Name == "Cobra Shot" || Me.CastingSpell.Name == "Steady Shot") && Me.CurrentCastTimeLeft.TotalMilliseconds > 700,
+                                new Action(delegate
+                                {
+                                    SpellManager.StopCasting();
+                                    Logging.Write(Colors.Red, "Stopping Cobra Shot");
+                                    return RunStatus.Failure;
+                                }
+                                )),
+
+                                new Decorator(ret => !Me.IsCasting && (!PvPBeastSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].Cooldown) && ((!Me.HasAura("The Beast Within") && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 40)
+                                || ((Me.HasAura("The Beast Within") && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 20),
+                                    new PrioritySelector(
+                                        castSpell("Steady Shot", ret => Me.CurrentFocus < PvPBeastSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < PvPBeastSettings.Instance.FocusShots / 2), "Cobra Shot")
+                                    )
+                                ) 
+                            ))
+                        ))
+                    ))
+                ));
+            }
         }
         #endregion
     }
 }
+

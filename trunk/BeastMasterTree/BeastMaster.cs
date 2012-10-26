@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 2, 0);
+        public static readonly Version Version = new Version(2, 2, 2);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -180,7 +180,7 @@ namespace TheBeastMasterTree
         private bool IsTargetBoss()
         {
             if (Me.CurrentTarget.Name.Contains("Dummy") || Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
-               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > Me.MaxHealth * 11))
+               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > Me.MaxHealth * 12))
                 return true;
 
             else return false;
@@ -188,7 +188,7 @@ namespace TheBeastMasterTree
         private bool IsTargetEasyBoss()
         {
             if (Me.CurrentTarget.Name.Contains("Dummy") || Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
-               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > Me.MaxHealth * 5))
+               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > Me.MaxHealth * 6))
                 return true;
 
             else return false;
@@ -206,7 +206,7 @@ namespace TheBeastMasterTree
 
         public static bool canCast(string spellName, WoWUnit target)
         {
-            if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 200 && Me.CurrentFocus >= SpellManager.Spells[spellName].PowerCost && !Me.IsChanneling)
+            if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 200 && Me.CurrentFocus >= SpellManager.Spells[spellName].PowerCost && !Me.IsChanneling && (!Me.IsCasting || Me.CurrentCastTimeLeft.TotalMilliseconds < 350))
             {
                 SpellManager.Cast(spellName, target);
                 return true;
@@ -235,9 +235,22 @@ namespace TheBeastMasterTree
             return castSpell(spellName, ret => Me.CurrentTarget, cond, label);
         }
 
-        public static Composite castTargetSpell(string spellName, WoWUnit target, CanRunDecoratorDelegate cond, string label)
+        public static Composite castOnTarget(string spellName, UnitSelection onUnit, CanRunDecoratorDelegate cond, string label)
         {
-            return castSpell(spellName, ret => target, cond, label);
+            return new Decorator(
+                delegate(object a)
+                {
+                    if (!cond(a))
+                        return false;
+                    //CLU.TroubleshootLog("Cancast: {0} = {1}", name, CanCast(name, onUnit(a)));
+                    if (!canCast(spellName, onUnit(a)))
+                        return false;
+
+                    return onUnit(a) != null;
+                },
+            new Sequence(
+                new Action(a => standardLog("[Casting] {0} on {1}", label, safeName(onUnit(a)))),
+                new Action(a => SpellManager.Cast(spellName, onUnit(a)))));
         }
 
         public static Composite castSelfSpell(string spellName, CanRunDecoratorDelegate cond, string label)
@@ -510,20 +523,6 @@ namespace TheBeastMasterTree
 
         #endregion
 
-        /*
-        #region CombatStart
-
-        private void AutoAttack()
-        {
-            if (!Me.IsAutoAttacking && Me.GotTarget && HaltFeign() && !SelfControl(Me.CurrentTarget))
-            {
-                Lua.DoString("StartAttack()");  
-            }
-
-        }
-        #endregion
-        */
-
         #region Combat
 
         public override Composite CombatBehavior
@@ -694,16 +693,16 @@ namespace TheBeastMasterTree
                                 castSelfSpell("Lifeblood", ret => BeastMasterSettings.Instance.LB && IsTargetEasyBoss(), "Lifeblood"),
                                 
 
-                                new Decorator(ret => BeastMasterSettings.Instance.GE && IsTargetBoss(),
+                                new Decorator(ret => BeastMasterSettings.Instance.GE && IsTargetEasyBoss(),
                                 UseEquippedItem(9)),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.T1 && IsTargetBoss(),
+                                new Decorator(ret => BeastMasterSettings.Instance.T1 && IsTargetEasyBoss(),
                                 UseEquippedItem(12)),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.T2 && IsTargetBoss(),
+                                new Decorator(ret => BeastMasterSettings.Instance.T2 && IsTargetEasyBoss(),
                                 UseEquippedItem(13)),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.RS && Me.Race == WoWRace.Troll && IsTargetBoss() && !SpellManager.Spells["Berserking"].Cooldown,
+                                new Decorator(ret => BeastMasterSettings.Instance.RS && Me.Race == WoWRace.Troll && IsTargetEasyBoss() && !SpellManager.Spells["Berserking"].Cooldown,
                                 new Action(delegate
                                 {
                                     Lua.DoString("RunMacroText('/Cast Berserking');");
@@ -711,7 +710,7 @@ namespace TheBeastMasterTree
                                 }
                                 )),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.RS && Me.Race == WoWRace.Orc && IsTargetBoss() && !SpellManager.Spells["Blood Fury"].Cooldown,
+                                new Decorator(ret => BeastMasterSettings.Instance.RS && Me.Race == WoWRace.Orc && IsTargetEasyBoss() && !SpellManager.Spells["Blood Fury"].Cooldown,
                                 new Action(delegate
                                 {
                                     Lua.DoString("RunMacroText('/Cast Blood Fury');");
@@ -724,7 +723,7 @@ namespace TheBeastMasterTree
                         new Decorator(ret => BeastMasterSettings.Instance.AspectSwitching && HaltFeign() && Me.CurrentTarget != null && Me.CurrentTarget.IsAlive && !Me.Mounted,
                             new PrioritySelector(
                                 castSelfSpell("Aspect of the Hawk", ret => !Me.IsMoving && !Me.HasAura("Aspect of the Iron Hawk") && !Me.HasAura("Aspect of the Hawk"), "Aspect of the Hawk"),
-                                castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && !Me.HasAura("Aspect of the Fox") && Me.CurrentFocus < 40, "Aspect of the Fox")   
+                                castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && !Me.HasAura("Aspect of the Fox") && Me.CurrentFocus < 50, "Aspect of the Fox")   
                             )
                         ),
                         //////////////////////////////// SINGLE TARGET ROTATION ////////////////////////////////////
