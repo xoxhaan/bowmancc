@@ -246,6 +246,8 @@ namespace PvPBeast
             FConcussive.Checked = PvPBeastSettings.Instance.FCONC;
             FScatter.Checked = PvPBeastSettings.Instance.FSCA;
             FWyvern.Checked = PvPBeastSettings.Instance.FWVS;
+            FBind.Checked = PvPBeastSettings.Instance.FBS;
+            FSilence.Checked = PvPBeastSettings.Instance.FSS;
             FFreeze.Checked = PvPBeastSettings.Instance.FFZT;
 			KillShot.Checked = PvPBeastSettings.Instance.KSH;
 			Deterrence.Checked = PvPBeastSettings.Instance.DETR;
@@ -920,6 +922,28 @@ namespace PvPBeast
             else
             {
                 PvPBeastSettings.Instance.FWVS = false;
+            }
+        }
+        private void FBind_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FBind.Checked == true)
+            {
+                PvPBeastSettings.Instance.FBS = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.FBS = false;
+            }
+        }
+        private void FSilence_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FSilence.Checked == true)
+            {
+                PvPBeastSettings.Instance.FSS = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.FSS = false;
             }
         }
         private void FFreeze_CheckedChanged(object sender, EventArgs e)
