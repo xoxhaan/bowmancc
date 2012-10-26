@@ -149,6 +149,8 @@
             this.TL4_Crows = new System.Windows.Forms.RadioButton();
             this.TL4_Blink = new System.Windows.Forms.RadioButton();
             this.label18 = new System.Windows.Forms.Label();
+            this.FBind = new System.Windows.Forms.CheckBox();
+            this.FSilence = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -294,6 +296,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.FSilence);
+            this.groupBox4.Controls.Add(this.FBind);
             this.groupBox4.Controls.Add(this.FFreeze);
             this.groupBox4.Controls.Add(this.FWyvern);
             this.groupBox4.Controls.Add(this.FScatter);
@@ -1624,6 +1628,30 @@
             this.label18.Size = new System.Drawing.Size(100, 23);
             this.label18.TabIndex = 37;
             // 
+            // FBind
+            // 
+            this.FBind.AutoSize = true;
+            this.FBind.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FBind.Location = new System.Drawing.Point(8, 101);
+            this.FBind.Name = "FBind";
+            this.FBind.Size = new System.Drawing.Size(86, 17);
+            this.FBind.TabIndex = 47;
+            this.FBind.Text = "Binding Shot";
+            this.FBind.UseVisualStyleBackColor = true;
+            this.FBind.CheckedChanged += new System.EventHandler(this.FBind_CheckedChanged);
+            // 
+            // FSilence
+            // 
+            this.FSilence.AutoSize = true;
+            this.FSilence.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FSilence.Location = new System.Drawing.Point(8, 121);
+            this.FSilence.Name = "FSilence";
+            this.FSilence.Size = new System.Drawing.Size(94, 17);
+            this.FSilence.TabIndex = 48;
+            this.FSilence.Text = "Silencing Shot";
+            this.FSilence.UseVisualStyleBackColor = true;
+            this.FSilence.CheckedChanged += new System.EventHandler(this.FSilence_CheckedChanged);
+            // 
             // PvPBeastGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1799,6 +1827,8 @@
         private System.Windows.Forms.CheckBox FScatter;
         private System.Windows.Forms.CheckBox FWyvern;
         private System.Windows.Forms.CheckBox FFreeze;
+        private System.Windows.Forms.CheckBox FSilence;
+        private System.Windows.Forms.CheckBox FBind;
     }
 }
 

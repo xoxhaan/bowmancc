@@ -22,7 +22,7 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 5, 8);
+        public static readonly Version Version = new Version(2, 6, 1);
 
         public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
@@ -765,32 +765,36 @@ namespace PvPBeast
                         new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign() && !Me.IsDead,
                             new PrioritySelector(
 
-                                new Decorator(ret => PvPBeastSettings.Instance.FFZT && validFocus() && !SpellManager.Spells["Freezing Trap"].Cooldown && Me.FocusedUnit.Distance < 40 && (!Me.FocusedUnit.IsMoving || Me.FocusedUnit.HasAura("Scatter Shot") || Me.FocusedUnit.HasAura("Wyvern Sting")),
+                                new Decorator(ret => PvPBeastSettings.Instance.FFZT && validFocus() && !SpellManager.Spells["Freezing Trap"].Cooldown && Me.FocusedUnit.Distance < 40 && (!Me.FocusedUnit.IsMoving || Me.FocusedUnit.HasAura("Scatter Shot") || Me.FocusedUnit.HasAura("Wyvern Sting") || Me.FocusedUnit.HasAura("Binding Shot")),
                                     new PrioritySelector(
                                         castSelfSpell("Trap Launcher", ret => !Me.HasAura("Trap Launcher"), "Trap Launcher Activated"),
                                         castOnUnitLocation("Freezing Trap", ret => Me.FocusedUnit, ret => Me.HasAura("Trap Launcher"), "Freezing Trap Launched")
                                     )
                                 ),
 
-                                castOnTarget("Wyvern Sting", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FWVS && validFocus() && !Invulnerable(Me.FocusedUnit) && !Me.FocusedUnit.HasAura("Freezing Trap") && Me.FocusedUnit.Distance <= 40, "Wyvern Sting"),
+                                castOnUnitLocation("Binding Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FBS && validFocus() && !SpellManager.Spells["Binding Shot"].Cooldown && Me.FocusedUnit.Distance <= 30, "Binding Shot Launched"),
+
+                                castOnTarget("Wyvern Sting", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FWVS && validFocus() && !Invulnerable(Me.FocusedUnit) && !Me.FocusedUnit.HasAura("Freezing Trap") && Me.FocusedUnit.Distance <= 35, "Wyvern Sting"),
 
                                 castOnTarget("Scatter Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FSCA && validFocus() && !SelfControl(Me.FocusedUnit) && Me.FocusedUnit.Distance <= 20 && !Invulnerable(Me.FocusedUnit), "Scatter Shot"),
 
+                                castOnTarget("Silencing Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FSS && Me.FocusedUnit.IsCasting && Me.FocusedUnit.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.FocusedUnit.CastingSpellId).SpellEffect1.EffectType == WoWSpellEffectType.Heal, "Silencing Shot"),
+                                
                                 castOnTarget("Concussive Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FCONC && validFocus() && !SelfControl(Me.FocusedUnit) && NeedSnare(Me.FocusedUnit) && !Invulnerable(Me.FocusedUnit) && MyDebuffTime("Concussive Shot", Me.FocusedUnit) <= 1 && Me.FocusedUnit.Distance <= 40, "Concussive Shot"),
 
-                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1. Interrupt" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast, "Intimidation"),
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1. Interrupt" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast, "Intimidation"),
 
                                 castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "2. Low Health" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth, "Intimidation"),
 
                                 castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "3. Protection" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget), "Intimidation"),
 
-                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 2" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast) || Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth), "Intimidation"),
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 2" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast) || Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth), "Intimidation"),
 
-                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast) || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget))), "Intimidation"),
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast) || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget))), "Intimidation"),
 
                                 castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "2 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && (Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget))), "Intimidation"),
 
-                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 2 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast) || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget)) || (Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth)), "Intimidation"),
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 2 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast) || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget)) || (Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth)), "Intimidation"),
 
                                 castSelfSpell("Every Man for Himself", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Human && !SpellManager.Spells["Every Man for Himself"].Cooldown && !PvPBeastSettings.Instance.T2MOB && !PvPBeastSettings.Instance.T1MOB && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2), "Every Man for Himself"),
 
@@ -800,11 +804,11 @@ namespace PvPBeast
 
                                 castSelfSpell("Stoneform", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Dwarf && !SpellManager.Spells["Stoneform"].Cooldown && StyxWoW.Me.GetAllAuras().Any(a => a.Spell.Mechanic == WoWSpellMechanic.Bleeding || a.Spell.DispelType == WoWDispelType.Disease || a.Spell.DispelType == WoWDispelType.Poison), "Stoneform"),
 
-                                castSelfSpell("War Stomp", ret => PvPBeastSettings.Instance.INT && Me.Race == WoWRace.Tauren && PvPBeastSettings.Instance.RS && Me.CurrentTarget.Distance < 8 && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && (SpellManager.Spells["Silencing Shot"].CooldownTimeLeft.TotalSeconds > 1 || Me.CurrentTarget.Distance < 5), "War Stomp"),
+                                castSelfSpell("War Stomp", ret => PvPBeastSettings.Instance.INT && Me.Race == WoWRace.Tauren && PvPBeastSettings.Instance.RS && Me.CurrentTarget.Distance < 8 && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && (SpellManager.Spells["Silencing Shot"].CooldownTimeLeft.TotalSeconds > 1 || Me.CurrentTarget.Distance < 5), "War Stomp"),
 
                                 castSelfSpell("War Stomp", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Tauren && (Me.CurrentTarget.Distance < 8 || Me.CurrentTarget.Pet.Distance < 8) && (Me.CurrentTarget.CurrentTargetGuid == Me.Guid || Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid) && (NeedSnare(Me.CurrentTarget) || NeedSnare(Me.CurrentTarget.Pet)) && (!Invulnerable(Me.CurrentTarget) || Me.CurrentTarget.Pet.Distance < 8), "War Stomp"),
 
-                                castSpell("Arcane Torrent", ret => PvPBeastSettings.Instance.INT && PvPBeastSettings.Instance.RS && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && Me.CurrentTarget.Distance >= 5, "Arcane Torrent"),
+                                castSpell("Arcane Torrent", ret => PvPBeastSettings.Instance.INT && PvPBeastSettings.Instance.RS && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && Me.CurrentTarget.Distance >= 5, "Arcane Torrent"),
 
                                 new Decorator(ret => PvPBeastSettings.Instance.WEB && NeedSnare(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !WoWSpell.FromId(54706).Cooldown && Me.CurrentTarget.Distance <= 30,
                                 new Action(delegate
@@ -817,28 +821,28 @@ namespace PvPBeast
 
                                 castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "1. Pet Near" && Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5, "Feign Death"),
 
-                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "2. Target Casting" && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal, "Feign Death"),
+                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "2. Target Casting" && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal, "Feign Death"),
 
                                 castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "3. Low Health" && Me.HealthPercent < 10, "Feign Death"),
 
-                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "1 + 2" && ((Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5) || (Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal)), "Feign Death"),
+                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "1 + 2" && ((Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5) || (Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal)), "Feign Death"),
 
                                 castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "1 + 3" && ((Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5) || Me.HealthPercent < 10), "Feign Death"),
 
-                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "2 + 3" && ((Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal) || Me.HealthPercent < 10), "Feign Death"),
+                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "2 + 3" && ((Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal) || Me.HealthPercent < 10), "Feign Death"),
 
-                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "1 + 2 + 3" && ((Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5) || (Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal) || Me.HealthPercent < 10), "Feign Death"),
+                                castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "1 + 2 + 3" && ((Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5) || (Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal) || Me.HealthPercent < 10), "Feign Death"),
 
                                 castSelfSpell("Deterrence", ret => PvPBeastSettings.Instance.DETR && Me.HealthPercent < 15 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid, "Deterrence"),
 
-                                castSpell("Scatter Shot", ret => PvPBeastSettings.Instance.ScatterBox == "1. Interrupt" && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && !Invulnerable(Me.CurrentTarget), "Scatter Shot"),
+                                castSpell("Scatter Shot", ret => PvPBeastSettings.Instance.ScatterBox == "1. Interrupt" && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && !Invulnerable(Me.CurrentTarget), "Scatter Shot"),
 
                                 castSpell("Scatter Shot", ret => PvPBeastSettings.Instance.ScatterBox == "2. Defense" && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Invulnerable(Me.CurrentTarget), "Scatter Shot"),
 
                                 castSpell("Scatter Shot", ret => PvPBeastSettings.Instance.ScatterBox == "1 + 2" && ((Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Invulnerable(Me.CurrentTarget))
-                                || (Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast)), "Scatter Shot"),
+                                || (Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast)), "Scatter Shot"),
 
-                                castSpell("Silencing Shot", ret => PvPBeastSettings.Instance.TL1_SS && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && (WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType == WoWSpellEffectType.Heal || Me.HealthPercent < 50), "Silencing Shot"),
+                                castSpell("Silencing Shot", ret => PvPBeastSettings.Instance.TL1_SS && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && (WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType == WoWSpellEffectType.Heal || Me.HealthPercent < 50), "Silencing Shot"),
 
                                 castOnUnitLocation("Binding Shot", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL1_BS && Me.CurrentTarget.Distance < 15 && MeleeClass(Me.CurrentTarget), "Binding Shot"),
 

@@ -220,6 +220,12 @@ namespace PvPBeast
         [Setting, DefaultValue(false)]
         public bool FFZT { get; set; }
 
+        [Setting, DefaultValue(false)]
+        public bool FBS { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool FSS { get; set; }
+
 		[Setting, DefaultValue(true)]
         public bool KSH { get; set; }
 
