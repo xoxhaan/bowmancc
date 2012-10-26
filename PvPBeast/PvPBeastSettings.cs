@@ -122,7 +122,7 @@ namespace PvPBeast
         public bool CP { get; set; }
 
         [Setting, DefaultValue(false)]
-        public bool CW { get; set; }
+        public bool STAM { get; set; }
 
         [Setting, DefaultValue(false)]
         public bool RP { get; set; }
@@ -175,9 +175,6 @@ namespace PvPBeast
         [Setting, DefaultValue(1)]
         public int PET { get; set; }
 
-        [Setting, DefaultValue(5)]
-        public int FFS { get; set; }
-
         [Setting, DefaultValue(75)]
         public int FocusShots { get; set; }
 
@@ -192,12 +189,6 @@ namespace PvPBeast
 
         [Setting, DefaultValue(70)]
         public int SpiritHealth_Focus { get; set; }
-
-        [Setting, DefaultValue(60)]
-        public int StamHealth_Me { get; set; }
-
-        [Setting, DefaultValue(40)]
-        public int StamHealth_Focus { get; set; }
 
         [Setting, DefaultValue(true)]
         public bool AspectSwitching { get; set; }
@@ -216,7 +207,19 @@ namespace PvPBeast
 		
 		[Setting, DefaultValue(true)]
         public bool CONC { get; set; }
-		
+
+        [Setting, DefaultValue(true)]
+        public bool FCONC { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool FSCA { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool FWVS { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool FFZT { get; set; }
+
 		[Setting, DefaultValue(true)]
         public bool KSH { get; set; }
 
@@ -246,9 +249,6 @@ namespace PvPBeast
 
         [Setting, DefaultValue("Never")]
         public string SpiritMendBox { get; set; }
-
-        [Setting, DefaultValue("Never")]
-        public string StampedeMendBox { get; set; }
 		
     }
 }
