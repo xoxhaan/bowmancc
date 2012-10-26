@@ -22,7 +22,7 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 6, 1);
+        public static readonly Version Version = new Version(2, 6, 2);
 
         public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
@@ -617,8 +617,8 @@ namespace PvPBeast
                                         return RunStatus.Failure;
                                     }
                                     )),
-                                castSelfSpell("Mend Pet", ret => PvPBeastSettings.Instance.MP && Me.GotAlivePet && !Me.Pet.HasAura("Mend Pet") && (isStunned(Me.Pet).TotalSeconds > 0 || isForsaken(Me.Pet).TotalSeconds > 0 || isRooted(Me.Pet).TotalMilliseconds > 0 || isSlowed(Me.Pet) || isControlled(Me.Pet).TotalSeconds > 0 || Me.Pet.HealthPercent < PvPBeastSettings.Instance.MendHealth), "Mend Pet"),
-
+                                castSelfSpell("Mend Pet", ret => PvPBeastSettings.Instance.MP && Me.GotAlivePet && !Me.Pet.HasAura("Mend Pet") && Me.Pet.HealthPercent < PvPBeastSettings.Instance.MendHealth, "Mend Pet"),
+                                /*  (isStunned(Me.Pet).TotalSeconds > 0 || isForsaken(Me.Pet).TotalSeconds > 0 || isRooted(Me.Pet).TotalMilliseconds > 0 || isSlowed(Me.Pet) || isControlled(Me.Pet).TotalSeconds > 0 ||  <- Mend Pet code for use with Glyph */
                                 castSelfSpell("Exhilaration", ret => PvPBeastSettings.Instance.TL2_EXH && (Me.HealthPercent < 70 || (Me.GotAlivePet && Me.Pet.HealthPercent < 15 
                                 && SpellManager.HasSpell("Heart of the Phoenix") && SpellManager.Spells["Heart of the Phoenix"].CooldownTimeLeft.TotalSeconds > 5)
                                 || (Me.GotAlivePet && Me.Pet.HealthPercent < 15 && !SpellManager.HasSpell("Heart of the Phoenix"))), "Exhilaration"),
@@ -669,86 +669,73 @@ namespace PvPBeast
 
                                 castSelfSpell("Master's Call", ret => isSlowed(Me) || isRooted(Me).TotalMilliseconds > 0, "Master's Call"),
 
-                             //////////////////////////////// Trinkets ///////////////////////////////////////
-                             /*
-                                new Decorator(ret => PvPBeastSettings.Instance.T1MOB && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0 && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2),
-                                UseEquippedItem(12)),
-
-                                new Decorator(ret => PvPBeastSettings.Instance.T2MOB && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0 && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2),
-                                UseEquippedItem(13)),
-
-                                new Decorator(ret => PvPBeastSettings.Instance.T1DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 15 && Me.CurrentTarget.Distance > 6 && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0,
-                                UseEquippedItem(12)),
-
-                                new Decorator(ret => PvPBeastSettings.Instance.T1DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
-                                UseEquippedItem(12)),                            
-
-                                new Decorator(ret => PvPBeastSettings.Instance.T2DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 15 && Me.CurrentTarget.Distance > 9 && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0,
-                                UseEquippedItem(13)),
-
-                                new Decorator(ret => PvPBeastSettings.Instance.T2DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
-                                UseEquippedItem(13)),      
-                          */
-                                new Decorator(ret => PvPBeastSettings.Instance.T1MOB && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0 && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2),
-                                new Action(delegate
-                                    {
-                                        Lua.DoString("RunMacroText('/use 13');");
-                                        {
-                                            Logging.Write(Colors.Aquamarine, "Trinket 1 Mobility");
-                                        }
-                                        return RunStatus.Failure;
-                                    }
-                                )),
-                                new Decorator(ret => PvPBeastSettings.Instance.T1DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 15 && Me.CurrentTarget.Distance > 6 && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0,
-                                new Action(delegate
-                                    {
-                                        Lua.DoString("RunMacroText('/use 13');");
-                                        {
-                                            Logging.Write(Colors.Aquamarine, "Trinket 1 Damage");
-                                        }
-                                        return RunStatus.Failure;
-                                    }
-                                )),
-                                new Decorator(ret => PvPBeastSettings.Instance.T1DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
-                                new Action(delegate
-                                    {
-                                        Lua.DoString("RunMacroText('/use 13');");
-                                        {
-                                            Logging.Write(Colors.Aquamarine, "Trinket 1 Defense");
-                                        }
-                                        return RunStatus.Failure;
-                                    }
-                                )),
-                                new Decorator(ret => PvPBeastSettings.Instance.T2MOB && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0 && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2),
-                                new Action(delegate
-                                    {
-                                        Lua.DoString("RunMacroText('/use 14');");
-                                        {
-                                            Logging.Write(Colors.Aquamarine, "Trinket 2 Mobility");
-                                        }
-                                        return RunStatus.Failure;
-                                    }
-                                )),
-                                new Decorator(ret => PvPBeastSettings.Instance.T2DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent > 15 && Me.CurrentTarget.Distance > 9 && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0,
-                                new Action(delegate
-                                    {
-                                        Lua.DoString("RunMacroText('/use 14');");
-                                        {
-                                            Logging.Write(Colors.Aquamarine, "Trinket 2 Damage");
-                                        }
-                                        return RunStatus.Failure;
-                                    }
-                                )),
-                                new Decorator(ret => PvPBeastSettings.Instance.T2DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
-                                new Action(delegate
-                                    {
-                                        Lua.DoString("RunMacroText('/use 14');");
-                                        {
-                                            Logging.Write(Colors.Aquamarine, "Trinket 2 Defense");
-                                        }
-                                        return RunStatus.Failure;
-                                    }
-                                )),
+                             //////////////////////////////// Trinkets ///////////////////////////////////////  
+                                new Decorator(ret => Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Usable && Me.Inventory.Equipped.Trinket1.Cooldown <= 0,
+                                    new PrioritySelector(
+                                        new Decorator(ret => PvPBeastSettings.Instance.T1MOB && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2),
+                                        new Action(delegate
+                                            {
+                                                Lua.DoString("RunMacroText('/use 13');");
+                                                {
+                                                    Logging.Write(Colors.Aquamarine, "Trinket 1 Mobility");
+                                                }
+                                                return RunStatus.Failure;
+                                            }
+                                        )),
+                                        new Decorator(ret => PvPBeastSettings.Instance.T1DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget),
+                                        new Action(delegate
+                                            {
+                                                Lua.DoString("RunMacroText('/use 13');");
+                                                {
+                                                    Logging.Write(Colors.Aquamarine, "Trinket 1 Damage");
+                                                }
+                                                return RunStatus.Failure;
+                                            }
+                                        )),
+                                        new Decorator(ret => PvPBeastSettings.Instance.T1DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
+                                        new Action(delegate
+                                            {
+                                                Lua.DoString("RunMacroText('/use 13');");
+                                                {
+                                                    Logging.Write(Colors.Aquamarine, "Trinket 1 Defense");
+                                                }
+                                                return RunStatus.Failure;
+                                            }
+                                        ))
+                                    )),
+                                new Decorator(ret => Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Usable && Me.Inventory.Equipped.Trinket2.Cooldown <= 0,
+                                    new PrioritySelector(
+                                        new Decorator(ret => PvPBeastSettings.Instance.T2MOB && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2),
+                                        new Action(delegate
+                                            {
+                                                Lua.DoString("RunMacroText('/use 14');");
+                                                {
+                                                    Logging.Write(Colors.Aquamarine, "Trinket 2 Mobility");
+                                                }
+                                                return RunStatus.Failure;
+                                            }
+                                        )),
+                                        new Decorator(ret => PvPBeastSettings.Instance.T2DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget),
+                                        new Action(delegate
+                                            {
+                                                Lua.DoString("RunMacroText('/use 14');");
+                                                {
+                                                    Logging.Write(Colors.Aquamarine, "Trinket 2 Damage");
+                                                }
+                                                return RunStatus.Failure;
+                                            }
+                                        )),
+                                        new Decorator(ret => PvPBeastSettings.Instance.T2DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
+                                        new Action(delegate
+                                            {
+                                                Lua.DoString("RunMacroText('/use 14');");
+                                                {
+                                                    Logging.Write(Colors.Aquamarine, "Trinket 2 Defense");
+                                                }
+                                                return RunStatus.Failure;
+                                            }
+                                        ))
+                                    )),
 
                                 new Decorator(ret => PvPBeastSettings.Instance.MDPet && Me.GotAlivePet && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Me.CurrentTarget.IsPlayer && !IsMyAuraActive(Me, "Misdirection")
                                     && !WoWSpell.FromId(34477).Cooldown && !SpellManager.Spells["Misdirection"].Cooldown,
@@ -880,8 +867,8 @@ namespace PvPBeast
                                 && (PvPBeastSettings.Instance.IntimidateBox == "Never" || !PvPBeastSettings.Instance.ARN || SpellManager.Spells["Intimidation"].CooldownTimeLeft.TotalSeconds > 2), "Readiness"),
 
                                 castSelfSpell("Lifeblood", ret => PvPBeastSettings.Instance.LB && SpellManager.HasSpell("Lifeblood") && !SpellManager.Spells["Lifeblood"].Cooldown && Me.HealthPercent < 99, "Lifeblood"),
-                                
-                                new Decorator(ret => PvPBeastSettings.Instance.GE && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.Inventory.Equipped.Hands != null && Me.Inventory.Equipped.Hands.Cooldown <= 0,
+
+                                new Decorator(ret => PvPBeastSettings.Instance.GE && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.Inventory.Equipped.Hands != null && Me.Inventory.Equipped.Hands.Cooldown <= 0 && Me.Inventory.Equipped.Hands.Usable,
                                 new Action(delegate
                                  {
                                      Lua.DoString("RunMacroText('/use 10');");
@@ -951,6 +938,8 @@ namespace PvPBeast
 
                                 castSpell("Kill Shot", ret => PvPBeastSettings.Instance.KSH && Me.CurrentTarget.HealthPercent <= 20, "Kill Shot"),
 
+                                castSpell("Lynx Rush", ret => PvPBeastSettings.Instance.TL4_LR && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25, "Lynx Rush"),
+
                                 castSpell("Serpent Sting", ret => PvPBeastSettings.Instance.SerpentBox == "Always" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1), "Serpent Sting"),
 
                                 castSpell("Serpent Sting", ret => PvPBeastSettings.Instance.SerpentBox == "Sometimes" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1) && Me.CurrentTarget.HealthPercent > 50, "Serpent Sting"),
@@ -962,9 +951,6 @@ namespace PvPBeast
                                 castSpell("Blink Strike", ret => PvPBeastSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40, "Blink Strike"),
 
                                 castSpell("Kill Command", ret => PvPBeastSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25, "Kill Command"),
-
-                                castSpell("Lynx Rush", ret => PvPBeastSettings.Instance.TL4_LR && Me.GotAlivePet && (!PvPBeastSettings.Instance.BWR || SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 5 || Me.HasAura("Bestial Wrath"))
-                                && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25, "Lynx Rush"),
 
                                 castSpell("Glaive Toss", ret => PvPBeastSettings.Instance.TL5_GLV, "Glaive Toss"),
 
