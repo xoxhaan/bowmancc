@@ -133,6 +133,7 @@
             this.TL4_Crows = new System.Windows.Forms.RadioButton();
             this.TL4_Blink = new System.Windows.Forms.RadioButton();
             this.label18 = new System.Windows.Forms.Label();
+            this.Belt = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -171,7 +172,7 @@
             // 
             this.Readiness.AutoSize = true;
             this.Readiness.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Readiness.Location = new System.Drawing.Point(7, 146);
+            this.Readiness.Location = new System.Drawing.Point(7, 149);
             this.Readiness.Name = "Readiness";
             this.Readiness.Size = new System.Drawing.Size(76, 17);
             this.Readiness.TabIndex = 24;
@@ -640,6 +641,7 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.Belt);
             this.groupBox5.Controls.Add(this.LifeBlood);
             this.groupBox5.Controls.Add(this.Rapid);
             this.groupBox5.Controls.Add(this.Gloves);
@@ -660,7 +662,7 @@
             // 
             this.LifeBlood.AutoSize = true;
             this.LifeBlood.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.LifeBlood.Location = new System.Drawing.Point(7, 81);
+            this.LifeBlood.Location = new System.Drawing.Point(7, 72);
             this.LifeBlood.Name = "LifeBlood";
             this.LifeBlood.Size = new System.Drawing.Size(69, 17);
             this.LifeBlood.TabIndex = 5;
@@ -672,7 +674,7 @@
             // 
             this.Rapid.AutoSize = true;
             this.Rapid.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Rapid.Location = new System.Drawing.Point(7, 59);
+            this.Rapid.Location = new System.Drawing.Point(7, 52);
             this.Rapid.Name = "Rapid";
             this.Rapid.Size = new System.Drawing.Size(74, 17);
             this.Rapid.TabIndex = 4;
@@ -684,7 +686,7 @@
             // 
             this.Gloves.AutoSize = true;
             this.Gloves.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Gloves.Location = new System.Drawing.Point(7, 125);
+            this.Gloves.Location = new System.Drawing.Point(7, 111);
             this.Gloves.Name = "Gloves";
             this.Gloves.Size = new System.Drawing.Size(102, 17);
             this.Gloves.TabIndex = 3;
@@ -696,7 +698,7 @@
             // 
             this.CallWild.AutoSize = true;
             this.CallWild.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CallWild.Location = new System.Drawing.Point(7, 166);
+            this.CallWild.Location = new System.Drawing.Point(7, 167);
             this.CallWild.Name = "CallWild";
             this.CallWild.Size = new System.Drawing.Size(74, 17);
             this.CallWild.TabIndex = 25;
@@ -708,7 +710,7 @@
             // 
             this.Racial.AutoSize = true;
             this.Racial.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Racial.Location = new System.Drawing.Point(7, 103);
+            this.Racial.Location = new System.Drawing.Point(7, 92);
             this.Racial.Name = "Racial";
             this.Racial.Size = new System.Drawing.Size(78, 17);
             this.Racial.TabIndex = 2;
@@ -720,7 +722,7 @@
             // 
             this.Trinket2.AutoSize = true;
             this.Trinket2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Trinket2.Location = new System.Drawing.Point(7, 37);
+            this.Trinket2.Location = new System.Drawing.Point(7, 33);
             this.Trinket2.Name = "Trinket2";
             this.Trinket2.Size = new System.Drawing.Size(68, 17);
             this.Trinket2.TabIndex = 1;
@@ -732,7 +734,7 @@
             // 
             this.Trinket1.AutoSize = true;
             this.Trinket1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Trinket1.Location = new System.Drawing.Point(7, 16);
+            this.Trinket1.Location = new System.Drawing.Point(7, 14);
             this.Trinket1.Name = "Trinket1";
             this.Trinket1.Size = new System.Drawing.Size(68, 17);
             this.Trinket1.TabIndex = 0;
@@ -1457,6 +1459,18 @@
             this.label18.TabIndex = 14;
             this.label18.Text = "________________________________________________________________";
             // 
+            // Belt
+            // 
+            this.Belt.AutoSize = true;
+            this.Belt.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.Belt.Location = new System.Drawing.Point(7, 130);
+            this.Belt.Name = "Belt";
+            this.Belt.Size = new System.Drawing.Size(87, 17);
+            this.Belt.TabIndex = 26;
+            this.Belt.Text = "Belt Enchant";
+            this.Belt.UseVisualStyleBackColor = true;
+            this.Belt.CheckedChanged += new System.EventHandler(this.Belt_CheckedChanged);
+            // 
             // BeastGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1610,6 +1624,7 @@
         private System.Windows.Forms.CheckBox Frost;
         private System.Windows.Forms.CheckBox StExplosive;
         private System.Windows.Forms.NumericUpDown DetHealth;
+        private System.Windows.Forms.CheckBox Belt;
     }
 }
 
