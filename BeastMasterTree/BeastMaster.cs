@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 2, 2);
+        public static readonly Version Version = new Version(2, 2, 3);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -691,16 +691,50 @@ namespace TheBeastMasterTree
                                 && (SpellManager.HasSpell("Dire Beast") && SpellManager.Spells["Dire Beast"].CooldownTimeLeft.TotalSeconds > 2 || !BeastMasterSettings.Instance.TL3_DB), "Readiness"),
 
                                 castSelfSpell("Lifeblood", ret => BeastMasterSettings.Instance.LB && IsTargetEasyBoss(), "Lifeblood"),
-                                
+
+                                new Decorator(ret => BeastMasterSettings.Instance.FB && Me.CurrentTarget.CurrentHealth > 40000,
+                                new Action(delegate
+                                {
+                                    Lua.DoString("RunMacroText('/use 6');");
+                                    {
+                                        Logging.Write(Colors.Aquamarine, "Using Belt");
+                                    }
+                                    return RunStatus.Failure;
+                                }
+                                )),
 
                                 new Decorator(ret => BeastMasterSettings.Instance.GE && IsTargetEasyBoss(),
-                                UseEquippedItem(9)),
+                                new Action(delegate
+                                {
+                                    Lua.DoString("RunMacroText('/use 10');");
+                                    {
+                                        Logging.Write(Colors.Aquamarine, "Using Gloves");
+                                    }
+                                    return RunStatus.Failure;
+                                }
+                                )),
 
                                 new Decorator(ret => BeastMasterSettings.Instance.T1 && IsTargetEasyBoss(),
-                                UseEquippedItem(12)),
+                                new Action(delegate
+                                {
+                                    Lua.DoString("RunMacroText('/use 13');");
+                                    {
+                                        Logging.Write(Colors.Aquamarine, "Trinket 1");
+                                    }
+                                    return RunStatus.Failure;
+                                }
+                                )),
 
                                 new Decorator(ret => BeastMasterSettings.Instance.T2 && IsTargetEasyBoss(),
-                                UseEquippedItem(13)),
+                                new Action(delegate
+                                {
+                                    Lua.DoString("RunMacroText('/use 14');");
+                                    {
+                                        Logging.Write(Colors.Aquamarine, "Trinket 2");
+                                    }
+                                    return RunStatus.Failure;
+                                }
+                                )),
 
                                 new Decorator(ret => BeastMasterSettings.Instance.RS && Me.Race == WoWRace.Troll && IsTargetEasyBoss() && !SpellManager.Spells["Berserking"].Cooldown,
                                 new Action(delegate
