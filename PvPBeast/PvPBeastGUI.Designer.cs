@@ -39,6 +39,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.FSilence = new System.Windows.Forms.CheckBox();
+            this.FBind = new System.Windows.Forms.CheckBox();
             this.FFreeze = new System.Windows.Forms.CheckBox();
             this.FWyvern = new System.Windows.Forms.CheckBox();
             this.FScatter = new System.Windows.Forms.CheckBox();
@@ -112,9 +114,6 @@
             this.Trinket2Mob = new System.Windows.Forms.RadioButton();
             this.Trinket2Dmg = new System.Windows.Forms.RadioButton();
             this.Trinket2Def = new System.Windows.Forms.RadioButton();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.SaveButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
@@ -149,8 +148,6 @@
             this.TL4_Crows = new System.Windows.Forms.RadioButton();
             this.TL4_Blink = new System.Windows.Forms.RadioButton();
             this.label18 = new System.Windows.Forms.Label();
-            this.FBind = new System.Windows.Forms.CheckBox();
-            this.FSilence = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -309,6 +306,30 @@
             this.groupBox4.TabIndex = 16;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Focused Unit Attacks";
+            // 
+            // FSilence
+            // 
+            this.FSilence.AutoSize = true;
+            this.FSilence.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FSilence.Location = new System.Drawing.Point(8, 121);
+            this.FSilence.Name = "FSilence";
+            this.FSilence.Size = new System.Drawing.Size(94, 17);
+            this.FSilence.TabIndex = 48;
+            this.FSilence.Text = "Silencing Shot";
+            this.FSilence.UseVisualStyleBackColor = true;
+            this.FSilence.CheckedChanged += new System.EventHandler(this.FSilence_CheckedChanged);
+            // 
+            // FBind
+            // 
+            this.FBind.AutoSize = true;
+            this.FBind.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FBind.Location = new System.Drawing.Point(8, 101);
+            this.FBind.Name = "FBind";
+            this.FBind.Size = new System.Drawing.Size(86, 17);
+            this.FBind.TabIndex = 47;
+            this.FBind.Text = "Binding Shot";
+            this.FBind.UseVisualStyleBackColor = true;
+            this.FBind.CheckedChanged += new System.EventHandler(this.FBind_CheckedChanged);
             // 
             // FFreeze
             // 
@@ -991,9 +1012,6 @@
             this.tabPage1.Controls.Add(this.groupBox8);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.groupBox7);
-            this.tabPage1.Controls.Add(this.label7);
-            this.tabPage1.Controls.Add(this.label14);
-            this.tabPage1.Controls.Add(this.label10);
             this.tabPage1.Controls.Add(this.linkLabel1);
             this.tabPage1.Controls.Add(this.SaveButton);
             this.tabPage1.Controls.Add(this.label4);
@@ -1194,37 +1212,6 @@
             this.Trinket2Def.Text = "Defense (You take less damage)";
             this.Trinket2Def.UseVisualStyleBackColor = true;
             this.Trinket2Def.CheckedChanged += new System.EventHandler(this.Trinket2Def_CheckedChanged);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(19, 333);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(114, 13);
-            this.label7.TabIndex = 26;
-            this.label7.Text = "Recommendations:";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(33, 370);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(155, 13);
-            this.label14.TabIndex = 25;
-            this.label14.Text = "Glyphs: Marked For Death";
-            this.label14.Click += new System.EventHandler(this.label14_Click);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(31, 352);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(391, 13);
-            this.label10.TabIndex = 24;
-            this.label10.Text = "Talents: Silencing Shot, Iron Hawk, Fervor, Lynx Rush, Glaive Toss";
             // 
             // linkLabel1
             // 
@@ -1628,30 +1615,6 @@
             this.label18.Size = new System.Drawing.Size(100, 23);
             this.label18.TabIndex = 37;
             // 
-            // FBind
-            // 
-            this.FBind.AutoSize = true;
-            this.FBind.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FBind.Location = new System.Drawing.Point(8, 101);
-            this.FBind.Name = "FBind";
-            this.FBind.Size = new System.Drawing.Size(86, 17);
-            this.FBind.TabIndex = 47;
-            this.FBind.Text = "Binding Shot";
-            this.FBind.UseVisualStyleBackColor = true;
-            this.FBind.CheckedChanged += new System.EventHandler(this.FBind_CheckedChanged);
-            // 
-            // FSilence
-            // 
-            this.FSilence.AutoSize = true;
-            this.FSilence.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FSilence.Location = new System.Drawing.Point(8, 121);
-            this.FSilence.Name = "FSilence";
-            this.FSilence.Size = new System.Drawing.Size(94, 17);
-            this.FSilence.TabIndex = 48;
-            this.FSilence.Text = "Silencing Shot";
-            this.FSilence.UseVisualStyleBackColor = true;
-            this.FSilence.CheckedChanged += new System.EventHandler(this.FSilence_CheckedChanged);
-            // 
             // PvPBeastGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1745,8 +1708,6 @@
         private System.Windows.Forms.CheckBox Misdirect;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox FDBox;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.CheckBox FocusFire;
         private System.Windows.Forms.ComboBox IntiBox;
         private System.Windows.Forms.Label Intimidate;
@@ -1784,7 +1745,6 @@
         private System.Windows.Forms.RadioButton TL5_Glaive;
         private System.Windows.Forms.RadioButton TL5_Power;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton Trinket1_None;
         private System.Windows.Forms.RadioButton Trinket1Mob;
