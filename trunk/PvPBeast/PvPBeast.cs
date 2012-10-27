@@ -22,7 +22,7 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 6, 4);
+        public static readonly Version Version = new Version(2, 6, 5);
 
         public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
@@ -765,7 +765,7 @@ namespace PvPBeast
 
                                 castOnTarget("Scatter Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FSCA && validFocus() && !SelfControl(Me.FocusedUnit) && Me.FocusedUnit.Distance <= 20 && !Invulnerable(Me.FocusedUnit), "Scatter Shot"),
 
-                                castOnTarget("Silencing Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FSS && Me.FocusedUnit.IsCasting && Me.FocusedUnit.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.FocusedUnit.CastingSpellId).SpellEffect1.EffectType == WoWSpellEffectType.Heal, "Silencing Shot"),
+                                castOnTarget("Silencing Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FSS && validFocus() && Me.FocusedUnit.IsCasting && Me.FocusedUnit.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.FocusedUnit.CastingSpellId).SpellEffect1.EffectType == WoWSpellEffectType.Heal, "Silencing Shot"),
                                 
                                 castOnTarget("Concussive Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FCONC && validFocus() && !SelfControl(Me.FocusedUnit) && NeedSnare(Me.FocusedUnit) && !Invulnerable(Me.FocusedUnit) && MyDebuffTime("Concussive Shot", Me.FocusedUnit) <= 1 && Me.FocusedUnit.Distance <= 40, "Concussive Shot"),
 
