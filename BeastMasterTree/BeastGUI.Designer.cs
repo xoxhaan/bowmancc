@@ -69,6 +69,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.Belt = new System.Windows.Forms.CheckBox();
             this.LifeBlood = new System.Windows.Forms.CheckBox();
             this.Rapid = new System.Windows.Forms.CheckBox();
             this.Gloves = new System.Windows.Forms.CheckBox();
@@ -133,7 +134,7 @@
             this.TL4_Crows = new System.Windows.Forms.RadioButton();
             this.TL4_Blink = new System.Windows.Forms.RadioButton();
             this.label18 = new System.Windows.Forms.Label();
-            this.Belt = new System.Windows.Forms.CheckBox();
+            this.PetAtk = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -658,6 +659,18 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Cooldowns";
             // 
+            // Belt
+            // 
+            this.Belt.AutoSize = true;
+            this.Belt.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.Belt.Location = new System.Drawing.Point(7, 130);
+            this.Belt.Name = "Belt";
+            this.Belt.Size = new System.Drawing.Size(87, 17);
+            this.Belt.TabIndex = 26;
+            this.Belt.Text = "Belt Enchant";
+            this.Belt.UseVisualStyleBackColor = true;
+            this.Belt.CheckedChanged += new System.EventHandler(this.Belt_CheckedChanged);
+            // 
             // LifeBlood
             // 
             this.LifeBlood.AutoSize = true;
@@ -744,6 +757,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.PetAtk);
             this.groupBox3.Controls.Add(this.Frost);
             this.groupBox3.Controls.Add(this.Burrow);
             this.groupBox3.Controls.Add(this.SpiritMend);
@@ -755,9 +769,9 @@
             this.groupBox3.Controls.Add(this.MendPet);
             this.groupBox3.Controls.Add(this.RevivePet);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(11, 6);
+            this.groupBox3.Location = new System.Drawing.Point(11, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(150, 185);
+            this.groupBox3.Size = new System.Drawing.Size(150, 186);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Pet options";
@@ -766,7 +780,7 @@
             // 
             this.Frost.AutoSize = true;
             this.Frost.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Frost.Location = new System.Drawing.Point(6, 143);
+            this.Frost.Location = new System.Drawing.Point(6, 129);
             this.Frost.Name = "Frost";
             this.Frost.Size = new System.Drawing.Size(108, 17);
             this.Frost.TabIndex = 29;
@@ -778,7 +792,7 @@
             // 
             this.Burrow.AutoSize = true;
             this.Burrow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Burrow.Location = new System.Drawing.Point(6, 163);
+            this.Burrow.Location = new System.Drawing.Point(6, 148);
             this.Burrow.Name = "Burrow";
             this.Burrow.Size = new System.Drawing.Size(93, 17);
             this.Burrow.TabIndex = 28;
@@ -790,7 +804,7 @@
             // 
             this.SpiritMend.AutoSize = true;
             this.SpiritMend.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SpiritMend.Location = new System.Drawing.Point(6, 123);
+            this.SpiritMend.Location = new System.Drawing.Point(6, 110);
             this.SpiritMend.Name = "SpiritMend";
             this.SpiritMend.Size = new System.Drawing.Size(79, 17);
             this.SpiritMend.TabIndex = 27;
@@ -802,7 +816,7 @@
             // 
             this.Misdirect.AutoSize = true;
             this.Misdirect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Misdirect.Location = new System.Drawing.Point(6, 103);
+            this.Misdirect.Location = new System.Drawing.Point(6, 91);
             this.Misdirect.Name = "Misdirect";
             this.Misdirect.Size = new System.Drawing.Size(102, 17);
             this.Misdirect.TabIndex = 26;
@@ -814,7 +828,7 @@
             this.label2.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 83);
+            this.label2.Location = new System.Drawing.Point(6, 73);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 13);
             this.label2.TabIndex = 24;
@@ -823,7 +837,7 @@
             // MendHealth
             // 
             this.MendHealth.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MendHealth.Location = new System.Drawing.Point(76, 81);
+            this.MendHealth.Location = new System.Drawing.Point(76, 71);
             this.MendHealth.Name = "MendHealth";
             this.MendHealth.Size = new System.Drawing.Size(52, 20);
             this.MendHealth.TabIndex = 23;
@@ -857,7 +871,7 @@
             // 
             this.CallPet.AutoSize = true;
             this.CallPet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.CallPet.Location = new System.Drawing.Point(6, 17);
+            this.CallPet.Location = new System.Drawing.Point(6, 16);
             this.CallPet.Name = "CallPet";
             this.CallPet.Size = new System.Drawing.Size(62, 17);
             this.CallPet.TabIndex = 4;
@@ -869,7 +883,7 @@
             // 
             this.MendPet.AutoSize = true;
             this.MendPet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MendPet.Location = new System.Drawing.Point(6, 61);
+            this.MendPet.Location = new System.Drawing.Point(6, 54);
             this.MendPet.Name = "MendPet";
             this.MendPet.Size = new System.Drawing.Size(72, 17);
             this.MendPet.TabIndex = 2;
@@ -881,7 +895,7 @@
             // 
             this.RevivePet.AutoSize = true;
             this.RevivePet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RevivePet.Location = new System.Drawing.Point(6, 39);
+            this.RevivePet.Location = new System.Drawing.Point(6, 35);
             this.RevivePet.Name = "RevivePet";
             this.RevivePet.Size = new System.Drawing.Size(79, 17);
             this.RevivePet.TabIndex = 1;
@@ -1459,17 +1473,17 @@
             this.label18.TabIndex = 14;
             this.label18.Text = "________________________________________________________________";
             // 
-            // Belt
+            // PetAtk
             // 
-            this.Belt.AutoSize = true;
-            this.Belt.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Belt.Location = new System.Drawing.Point(7, 130);
-            this.Belt.Name = "Belt";
-            this.Belt.Size = new System.Drawing.Size(87, 17);
-            this.Belt.TabIndex = 26;
-            this.Belt.Text = "Belt Enchant";
-            this.Belt.UseVisualStyleBackColor = true;
-            this.Belt.CheckedChanged += new System.EventHandler(this.Belt_CheckedChanged);
+            this.PetAtk.AutoSize = true;
+            this.PetAtk.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PetAtk.Location = new System.Drawing.Point(6, 166);
+            this.PetAtk.Name = "PetAtk";
+            this.PetAtk.Size = new System.Drawing.Size(128, 17);
+            this.PetAtk.TabIndex = 30;
+            this.PetAtk.Text = "Attack Current Target";
+            this.PetAtk.UseVisualStyleBackColor = true;
+            this.PetAtk.CheckedChanged += new System.EventHandler(this.PetAtk_CheckedChanged);
             // 
             // BeastGUI
             // 
@@ -1625,6 +1639,7 @@
         private System.Windows.Forms.CheckBox StExplosive;
         private System.Windows.Forms.NumericUpDown DetHealth;
         private System.Windows.Forms.CheckBox Belt;
+        private System.Windows.Forms.CheckBox PetAtk;
     }
 }
 

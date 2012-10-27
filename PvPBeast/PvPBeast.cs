@@ -22,7 +22,7 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 6, 2);
+        public static readonly Version Version = new Version(2, 6, 4);
 
         public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
@@ -601,7 +601,7 @@ namespace PvPBeast
                                         return RunStatus.Failure;
                                     }
                                     )),
-                        new Decorator(ret => validTarget(Me.CurrentTarget) && Me.GotAlivePet && Me.Pet.CurrentTargetGuid != Me.CurrentTargetGuid && !SelfControl(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget),
+                        new Decorator(ret => validTarget(Me.CurrentTarget) && Me.GotAlivePet && Me.Pet.CurrentTargetGuid != Me.CurrentTargetGuid && !Invulnerable(Me.CurrentTarget) && !SelfControl(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget),
                                 new Action(delegate
                                     {
                                          Lua.DoString("PetAttack()");

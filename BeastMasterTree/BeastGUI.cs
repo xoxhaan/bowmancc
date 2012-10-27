@@ -187,6 +187,7 @@ namespace TheBeastMasterTree
             LifeBlood.Checked = BeastMasterSettings.Instance.LB;
             Gloves.Checked = BeastMasterSettings.Instance.GE;
             Belt.Checked = BeastMasterSettings.Instance.FB;
+            PetAtk.Checked = BeastMasterSettings.Instance.PAT;
             Racial.Checked = BeastMasterSettings.Instance.RS;
             AspectSwitching.Checked = BeastMasterSettings.Instance.AspectSwitching;
 			Arcane.Checked = BeastMasterSettings.Instance.ARC;
@@ -676,6 +677,17 @@ namespace TheBeastMasterTree
             else
             {
                 BeastMasterSettings.Instance.FB = false;
+            }
+        }
+        private void PetAtk_CheckedChanged(object sender, EventArgs e)
+        {
+            if (PetAtk.Checked == true)
+            {
+                BeastMasterSettings.Instance.PAT = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.PAT = false;
             }
         }
         private void LifeBlood_CheckedChanged(object sender, EventArgs e)

@@ -142,6 +142,9 @@ namespace TheBeastMasterTree
         [Setting, DefaultValue(false)]
         public bool FB { get; set; }
 
+        [Setting, DefaultValue(true)]
+        public bool PAT { get; set; }
+
         [Setting, DefaultValue(false)]
         public bool RS { get; set; }
 
