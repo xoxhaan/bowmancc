@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 2, 3);
+        public static readonly Version Version = new Version(2, 2, 5);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -308,6 +308,27 @@ namespace TheBeastMasterTree
             item.Use();
         }
 
+        /// <summary>Attempts to use the bag item provided it is usable and its not on cooldown</summary>
+        /// <param name="name">the name of the bag item to use</param>
+        /// <param name="cond">The conditions that must be true</param>
+        /// <param name="label">A descriptive label for the clients GUI logging output</param>
+        /// <returns>The use bag item.</returns>
+        public static Composite UseBagItem(string name, CanRunDecoratorDelegate cond, string label)
+        {
+            WoWItem item = null;
+            return new Decorator(
+                delegate(object a)
+                {
+                    if (!cond(a))
+                        return false;
+                    item = Me.BagItems.FirstOrDefault(x => x.Name == name && x.Usable && x.Cooldown <= 0);
+                    return item != null;
+                },
+            new Sequence(
+                new Action(a => standardLog(" [BagItem] {0} ", label)),
+                new Action(a => item.UseContainerItem())));
+        }
+
         #endregion 
 
         #region Add Detection
@@ -569,7 +590,7 @@ namespace TheBeastMasterTree
                                 }
                                 return RunStatus.Failure;
                             }
-                                    )),
+                        )),
                         new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign(),
                             new PrioritySelector(
                                 castSelfSpell("Mend Pet", ret => BeastMasterSettings.Instance.MP && Me.GotAlivePet && Me.Pet.HealthPercent <= BeastMasterSettings.Instance.MendHealth 
@@ -578,6 +599,15 @@ namespace TheBeastMasterTree
                                 castSelfSpell("Exhilaration", ret => BeastMasterSettings.Instance.TL2_EXH && (Me.HealthPercent < 70 || (Me.Pet.HealthPercent < 15 
                                 && SpellManager.HasSpell("Heart of the Phoenix") && SpellManager.Spells["Heart of the Phoenix"].CooldownTimeLeft.TotalSeconds > 5)
                                 || (Me.Pet.HealthPercent < 15 && !SpellManager.HasSpell("Heart of the Phoenix"))), "Exhilaration"),
+
+                                new Decorator(ret => BeastMasterSettings.Instance.PAT && Me.GotAlivePet && Me.Pet.CurrentTargetGuid != Me.CurrentTargetGuid && !SelfControl(Me.CurrentTarget),
+                                new Action(delegate
+                                {
+                                    Lua.DoString("PetAttack()");
+                                    standardLog("Send pet on my current Target");
+                                    return RunStatus.Failure;
+                                }
+                                )),
 
                                 new Decorator(ret => BeastMasterSettings.Instance.MDPet && Me.GotAlivePet && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !IsMyAuraActive(Me, "Misdirection")
                                                      && !WoWSpell.FromId(34477).Cooldown && !SpellManager.Spells["Misdirection"].Cooldown,
@@ -638,28 +668,28 @@ namespace TheBeastMasterTree
                                 )),
                         new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign() && !SelfControl(Me.CurrentTarget),
                             new PrioritySelector(
-                                castSpell("Scatter Shot", ret => BeastMasterSettings.Instance.ScatterBox == "1. Interrupt" && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast, "Scatter Shot"),
+                                castSpell("Scatter Shot", ret => BeastMasterSettings.Instance.ScatterBox == "1. Interrupt" && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast, "Scatter Shot"),
 
                                 castSpell("Scatter Shot", ret => BeastMasterSettings.Instance.ScatterBox == "2. Defense" && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid, "Scatter Shot"),
 
-                                castSpell("Scatter Shot", ret => BeastMasterSettings.Instance.ScatterBox == "1 + 2" && (Me.CurrentTarget.Distance <= 20 && (Me.CurrentTarget.CurrentTargetGuid == Me.Guid || (Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast))), "Scatter Shot"),
+                                castSpell("Scatter Shot", ret => BeastMasterSettings.Instance.ScatterBox == "1 + 2" && (Me.CurrentTarget.Distance <= 20 && (Me.CurrentTarget.CurrentTargetGuid == Me.Guid || (Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast))), "Scatter Shot"),
 
-                                castSpell("Silencing Shot", ret => BeastMasterSettings.Instance.TL1_SS && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast, "Silencing Shot"),
+                                castSpell("Silencing Shot", ret => BeastMasterSettings.Instance.TL1_SS && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast, "Silencing Shot"),
 
-                                castSpell("Wyvern Sting", ret => BeastMasterSettings.Instance.TL1_WS && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast, "Wyvern Sting"),
+                                castSpell("Wyvern Sting", ret => BeastMasterSettings.Instance.TL1_WS && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast, "Wyvern Sting"),
 
                                 castOnUnitLocation("Binding Shot", ret => Me.CurrentTarget, ret => BeastMasterSettings.Instance.TL1_BS && addCount() >= BeastMasterSettings.Instance.Mobs, "Binding Shot"),
 
                                 castSpell("Concussive Shot", ret => BeastMasterSettings.Instance.CONC && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Me.CurrentTarget.HasAura("Concussive Shot") && Me.CurrentTarget.Distance < 25, "Concussive Shot"),
 
                                 castSpell("Intimidation", ret => BeastMasterSettings.Instance.IntimidateBox == "1. Interrupt" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 
-                                && Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && !SpellManager.Spells["Intimidation"].Cooldown, "Intimidation"),
+                                && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && !SpellManager.Spells["Intimidation"].Cooldown, "Intimidation"),
 
                                 castSpell("Intimidation", ret => BeastMasterSettings.Instance.IntimidateBox == "2. Defense" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 
                                 && Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid, "Intimidation"),
 
                                 castSpell("Intimidation", ret => BeastMasterSettings.Instance.IntimidateBox == "1 + 2" && ((Me.CurrentTarget.Distance <= 20 && Me.CurrentTarget.CurrentTargetGuid == Me.Guid) 
-                                || (Me.CurrentTarget.IsCasting && Me.CanInterruptCurrentSpellCast && !SpellManager.Spells["Intimidation"].Cooldown)), "Intimidation"),
+                                || (Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && !SpellManager.Spells["Intimidation"].Cooldown)), "Intimidation"),
 
                                 castSpell("Fervor", ret => BeastMasterSettings.Instance.TL3_FV && (Me.CurrentFocus < 60 || (Me.HasAura("The Beast within") && Me.CurrentFocus < 40)), "Fervor"),
 
@@ -692,7 +722,7 @@ namespace TheBeastMasterTree
 
                                 castSelfSpell("Lifeblood", ret => BeastMasterSettings.Instance.LB && IsTargetEasyBoss(), "Lifeblood"),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.FB && Me.CurrentTarget.CurrentHealth > 40000,
+                                new Decorator(ret => BeastMasterSettings.Instance.FB && Me.CurrentTarget.CurrentHealth > 40000 && Me.Inventory.Equipped.Waist != null && Me.Inventory.Equipped.Waist.Cooldown <= 0 && Me.Inventory.Equipped.Waist.Usable,
                                 new Action(delegate
                                 {
                                     Lua.DoString("RunMacroText('/use 6');");
@@ -703,7 +733,7 @@ namespace TheBeastMasterTree
                                 }
                                 )),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.GE && IsTargetEasyBoss(),
+                                new Decorator(ret => BeastMasterSettings.Instance.GE && Me.Inventory.Equipped.Hands != null && Me.Inventory.Equipped.Hands.Cooldown <= 0 && Me.Inventory.Equipped.Hands.Usable && IsTargetEasyBoss(),
                                 new Action(delegate
                                 {
                                     Lua.DoString("RunMacroText('/use 10');");
@@ -714,7 +744,7 @@ namespace TheBeastMasterTree
                                 }
                                 )),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.T1 && IsTargetEasyBoss(),
+                                new Decorator(ret => BeastMasterSettings.Instance.T1 && Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Cooldown <= 0 && Me.Inventory.Equipped.Trinket1.Usable && IsTargetEasyBoss(),
                                 new Action(delegate
                                 {
                                     Lua.DoString("RunMacroText('/use 13');");
@@ -725,7 +755,7 @@ namespace TheBeastMasterTree
                                 }
                                 )),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.T2 && IsTargetEasyBoss(),
+                                new Decorator(ret => BeastMasterSettings.Instance.T2 && Me.Inventory.Equipped.Trinket2 != null && Me.Inventory.Equipped.Trinket2.Cooldown <= 0 && Me.Inventory.Equipped.Trinket2.Usable && IsTargetEasyBoss(),
                                 new Action(delegate
                                 {
                                     Lua.DoString("RunMacroText('/use 14');");
