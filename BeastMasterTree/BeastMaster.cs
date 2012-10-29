@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 2, 5);
+        public static readonly Version Version = new Version(2, 2, 7);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -642,6 +642,8 @@ namespace TheBeastMasterTree
 
                                 castSpell("Kill Command", ret => BeastMasterSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && IsMyAuraActive(Me.CurrentTarget, "Scatter Shot"), "Kill Command"),
 
+                                castSpell("Blink Strike", ret => BeastMasterSettings.Instance.TL4_BSTRK && !SelfControl(Me.CurrentTarget) && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) > 25, "Blink Strike"),
+
                                 new Decorator(ret => BeastMasterSettings.Instance.SMend && Me.CurrentHealth < Me.MaxHealth - 50000 && !WoWSpell.FromId(90361).Cooldown,
                                 new Action(delegate
                                 {
@@ -728,6 +730,7 @@ namespace TheBeastMasterTree
                                     Lua.DoString("RunMacroText('/use 6');");
                                     {
                                         Logging.Write(Colors.Aquamarine, "Using Belt");
+                                        SpellManager.ClickRemoteLocation(Me.CurrentTarget.Location);
                                     }
                                     return RunStatus.Failure;
                                 }
@@ -801,9 +804,9 @@ namespace TheBeastMasterTree
                                 castSpell("Serpent Sting", ret => BeastMasterSettings.Instance.SerpentBox == "Always" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1), "Serpent Sting"),
 
                                 castSpell("Serpent Sting", ret => BeastMasterSettings.Instance.SerpentBox == "Sometimes" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1)
-                                                                  && (Me.CurrentTarget.CurrentHealth > 600000 || CalculateTimeToDeath(Me.CurrentTarget) >= 15), "Serpent Sting"),
+                                                                  && (Me.CurrentTarget.CurrentHealth > 1000000 || CalculateTimeToDeath(Me.CurrentTarget) >= 15), "Serpent Sting"),
 
-                                castSpell("Dire Beast", ret => BeastMasterSettings.Instance.TL3_DB && ((Me.CurrentTarget.Level >= Me.Level && (Me.CurrentTarget.CurrentHealth > 90000 || CalculateTimeToDeath(Me.CurrentTarget) > 10))
+                                castSpell("Dire Beast", ret => BeastMasterSettings.Instance.TL3_DB && ((Me.CurrentTarget.Level >= Me.Level && (Me.CurrentTarget.CurrentHealth > 150000 || CalculateTimeToDeath(Me.CurrentTarget) > 14))
                                                                || Me.CurrentFocus < 20) || Me.CurrentTarget.Name.Contains("Training Dummy"), "Dire Beast"),
 
                                 castSpell("Blink Strike", ret => BeastMasterSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40, "Blink Strike"),
@@ -812,7 +815,7 @@ namespace TheBeastMasterTree
 
                                 castSpell("Lynx Rush", ret => BeastMasterSettings.Instance.TL4_LR && Me.GotAlivePet && (!BeastMasterSettings.Instance.BWR || SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 10)
                                 && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25 && ((Me.CurrentTarget.MaxHealth > 400000 
-                                && (Me.CurrentTarget.CurrentHealth > 90000 || CalculateTimeToDeath(Me.CurrentTarget) > 4)) || Me.CurrentTarget.Name.Contains("Training Dummy")), "Lynx Rush"),
+                                && (Me.CurrentTarget.CurrentHealth > 150000 || CalculateTimeToDeath(Me.CurrentTarget) > 5)) || Me.CurrentTarget.Name.Contains("Training Dummy")), "Lynx Rush"),
 
                                 castSpell("Glaive Toss", ret => BeastMasterSettings.Instance.TL5_GLV, "Glaive Toss"),
 
