@@ -136,6 +136,9 @@ namespace TheBeastMasterTree
         [Setting, DefaultValue(false)]
         public bool LB { get; set; }
 
+        [Setting, DefaultValue(true)]
+        public bool RBD { get; set; }
+
         [Setting, DefaultValue(false)]
         public bool GE { get; set; }
 
@@ -165,6 +168,9 @@ namespace TheBeastMasterTree
 
         [Setting, DefaultValue(15)]
         public int DetHealth { get; set; }
+
+        [Setting, DefaultValue(120)]
+        public int BossHealth { get; set; }
 
         [Setting, DefaultValue(true)]
         public bool AspectSwitching { get; set; }

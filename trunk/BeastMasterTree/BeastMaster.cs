@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 2, 7);
+        public static readonly Version Version = new Version(2, 3, 1);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -180,7 +180,7 @@ namespace TheBeastMasterTree
         private bool IsTargetBoss()
         {
             if (Me.CurrentTarget.Name.Contains("Dummy") || Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
-               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > Me.MaxHealth * 12))
+               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > BeastMasterSettings.Instance.BossHealth * 100000))
                 return true;
 
             else return false;
@@ -188,7 +188,7 @@ namespace TheBeastMasterTree
         private bool IsTargetEasyBoss()
         {
             if (Me.CurrentTarget.Name.Contains("Dummy") || Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
-               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > Me.MaxHealth * 6))
+               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > BeastMasterSettings.Instance.BossHealth * 40000))
                 return true;
 
             else return false;
@@ -527,7 +527,7 @@ namespace TheBeastMasterTree
             get
             {
                 return (
-                    new Decorator(ret => HaltFeign() && StyxWoW.IsInWorld && !Me.IsGhost && Me.IsAlive && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport,
+                    new Decorator(ret => HaltFeign() && StyxWoW.IsInWorld && !Me.IsGhost && Me.IsAlive && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport && Me.CurrentFocus >= 35,
                         new PrioritySelector(
                             new Decorator(ret => reviveTimer.ElapsedMilliseconds < 100,
                                 revivePet(ret => BeastMasterSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"), "Reviving Pet")),
@@ -722,7 +722,16 @@ namespace TheBeastMasterTree
                                 && (SpellManager.HasSpell("Blink Strike") && SpellManager.Spells["Blink Strike"].CooldownTimeLeft.TotalSeconds > 2 || !BeastMasterSettings.Instance.TL4_BSTRK)
                                 && (SpellManager.HasSpell("Dire Beast") && SpellManager.Spells["Dire Beast"].CooldownTimeLeft.TotalSeconds > 2 || !BeastMasterSettings.Instance.TL3_DB), "Readiness"),
 
-                                castSelfSpell("Lifeblood", ret => BeastMasterSettings.Instance.LB && IsTargetEasyBoss(), "Lifeblood"),
+                                castSelfSpell("Lifeblood", ret => BeastMasterSettings.Instance.LB && Me.GotAlivePet && Me.Pet.CurrentTarget != null && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25 && IsTargetEasyBoss(), "Rabid"),
+
+                                new Decorator(ret => BeastMasterSettings.Instance.RBD && !WoWSpell.FromId(53401).Cooldown && IsTargetEasyBoss(),
+                                new Action(delegate
+                                {
+                                    Lua.DoString("RunMacroText(\"/cast Rabid\")");
+                                    Logging.Write(Colors.Aquamarine, "Pet: Rabid");
+                                    return RunStatus.Failure;
+                                }
+                                )),
 
                                 new Decorator(ret => BeastMasterSettings.Instance.FB && Me.CurrentTarget.CurrentHealth > 40000 && Me.Inventory.Equipped.Waist != null && Me.Inventory.Equipped.Waist.Cooldown <= 0 && Me.Inventory.Equipped.Waist.Usable,
                                 new Action(delegate
