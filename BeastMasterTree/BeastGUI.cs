@@ -146,6 +146,7 @@ namespace TheBeastMasterTree
             FFS.Value = new decimal(BeastMasterSettings.Instance.FFS);
             MendHealth.Value = new decimal(BeastMasterSettings.Instance.MendHealth);
             DetHealth.Value = new decimal(BeastMasterSettings.Instance.DetHealth);
+            BossHealth.Value = new decimal(BeastMasterSettings.Instance.BossHealth);
             FocusShots.Value = new decimal(BeastMasterSettings.Instance.FocusShots);
             Party.Checked = BeastMasterSettings.Instance.Party;
             DSHC.Checked = BeastMasterSettings.Instance.DSHC;
@@ -187,6 +188,7 @@ namespace TheBeastMasterTree
             LifeBlood.Checked = BeastMasterSettings.Instance.LB;
             Gloves.Checked = BeastMasterSettings.Instance.GE;
             Belt.Checked = BeastMasterSettings.Instance.FB;
+            Rabid.Checked = BeastMasterSettings.Instance.RBD;
             PetAtk.Checked = BeastMasterSettings.Instance.PAT;
             Racial.Checked = BeastMasterSettings.Instance.RS;
             AspectSwitching.Checked = BeastMasterSettings.Instance.AspectSwitching;
@@ -238,6 +240,10 @@ namespace TheBeastMasterTree
         private void DetHealth_ValueChanged(object sender, EventArgs e)
         {
             BeastMasterSettings.Instance.DetHealth = (int)DetHealth.Value;
+        }
+        private void BossHealth_ValueChanged(object sender, EventArgs e)
+        {
+            BeastMasterSettings.Instance.BossHealth = (int)BossHealth.Value;
         }
         private void Party_CheckedChanged(object sender, EventArgs e)
         {
@@ -679,6 +685,17 @@ namespace TheBeastMasterTree
                 BeastMasterSettings.Instance.FB = false;
             }
         }
+        private void Rabid_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Rabid.Checked == true)
+            {
+                BeastMasterSettings.Instance.RBD = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.RBD = false;
+            }
+        }
         private void PetAtk_CheckedChanged(object sender, EventArgs e)
         {
             if (PetAtk.Checked == true)
@@ -887,6 +904,11 @@ namespace TheBeastMasterTree
             BeastMasterSettings.Instance.Save();
             Logging.Write(Colors.Aquamarine, "Configuration Saved");
             Close();
+        }
+
+        private void groupBox5_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }
