@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 3, 1);
+        public static readonly Version Version = new Version(2, 3, 3);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -810,6 +810,8 @@ namespace TheBeastMasterTree
 
                                 castSpell("Kill Shot", ret => BeastMasterSettings.Instance.KSH && Me.CurrentTarget.HealthPercent <= 20, "Kill Shot"),
 
+                                castSpell("Kill Command", ret => BeastMasterSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25, "Kill Command"),
+
                                 castSpell("Serpent Sting", ret => BeastMasterSettings.Instance.SerpentBox == "Always" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1), "Serpent Sting"),
 
                                 castSpell("Serpent Sting", ret => BeastMasterSettings.Instance.SerpentBox == "Sometimes" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1)
@@ -818,15 +820,13 @@ namespace TheBeastMasterTree
                                 castSpell("Dire Beast", ret => BeastMasterSettings.Instance.TL3_DB && ((Me.CurrentTarget.Level >= Me.Level && (Me.CurrentTarget.CurrentHealth > 150000 || CalculateTimeToDeath(Me.CurrentTarget) > 14))
                                                                || Me.CurrentFocus < 20) || Me.CurrentTarget.Name.Contains("Training Dummy"), "Dire Beast"),
 
-                                castSpell("Blink Strike", ret => BeastMasterSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40, "Blink Strike"),
-
-                                castSpell("Kill Command", ret => BeastMasterSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25, "Kill Command"),
-
                                 castSpell("Lynx Rush", ret => BeastMasterSettings.Instance.TL4_LR && Me.GotAlivePet && (!BeastMasterSettings.Instance.BWR || SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 10)
                                 && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25 && ((Me.CurrentTarget.MaxHealth > 400000 
                                 && (Me.CurrentTarget.CurrentHealth > 150000 || CalculateTimeToDeath(Me.CurrentTarget) > 5)) || Me.CurrentTarget.Name.Contains("Training Dummy")), "Lynx Rush"),
 
                                 castSpell("Glaive Toss", ret => BeastMasterSettings.Instance.TL5_GLV, "Glaive Toss"),
+
+                                castSpell("Blink Strike", ret => BeastMasterSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40, "Blink Strike"),
 
                                 castSpell("Powershot", ret => BeastMasterSettings.Instance.TL5_PWR, "Powershot"),
 
@@ -862,7 +862,7 @@ namespace TheBeastMasterTree
                                     )
                                 ),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.ARC && (!BeastMasterSettings.Instance.TL5_GLV || SpellManager.Spells["Glaive Toss"].Cooldown),
+                                new Decorator(ret => BeastMasterSettings.Instance.ARC && (!BeastMasterSettings.Instance.TL5_GLV || SpellManager.Spells["Glaive Toss"].Cooldown) && (!BeastMasterSettings.Instance.TL4_BSTRK || SpellManager.Spells["Blink Strike"].Cooldown),
                                     new PrioritySelector(
                                         new Decorator(ret => BeastMasterSettings.Instance.KCO,
                                             new PrioritySelector(
@@ -906,8 +906,7 @@ namespace TheBeastMasterTree
                                 }
                                 )),
 
-                                new Decorator(ret => !Me.IsCasting && (!BeastMasterSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].Cooldown) && ((!Me.HasAura("The Beast Within") && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 40)
-                                || ((Me.HasAura("The Beast Within") && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 20),
+                                new Decorator(ret => !Me.IsCasting && (!BeastMasterSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].Cooldown) && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 1000 || Me.CurrentFocus < SpellManager.Spells["Kill Command"].PowerCost),
                                     new PrioritySelector(
                                         castSpell("Steady Shot", ret => Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots / 2), "Cobra Shot")
                                     )
@@ -947,7 +946,7 @@ namespace TheBeastMasterTree
 
                                 castSpell("Bestial Wrath", ret => Me.GotAlivePet && BeastMasterSettings.Instance.BWR && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.HasAura("The Beast Within"), "Bestial Wrath, AoE"),
                                 
-                                castSpell("Kill Shot", ret => BeastMasterSettings.Instance.KSH && Me.CurrentTarget.HealthPercent < 20 && (Me.CurrentFocus < 40 || (Me.HasAura("The Beast Within") && Me.CurrentFocus < 20)), "Kill Shot"),
+                                castSpell("Kill Shot", ret => BeastMasterSettings.Instance.KSH && Me.CurrentTarget.HealthPercent < 20 && (Me.CurrentFocus < 20 || (!Me.HasAura("The Beast Within") && Me.CurrentFocus < 40)), "Kill Shot"),
 
                                 castSpell("Glaive Toss", ret => BeastMasterSettings.Instance.TL5_GLV, "Glaive Toss"),
 

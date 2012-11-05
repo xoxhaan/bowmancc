@@ -22,7 +22,7 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 6, 5);
+        public static readonly Version Version = new Version(2, 6, 7);
 
         public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
@@ -374,6 +374,17 @@ namespace PvPBeast
 
         // Big thanks and credit to ZenLulz for all the movement imparement related code.
         #region Movement Imparement
+
+        public static bool isCrowdControlled(WoWUnit unit)
+        {
+            if (unit != null)
+            {
+                Dictionary<string, WoWAura>.ValueCollection auras = unit.Auras.Values;
+                return auras.Any(a => a.Spell.Mechanic == WoWSpellMechanic.Banished || a.Spell.Mechanic == WoWSpellMechanic.Disoriented || a.Spell.Mechanic == WoWSpellMechanic.Charmed || a.Spell.Mechanic == WoWSpellMechanic.Horrified || a.Spell.Mechanic == WoWSpellMechanic.Incapacitated || a.Spell.Mechanic == WoWSpellMechanic.Polymorphed || a.Spell.Mechanic == WoWSpellMechanic.Sapped || a.Spell.Mechanic == WoWSpellMechanic.Shackled || a.Spell.Mechanic == WoWSpellMechanic.Asleep || a.Spell.Mechanic == WoWSpellMechanic.Frozen || a.Spell.Mechanic == WoWSpellMechanic.Invulnerable || a.Spell.Mechanic == WoWSpellMechanic.Invulnerable2 || a.Spell.Mechanic == WoWSpellMechanic.Turned || a.Spell.Mechanic == WoWSpellMechanic.Fleeing || a.Spell.Name == "Hex");
+            }
+            return false;
+        }
+
         private static List<WoWSpellMechanic> controlMechanic = new List<WoWSpellMechanic>()
         {
             WoWSpellMechanic.Charmed,
@@ -382,7 +393,8 @@ namespace PvPBeast
             WoWSpellMechanic.Frozen,
             WoWSpellMechanic.Incapacitated,
             WoWSpellMechanic.Polymorphed,
-            WoWSpellMechanic.Sapped
+            WoWSpellMechanic.Sapped,
+            WoWSpellMechanic.Asleep
         };
         private static List<WoWSpellMechanic> slowMechanic = new List<WoWSpellMechanic>()
         {
@@ -609,14 +621,7 @@ namespace PvPBeast
                                         return RunStatus.Failure;
                                     }
                                     )),
-                        new Decorator(ret => Me.GotAlivePet && Me.GotTarget && IsMyAuraActive(Me.CurrentTarget, "Scatter Shot") && !DumbBear(Me.CurrentTarget),
-                                new Action(delegate
-                                    {
-                                         Lua.DoString("PetAttack()");
-                                        standardLog("Target Scattered, Send in pet");
-                                        return RunStatus.Failure;
-                                    }
-                                    )),
+
                                 castSelfSpell("Mend Pet", ret => PvPBeastSettings.Instance.MP && Me.GotAlivePet && !Me.Pet.HasAura("Mend Pet") && Me.Pet.HealthPercent < PvPBeastSettings.Instance.MendHealth, "Mend Pet"),
                                 /*  (isStunned(Me.Pet).TotalSeconds > 0 || isForsaken(Me.Pet).TotalSeconds > 0 || isRooted(Me.Pet).TotalMilliseconds > 0 || isSlowed(Me.Pet) || isControlled(Me.Pet).TotalSeconds > 0 ||  <- Mend Pet code for use with Glyph */
                                 castSelfSpell("Exhilaration", ret => PvPBeastSettings.Instance.TL2_EXH && (Me.HealthPercent < 70 || (Me.GotAlivePet && Me.Pet.HealthPercent < 15 
@@ -665,7 +670,6 @@ namespace PvPBeast
 
                         new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign() && !Me.IsDead,
                             new PrioritySelector(
-                                castSpell("Kill Command", ret => PvPBeastSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && IsMyAuraActive(Me.CurrentTarget, "Scatter Shot") && !DumbBear(Me.CurrentTarget), "Kill Command"),
 
                                 castSelfSpell("Master's Call", ret => isSlowed(Me) || isRooted(Me).TotalMilliseconds > 0, "Master's Call"),
 
@@ -735,21 +739,11 @@ namespace PvPBeast
                                                 return RunStatus.Failure;
                                             }
                                         ))
-                                    )),
-
-                                new Decorator(ret => PvPBeastSettings.Instance.MDPet && Me.GotAlivePet && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !Me.CurrentTarget.IsPlayer && !IsMyAuraActive(Me, "Misdirection")
-                                    && !WoWSpell.FromId(34477).Cooldown && !SpellManager.Spells["Misdirection"].Cooldown,
-                                new Action(delegate
-                                    {
-                                        Lua.DoString("RunMacroText('/cast [@pet,exists] Misdirection');");
-                                        Logging.Write(Colors.Aquamarine, "Misdirection on Pet");
-                                        return RunStatus.Failure;
-                                    }
-                                ))
+                                    ))
                             )),
             new Decorator(ret => !SelfControl(Me.CurrentTarget),
                 new PrioritySelector(
-                        new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign() && !Me.IsDead,
+                        new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign(),
                             new PrioritySelector(
 
                                 new Decorator(ret => PvPBeastSettings.Instance.FFZT && validFocus() && !SpellManager.Spells["Freezing Trap"].Cooldown && Me.FocusedUnit.Distance < 40 && (!Me.FocusedUnit.IsMoving || Me.FocusedUnit.HasAura("Scatter Shot") || Me.FocusedUnit.HasAura("Wyvern Sting") || Me.FocusedUnit.HasAura("Binding Shot")),
@@ -795,7 +789,7 @@ namespace PvPBeast
 
                                 castSelfSpell("War Stomp", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Tauren && (Me.CurrentTarget.Distance < 8 || Me.CurrentTarget.Pet.Distance < 8) && (Me.CurrentTarget.CurrentTargetGuid == Me.Guid || Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid) && (NeedSnare(Me.CurrentTarget) || NeedSnare(Me.CurrentTarget.Pet)) && (!Invulnerable(Me.CurrentTarget) || Me.CurrentTarget.Pet.Distance < 8), "War Stomp"),
 
-                                castSpell("Arcane Torrent", ret => PvPBeastSettings.Instance.INT && PvPBeastSettings.Instance.RS && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && Me.CurrentTarget.Distance >= 5, "Arcane Torrent"),
+                                castSpell("Arcane Torrent", ret => PvPBeastSettings.Instance.INT && Me.Race == WoWRace.BloodElf && PvPBeastSettings.Instance.RS && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && Me.CurrentTarget.Distance >= 5, "Arcane Torrent"),
 
                                 new Decorator(ret => PvPBeastSettings.Instance.WEB && NeedSnare(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !WoWSpell.FromId(54706).Cooldown && Me.CurrentTarget.Distance <= 30,
                                 new Action(delegate
