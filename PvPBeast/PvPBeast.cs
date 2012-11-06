@@ -22,7 +22,7 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 6, 9);
+        public static readonly Version Version = new Version(2, 7, 0);
 
         public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
@@ -1006,8 +1006,7 @@ namespace PvPBeast
                                 }
                                 )),
 
-                                new Decorator(ret => !Me.IsCasting && (!PvPBeastSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].Cooldown) && ((!Me.HasAura("The Beast Within") && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 40)
-                                || ((Me.HasAura("The Beast Within") && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1) || Me.CurrentFocus < 20),
+                                new Decorator(ret => !Me.IsCasting && (!PvPBeastSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].Cooldown) && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1 || Me.CurrentFocus < 20 || (!Me.HasAura("Bestial Wrath") && Me.CurrentFocus < 40)),
                                     new PrioritySelector(
                                         castSpell("Steady Shot", ret => Me.CurrentFocus < PvPBeastSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < PvPBeastSettings.Instance.FocusShots / 2), "Cobra Shot")
                                     )
