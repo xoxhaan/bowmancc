@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 3, 3);
+        public static readonly Version Version = new Version(2, 3, 4);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -906,7 +906,7 @@ namespace TheBeastMasterTree
                                 }
                                 )),
 
-                                new Decorator(ret => !Me.IsCasting && (!BeastMasterSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].Cooldown) && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 1000 || Me.CurrentFocus < SpellManager.Spells["Kill Command"].PowerCost),
+                                new Decorator(ret => !Me.IsCasting && (!BeastMasterSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].Cooldown) && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1 || Me.CurrentFocus < 20 || (!Me.HasAura("Bestial Wrath") && Me.CurrentFocus < 40)),
                                     new PrioritySelector(
                                         castSpell("Steady Shot", ret => Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots / 2), "Cobra Shot")
                                     )
