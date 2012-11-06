@@ -22,7 +22,7 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 6, 7);
+        public static readonly Version Version = new Version(2, 6, 9);
 
         public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
@@ -630,6 +630,8 @@ namespace PvPBeast
 
                                 castSelfSpell("Gift of the Naaru", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Draenei && Me.HealthPercent < 30 && !SpellManager.Spells["Gift of the Naaru"].Cooldown, "Gift of the Naaru"),
 
+                                castSelfSpell("Master's Call", ret => isSlowed(Me) || isRooted(Me).TotalMilliseconds > 0, "Master's Call"),
+
                                 new Decorator(ret => PvPBeastSettings.Instance.SpiritMendBox != "Never" && Me.GotAlivePet && !WoWSpell.FromId(90361).Cooldown,
                                 new Action(delegate
                                 {
@@ -637,14 +639,14 @@ namespace PvPBeast
                                     {
                                         Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
                                         {
-                                            Logging.Write(Colors.Aquamarine, ">> Spirit Mend on <<");
+                                            Logging.Write(Colors.Aquamarine, "Spirit Mend on Me");
                                         }
                                     }
                                     if (PvPBeastSettings.Instance.SpiritMendBox == "2. Focus" && Me.FocusedUnit != null && Me.FocusedUnit.IsFriendly && Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Focus)
                                     {
                                         Lua.DoString("RunMacroText(\"/cast [@Focus] Spirit Mend\")");
                                         {
-                                            Logging.Write(Colors.Aquamarine, ">> Spirit Mend on <<");
+                                            Logging.Write(Colors.Aquamarine, "Spirit Mend on Focus");
                                         }
                                     }
                                     if (PvPBeastSettings.Instance.SpiritMendBox == "1 + 2")
@@ -653,14 +655,14 @@ namespace PvPBeast
                                         {
                                             Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
                                             {
-                                                Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Me<<");
+                                                Logging.Write(Colors.Aquamarine, "Spirit Mend on Me");
                                             }
                                         }
                                         if (Me.FocusedUnit != null && Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Focus && Me.FocusedUnit.IsFriendly)
                                         {
                                             Lua.DoString("RunMacroText(\"/cast [@Focus] Spirit Mend\")");
                                             {
-                                                Logging.Write(Colors.Aquamarine, ">> Spirit Mend on Pet <<");
+                                                Logging.Write(Colors.Aquamarine, "Spirit Mend on Focus");
                                             }
                                         }
                                     }
@@ -668,11 +670,8 @@ namespace PvPBeast
                                 }
                                 )),
 
-                        new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign() && !Me.IsDead,
+                        new Decorator(ret => validTarget(Me.CurrentTarget) && !Me.Mounted && HaltFeign(),
                             new PrioritySelector(
-
-                                castSelfSpell("Master's Call", ret => isSlowed(Me) || isRooted(Me).TotalMilliseconds > 0, "Master's Call"),
-
                              //////////////////////////////// Trinkets ///////////////////////////////////////  
                                 new Decorator(ret => Me.Inventory.Equipped.Trinket1 != null && Me.Inventory.Equipped.Trinket1.Usable && Me.Inventory.Equipped.Trinket1.Cooldown <= 0,
                                     new PrioritySelector(
@@ -934,6 +933,8 @@ namespace PvPBeast
 
                                 castSpell("Lynx Rush", ret => PvPBeastSettings.Instance.TL4_LR && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25, "Lynx Rush"),
 
+                                castSpell("Kill Command", ret => PvPBeastSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25, "Kill Command"),
+
                                 castSpell("Serpent Sting", ret => PvPBeastSettings.Instance.SerpentBox == "Always" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1), "Serpent Sting"),
 
                                 castSpell("Serpent Sting", ret => PvPBeastSettings.Instance.SerpentBox == "Sometimes" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1) && Me.CurrentTarget.HealthPercent > 50, "Serpent Sting"),
@@ -944,7 +945,6 @@ namespace PvPBeast
 
                                 castSpell("Blink Strike", ret => PvPBeastSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40, "Blink Strike"),
 
-                                castSpell("Kill Command", ret => PvPBeastSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25, "Kill Command"),
 
                                 castSpell("Glaive Toss", ret => PvPBeastSettings.Instance.TL5_GLV, "Glaive Toss"),
 
