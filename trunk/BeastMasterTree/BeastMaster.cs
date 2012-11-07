@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 3, 4);
+        public static readonly Version Version = new Version(2, 3, 5);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -815,14 +815,14 @@ namespace TheBeastMasterTree
                                 castSpell("Serpent Sting", ret => BeastMasterSettings.Instance.SerpentBox == "Always" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1), "Serpent Sting"),
 
                                 castSpell("Serpent Sting", ret => BeastMasterSettings.Instance.SerpentBox == "Sometimes" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1)
-                                                                  && (Me.CurrentTarget.CurrentHealth > 1000000 || CalculateTimeToDeath(Me.CurrentTarget) >= 15), "Serpent Sting"),
+                                                                  && (Me.CurrentTarget.CurrentHealth > 2000000 || CalculateTimeToDeath(Me.CurrentTarget) >= 17), "Serpent Sting"),
 
                                 castSpell("Dire Beast", ret => BeastMasterSettings.Instance.TL3_DB && ((Me.CurrentTarget.Level >= Me.Level && (Me.CurrentTarget.CurrentHealth > 150000 || CalculateTimeToDeath(Me.CurrentTarget) > 14))
                                                                || Me.CurrentFocus < 20) || Me.CurrentTarget.Name.Contains("Training Dummy"), "Dire Beast"),
 
                                 castSpell("Lynx Rush", ret => BeastMasterSettings.Instance.TL4_LR && Me.GotAlivePet && (!BeastMasterSettings.Instance.BWR || SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 10)
                                 && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25 && ((Me.CurrentTarget.MaxHealth > 400000 
-                                && (Me.CurrentTarget.CurrentHealth > 150000 || CalculateTimeToDeath(Me.CurrentTarget) > 5)) || Me.CurrentTarget.Name.Contains("Training Dummy")), "Lynx Rush"),
+                                && (Me.CurrentTarget.CurrentHealth > 200000 || CalculateTimeToDeath(Me.CurrentTarget) > 5)) || Me.CurrentTarget.Name.Contains("Training Dummy")), "Lynx Rush"),
 
                                 castSpell("Glaive Toss", ret => BeastMasterSettings.Instance.TL5_GLV, "Glaive Toss"),
 
@@ -946,7 +946,7 @@ namespace TheBeastMasterTree
 
                                 castSpell("Bestial Wrath", ret => Me.GotAlivePet && BeastMasterSettings.Instance.BWR && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.HasAura("The Beast Within"), "Bestial Wrath, AoE"),
                                 
-                                castSpell("Kill Shot", ret => BeastMasterSettings.Instance.KSH && Me.CurrentTarget.HealthPercent < 20 && (Me.CurrentFocus < 20 || (!Me.HasAura("The Beast Within") && Me.CurrentFocus < 40)), "Kill Shot"),
+                                castSpell("Kill Shot", ret => BeastMasterSettings.Instance.KSH && Me.CurrentTarget.HealthPercent < 20 && Me.CurrentFocus < 40, "Kill Shot"),
 
                                 castSpell("Glaive Toss", ret => BeastMasterSettings.Instance.TL5_GLV, "Glaive Toss"),
 
@@ -955,8 +955,7 @@ namespace TheBeastMasterTree
 
                                 castSpell("Dire Beast", ret => BeastMasterSettings.Instance.AOEDB && Me.CurrentFocus < 80, "Dire Beast, AoE"),
 
-                                 castSpell("Blink Strike", ret => BeastMasterSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40 
-                                                           && (Me.CurrentFocus < 20 || (!Me.HasAura("The Beast Within") && Me.CurrentFocus < 40)), "Blink Strike"),
+                                 castSpell("Blink Strike", ret => BeastMasterSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40 && Me.CurrentFocus < 40, "Blink Strike"),
                                 
                                 castSpell("Lynx Rush", ret => BeastMasterSettings.Instance.AOELR && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && Me.CurrentFocus < 40 && !Me.HasAura("The Beast Within")
                                 && ((Me.CurrentTarget.MaxHealth > 30000 && (Me.CurrentTarget.CurrentHealth > 90000 || CalculateTimeToDeath(Me.CurrentTarget) > 4)) || Me.CurrentTarget.Name.Contains("Training Dummy")), "Lynx Rush, AoE"),

@@ -354,7 +354,7 @@
             this.BossHealth.Name = "BossHealth";
             this.BossHealth.Size = new System.Drawing.Size(52, 20);
             this.BossHealth.TabIndex = 39;
-            this.BossHealth.Maximum = 200;
+            this.BossHealth.Maximum = 500;
             this.BossHealth.Minimum = 0;
             this.BossHealth.ValueChanged += new System.EventHandler(this.BossHealth_ValueChanged);
             // 

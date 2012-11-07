@@ -169,7 +169,7 @@ namespace TheBeastMasterTree
         [Setting, DefaultValue(15)]
         public int DetHealth { get; set; }
 
-        [Setting, DefaultValue(120)]
+        [Setting, DefaultValue(150)]
         public int BossHealth { get; set; }
 
         [Setting, DefaultValue(true)]
