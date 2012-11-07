@@ -22,7 +22,7 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 7, 0);
+        public static readonly Version Version = new Version(2, 7, 2);
 
         public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
@@ -175,7 +175,7 @@ namespace PvPBeast
 
         private bool validTarget(WoWUnit unit)
         {
-            if (Me.GotTarget && unit.IsAlive && unit.Attackable && !unit.IsFriendly)
+            if (Me.GotTarget && unit.Attackable)
                 return true;
             else return false;
         }
@@ -579,7 +579,7 @@ namespace PvPBeast
             get
             {
                 return (
-                    new Decorator(ret => HaltFeign() && StyxWoW.IsInWorld && !Me.IsGhost && Me.IsAlive && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport,
+                    new Decorator(ret => HaltFeign() && StyxWoW.IsInWorld && !Me.IsGhost && Me.IsAlive && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport && !Me.InVehicle,
                         new PrioritySelector(
                             new Decorator(ret => reviveTimer.ElapsedMilliseconds < 100,
                                 revivePet(ret => PvPBeastSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"), "Reviving Pet")),
@@ -635,35 +635,18 @@ namespace PvPBeast
                                 new Decorator(ret => PvPBeastSettings.Instance.SpiritMendBox != "Never" && Me.GotAlivePet && !WoWSpell.FromId(90361).Cooldown,
                                 new Action(delegate
                                 {
-                                    if (PvPBeastSettings.Instance.SpiritMendBox == "1. Me" && Me.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Me)
+                                    if ((PvPBeastSettings.Instance.SpiritMendBox == "1. Me" || PvPBeastSettings.Instance.SpiritMendBox == "1 + 2") && Me.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Me)
                                     {
                                         Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
                                         {
                                             Logging.Write(Colors.Aquamarine, "Spirit Mend on Me");
                                         }
                                     }
-                                    if (PvPBeastSettings.Instance.SpiritMendBox == "2. Focus" && Me.FocusedUnit != null && Me.FocusedUnit.IsFriendly && Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Focus)
+                                    if ((PvPBeastSettings.Instance.SpiritMendBox == "2. Focus" || PvPBeastSettings.Instance.SpiritMendBox == "1 + 2") && Me.FocusedUnit != null && Me.FocusedUnit.IsFriendly && Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Focus)
                                     {
                                         Lua.DoString("RunMacroText(\"/cast [@Focus] Spirit Mend\")");
                                         {
                                             Logging.Write(Colors.Aquamarine, "Spirit Mend on Focus");
-                                        }
-                                    }
-                                    if (PvPBeastSettings.Instance.SpiritMendBox == "1 + 2")
-                                    {
-                                        if (Me.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Me)
-                                        {
-                                            Lua.DoString("RunMacroText(\"/cast [@" + Me.Name + "] Spirit Mend\")");
-                                            {
-                                                Logging.Write(Colors.Aquamarine, "Spirit Mend on Me");
-                                            }
-                                        }
-                                        if (Me.FocusedUnit != null && Me.FocusedUnit.HealthPercent < PvPBeastSettings.Instance.SpiritHealth_Focus && Me.FocusedUnit.IsFriendly)
-                                        {
-                                            Lua.DoString("RunMacroText(\"/cast [@Focus] Spirit Mend\")");
-                                            {
-                                                Logging.Write(Colors.Aquamarine, "Spirit Mend on Focus");
-                                            }
                                         }
                                     }
                                     return RunStatus.Failure;
@@ -941,18 +924,18 @@ namespace PvPBeast
 
                                 castSpell("Dire Beast", ret => PvPBeastSettings.Instance.TL3_DB, "Dire Beast"),
 
+                                castSpell("A Murder of Crows", ret => PvPBeastSettings.Instance.TL4_AMOC && !IsMyAuraActive(Me.CurrentTarget, "A Murder of Crows"), "A Murder of Crows"),
+
                                 castSpell("Widow Venom", ret => PvPBeastSettings.Instance.WVE && Me.CurrentFocus > 53 && HostilePlayer(Me.CurrentTarget) && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1 && (!IsMyAuraActive(Me.CurrentTarget, "Widow Venom") || MyDebuffTime("Widow Venom", Me.CurrentTarget) <= 1), "Widow Venom"),
 
                                 castSpell("Blink Strike", ret => PvPBeastSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40, "Blink Strike"),
-
 
                                 castSpell("Glaive Toss", ret => PvPBeastSettings.Instance.TL5_GLV, "Glaive Toss"),
 
                                 castSpell("Powershot", ret => PvPBeastSettings.Instance.TL5_PWR, "Powershot"),
 
                                 castSpell("Barrage", ret => PvPBeastSettings.Instance.TL5_BRG, "Barrage"),
-
-                                castSpell("A Murder of Crows", ret => PvPBeastSettings.Instance.TL4_AMOC && !IsMyAuraActive(Me.CurrentTarget, "A Murder of Crows"), "A Murder of Crows"),
+                                
 
                                 new Decorator(ret => PvPBeastSettings.Instance.FF && Me.HasAura("Frenzy") && !Me.HasAura("The Beast Within") && SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds >= 10,
                                     new PrioritySelector(
