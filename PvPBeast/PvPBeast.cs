@@ -579,7 +579,7 @@ namespace PvPBeast
             get
             {
                 return (
-                    new Decorator(ret => HaltFeign() && StyxWoW.IsInWorld && !Me.IsGhost && Me.IsAlive && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport && !Me.InVehicle,
+                    new Decorator(ret => HaltFeign() && StyxWoW.IsInWorld && !Me.IsGhost && Me.IsAlive && !Me.Mounted && !Me.IsFlying && !Me.IsOnTransport,
                         new PrioritySelector(
                             new Decorator(ret => reviveTimer.ElapsedMilliseconds < 100,
                                 revivePet(ret => PvPBeastSettings.Instance.RP && !Me.GotAlivePet && SpellManager.HasSpell("Revive Pet"), "Reviving Pet")),
