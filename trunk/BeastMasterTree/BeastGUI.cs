@@ -146,6 +146,8 @@ namespace TheBeastMasterTree
             FFS.Value = new decimal(BeastMasterSettings.Instance.FFS);
             MendHealth.Value = new decimal(BeastMasterSettings.Instance.MendHealth);
             DetHealth.Value = new decimal(BeastMasterSettings.Instance.DetHealth);
+            ItemsHealth.Value = new decimal(BeastMasterSettings.Instance.ItemsHealth);
+            HealthStone.Value = new decimal(BeastMasterSettings.Instance.HealthStone);
             BossHealth.Value = new decimal(BeastMasterSettings.Instance.BossHealth);
             FocusShots.Value = new decimal(BeastMasterSettings.Instance.FocusShots);
             Party.Checked = BeastMasterSettings.Instance.Party;
@@ -188,6 +190,9 @@ namespace TheBeastMasterTree
             LifeBlood.Checked = BeastMasterSettings.Instance.LB;
             Gloves.Checked = BeastMasterSettings.Instance.GE;
             Belt.Checked = BeastMasterSettings.Instance.FB;
+            LifeSpirit.Checked = BeastMasterSettings.Instance.LIFES;
+            HealingPot.Checked = BeastMasterSettings.Instance.HEALP;
+            AlchRejuv.Checked = BeastMasterSettings.Instance.ALCR;
             Rabid.Checked = BeastMasterSettings.Instance.RBD;
             PetAtk.Checked = BeastMasterSettings.Instance.PAT;
             Racial.Checked = BeastMasterSettings.Instance.RS;
@@ -240,6 +245,14 @@ namespace TheBeastMasterTree
         private void DetHealth_ValueChanged(object sender, EventArgs e)
         {
             BeastMasterSettings.Instance.DetHealth = (int)DetHealth.Value;
+        }
+        private void HealthStone_ValueChanged(object sender, EventArgs e)
+        {
+            BeastMasterSettings.Instance.HealthStone = (int)HealthStone.Value;
+        }
+        private void ItemsHealth_ValueChanged(object sender, EventArgs e)
+        {
+            BeastMasterSettings.Instance.ItemsHealth = (int)ItemsHealth.Value;
         }
         private void BossHealth_ValueChanged(object sender, EventArgs e)
         {
@@ -685,6 +698,39 @@ namespace TheBeastMasterTree
                 BeastMasterSettings.Instance.FB = false;
             }
         }
+        private void LifeSpirit_CheckedChanged(object sender, EventArgs e)
+        {
+            if (LifeSpirit.Checked == true)
+            {
+                BeastMasterSettings.Instance.LIFES = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.LIFES = false;
+            }
+        }
+        private void AlchRejuv_CheckedChanged(object sender, EventArgs e)
+        {
+            if (AlchRejuv.Checked == true)
+            {
+                BeastMasterSettings.Instance.ALCR = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.ALCR = false;
+            }
+        }
+        private void HealingPot_CheckedChanged(object sender, EventArgs e)
+        {
+            if (HealingPot.Checked == true)
+            {
+                BeastMasterSettings.Instance.HEALP = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.HEALP = false;
+            }
+        }
         private void Rabid_CheckedChanged(object sender, EventArgs e)
         {
             if (Rabid.Checked == true)
@@ -904,11 +950,6 @@ namespace TheBeastMasterTree
             BeastMasterSettings.Instance.Save();
             Logging.Write(Colors.Aquamarine, "Configuration Saved");
             Close();
-        }
-
-        private void groupBox5_Enter(object sender, EventArgs e)
-        {
-
         }
     }
 }

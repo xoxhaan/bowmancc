@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 3, 5);
+        public static readonly Version Version = new Version(2, 5, 0);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -85,130 +85,12 @@ namespace TheBeastMasterTree
         }
         #endregion
 
-        #region Halt on Feign Death
-        public bool HaltFeign()
-        {
-            {
-                if (!Me.HasAura("Feign Death"))
-                    return true;
-            }
-            return false;
-        }
-        #endregion
-
-        #region SelfControl
-        public bool SelfControl(WoWUnit unit)
-        {
-            if (Me.GotTarget && (unit.HasAura("Freezing Trap") || unit.HasAura("Wyvern Sting") || unit.HasAura("Bad Manner") || unit.HasAura("Scatter Shot")))
-                return true;
-
-            else return false;
-        }
-        #endregion
-
-        #region Dragon Soul
-
-        public bool DebuffByID(int spellId)
-        {
-            if (Me.HasAura(spellId) && StyxWoW.Me.GetAuraById(spellId).TimeLeft.TotalMilliseconds <= 2000)
-                return true;
-            else return false;
-        }
-
-        public bool Ultra()
-        {
-            if (BeastMasterSettings.Instance.DSNOR || BeastMasterSettings.Instance.DSLFR)
-            {
-                if (!Me.HasAura("Deterrence"))
-                {
-                    foreach (WoWUnit u in ObjectManager.GetObjectsOfType<WoWUnit>(true, true))
-                    {
-                        if (u.IsAlive
-                            && u.Guid != Me.Guid
-                            && u.IsHostile
-                            && u.IsCasting
-                            && (u.CastingSpell.Id == 106174 
-                                || u.CastingSpell.Id == 106389 
-                                || u.CastingSpell.Id == 103327 
-                                || u.CastingSpell.Id == 109417
-                                || u.CastingSpell.Id == 109416
-                                || u.CastingSpell.Id == 109415
-                                || u.CastingSpell.Id == 106371)
-                            && u.CurrentCastTimeLeft.TotalMilliseconds <= 1000)
-                            return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        public bool UltraFL()
-        {
-            if (DebuffByID(110079)
-                || DebuffByID(110080)
-                || DebuffByID(110070)
-                || DebuffByID(110069)
-                || DebuffByID(109075)
-                || DebuffByID(109200) 
-                || DebuffByID(110068)
-                || DebuffByID(105926) 
-                || DebuffByID(105925)
-                || DebuffByID(110078))
-                return true;
-
-            else return false;
-        }
-
-        public bool DW()
-        {
-            if (DebuffByID(110139)
-                || DebuffByID(110140)
-                || DebuffByID(110141)
-                || DebuffByID(106791)
-                || DebuffByID(109599)
-                || DebuffByID(106794)
-                || DebuffByID(109597)
-                || DebuffByID(109598))
-                return true;
-
-            else return false;
-        }
-        #endregion
-
-        #region Target Checks
-
-        private bool IsTargetBoss()
-        {
-            if (Me.CurrentTarget.Name.Contains("Dummy") || Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
-               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > BeastMasterSettings.Instance.BossHealth * 100000))
-                return true;
-
-            else return false;
-        }
-        private bool IsTargetEasyBoss()
-        {
-            if (Me.CurrentTarget.Name.Contains("Dummy") || Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
-               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > BeastMasterSettings.Instance.BossHealth * 40000))
-                return true;
-
-            else return false;
-        }
-
-        private bool validTarget(WoWUnit unit)
-        {
-            if (Me.GotTarget && unit.IsAlive && unit.Attackable && unit.CanSelect && !unit.IsFriendly)
-                return true;
-            else return false;
-        }
-        #endregion
-
         #region CastSpell Method
 
         public static bool canCast(string spellName, WoWUnit target)
         {
-            if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 200 && Me.CurrentFocus >= SpellManager.Spells[spellName].PowerCost && !Me.IsChanneling && (!Me.IsCasting || Me.CurrentCastTimeLeft.TotalMilliseconds < 350))
+            if (SpellManager.CanCast(spellName))
             {
-                SpellManager.Cast(spellName, target);
                 return true;
             }
             return false;
@@ -221,7 +103,7 @@ namespace TheBeastMasterTree
                 {
                     if (!cond(a))
                         return false;
-                    if (!canCast(spellName, onUnit(a)))
+                    if (!SpellManager.CanCast(spellName))
                         return false;
                     return onUnit(a) != null;
                 },
@@ -242,10 +124,8 @@ namespace TheBeastMasterTree
                 {
                     if (!cond(a))
                         return false;
-                    //CLU.TroubleshootLog("Cancast: {0} = {1}", name, CanCast(name, onUnit(a)));
                     if (!canCast(spellName, onUnit(a)))
                         return false;
-
                     return onUnit(a) != null;
                 },
             new Sequence(
@@ -282,16 +162,6 @@ namespace TheBeastMasterTree
 
         #region Use Items
 
-        public static Composite UseEquippedItem(uint slot)
-        {
-            return new PrioritySelector(
-                ctx => StyxWoW.Me.Inventory.GetItemBySlot(slot),
-                new Decorator(
-                    ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
-                    new Action(ctx => UseItem((WoWItem)ctx))));
-
-        }
-
         private static bool CanUseEquippedItem(WoWItem item)
         {
             // Check for engineering tinkers!
@@ -302,17 +172,42 @@ namespace TheBeastMasterTree
             return item.Usable && item.Cooldown <= 0;
         }
 
-        private static void UseItem(WoWItem item)
+
+        public static Composite UseEquippedItem(uint slot)
         {
-            standardLog("Using item: " + item.Name);
-            item.Use();
+            return new PrioritySelector(
+                ctx => StyxWoW.Me.Inventory.GetItemBySlot(slot),
+                new Decorator(
+                    ctx => ctx != null && CanUseEquippedItem((WoWItem)ctx),
+                    new Action(ctx => UseItem((WoWItem)ctx))));
+
         }
 
-        /// <summary>Attempts to use the bag item provided it is usable and its not on cooldown</summary>
-        /// <param name="name">the name of the bag item to use</param>
-        /// <param name="cond">The conditions that must be true</param>
-        /// <param name="label">A descriptive label for the clients GUI logging output</param>
-        /// <returns>The use bag item.</returns>
+        private static bool CanUseItem(WoWItem item)
+        {
+            return item != null && item.Usable && item.Cooldown <= 0;
+        }
+
+
+        private static void UseItem(WoWItem item)
+        {
+            if (item != null)
+            {
+                standardLog("Using item: " + item.Name);
+                item.Use();
+            }
+        }
+        #endregion 
+        
+        public static Composite UseItem(uint id)
+        {
+            return new PrioritySelector(
+                       ctx => ObjectManager.GetObjectsOfType<WoWItem>().FirstOrDefault(item => item.Entry == id),
+                       new Decorator(
+                           ctx => ctx != null && CanUseItem((WoWItem)ctx),
+                           new Action(ctx => UseItem((WoWItem)ctx))));
+        }
+
         public static Composite UseBagItem(string name, CanRunDecoratorDelegate cond, string label)
         {
             WoWItem item = null;
@@ -328,8 +223,6 @@ namespace TheBeastMasterTree
                 new Action(a => standardLog(" [BagItem] {0} ", label)),
                 new Action(a => item.UseContainerItem())));
         }
-
-        #endregion 
 
         #region Add Detection
 
@@ -469,6 +362,33 @@ namespace TheBeastMasterTree
 
         #endregion
 
+        #region Target Checks
+
+        private bool IsTargetBoss()
+        {
+            if (Me.CurrentTarget.Name.Contains("Dummy") || Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
+               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > BeastMasterSettings.Instance.BossHealth * 100000))
+                return true;
+
+            else return false;
+        }
+        private bool IsTargetEasyBoss()
+        {
+            if (Me.CurrentTarget.Name.Contains("Dummy") || Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.WorldBoss ||
+               (Me.CurrentTarget.CreatureRank == WoWUnitClassificationType.Elite && Me.CurrentTarget.MaxHealth > BeastMasterSettings.Instance.BossHealth * 40000))
+                return true;
+
+            else return false;
+        }
+
+        private bool validTarget(WoWUnit unit)
+        {
+            if (Me.GotTarget && unit.IsAlive && unit.Attackable && unit.CanSelect && !unit.IsFriendly)
+                return true;
+            else return false;
+        }
+        #endregion
+
         #region Pet Management
 
         public static Stopwatch reviveTimer = new Stopwatch();
@@ -517,7 +437,96 @@ namespace TheBeastMasterTree
             return callPet(spellName, ret => Me, cond, label);
         }
 
+        #endregion
 
+        #region Halt on Feign Death
+        public bool HaltFeign()
+        {
+            {
+                if (!Me.HasAura("Feign Death"))
+                    return true;
+            }
+            return false;
+        }
+        #endregion
+
+        #region SelfControl
+        public bool SelfControl(WoWUnit unit)
+        {
+            if (Me.GotTarget && (unit.HasAura("Freezing Trap") || unit.HasAura("Wyvern Sting") || unit.HasAura("Bad Manner") || unit.HasAura("Scatter Shot")))
+                return true;
+
+            else return false;
+        }
+        #endregion
+
+        #region Dragon Soul
+
+        public bool DebuffByID(int spellId)
+        {
+            if (Me.HasAura(spellId) && StyxWoW.Me.GetAuraById(spellId).TimeLeft.TotalMilliseconds <= 2000)
+                return true;
+            else return false;
+        }
+
+        public bool Ultra()
+        {
+            if (BeastMasterSettings.Instance.DSNOR || BeastMasterSettings.Instance.DSLFR)
+            {
+                if (!Me.HasAura("Deterrence"))
+                {
+                    foreach (WoWUnit u in ObjectManager.GetObjectsOfType<WoWUnit>(true, true))
+                    {
+                        if (u.IsAlive
+                            && u.Guid != Me.Guid
+                            && u.IsHostile
+                            && u.IsCasting
+                            && (u.CastingSpell.Id == 106174
+                                || u.CastingSpell.Id == 106389
+                                || u.CastingSpell.Id == 103327
+                                || u.CastingSpell.Id == 109417
+                                || u.CastingSpell.Id == 109416
+                                || u.CastingSpell.Id == 109415
+                                || u.CastingSpell.Id == 106371)
+                            && u.CurrentCastTimeLeft.TotalMilliseconds <= 1000)
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool UltraFL()
+        {
+            if (DebuffByID(110079)
+                || DebuffByID(110080)
+                || DebuffByID(110070)
+                || DebuffByID(110069)
+                || DebuffByID(109075)
+                || DebuffByID(109200)
+                || DebuffByID(110068)
+                || DebuffByID(105926)
+                || DebuffByID(105925)
+                || DebuffByID(110078))
+                return true;
+
+            else return false;
+        }
+
+        public bool DW()
+        {
+            if (DebuffByID(110139)
+                || DebuffByID(110140)
+                || DebuffByID(110141)
+                || DebuffByID(106791)
+                || DebuffByID(109599)
+                || DebuffByID(106794)
+                || DebuffByID(109597)
+                || DebuffByID(109598))
+                return true;
+
+            else return false;
+        }
         #endregion
 
         #region rest
@@ -599,6 +608,17 @@ namespace TheBeastMasterTree
                                 castSelfSpell("Exhilaration", ret => BeastMasterSettings.Instance.TL2_EXH && (Me.HealthPercent < 70 || (Me.Pet.HealthPercent < 15 
                                 && SpellManager.HasSpell("Heart of the Phoenix") && SpellManager.Spells["Heart of the Phoenix"].CooldownTimeLeft.TotalSeconds > 5)
                                 || (Me.Pet.HealthPercent < 15 && !SpellManager.HasSpell("Heart of the Phoenix"))), "Exhilaration"),
+
+                                UseBagItem("Healthstone", ret => Me.HealthPercent < BeastMasterSettings.Instance.HealthStone && Me.IsAlive, "Healthstone"),
+
+                                new Decorator(ret => Me.HealthPercent < BeastMasterSettings.Instance.ItemsHealth,
+                                    new PrioritySelector(
+                                        UseBagItem("Life Spirit", ret => BeastMasterSettings.Instance.LIFES && Me.IsAlive, "Life Spirit"),
+
+                                        UseBagItem("Alchemist's Rejuvenation", ret => BeastMasterSettings.Instance.ALCR && Me.IsAlive, "Alchemist's Rejuvenation"),
+
+                                        UseBagItem("Master Healing Potion", ret => BeastMasterSettings.Instance.HEALP && Me.IsAlive, "Master Healing Potion")
+                                )),
 
                                 new Decorator(ret => BeastMasterSettings.Instance.PAT && Me.GotAlivePet && Me.Pet.CurrentTargetGuid != Me.CurrentTargetGuid && !SelfControl(Me.CurrentTarget),
                                 new Action(delegate
@@ -832,8 +852,7 @@ namespace TheBeastMasterTree
 
                                 castSpell("Barrage", ret => BeastMasterSettings.Instance.TL5_BRG, "Barrage"),
 
-                                castSpell("A Murder of Crows", ret => BeastMasterSettings.Instance.TL4_AMOC && !IsMyAuraActive(Me.CurrentTarget, "A Murder of Crows") && ((Me.CurrentTarget.MaxHealth > Me.MaxHealth * 2 && Me.CurrentTarget.HealthPercent > 20) 
-                                || (Me.CurrentTarget.MaxHealth > Me.MaxHealth && Me.CurrentTarget.HealthPercent <= 20) || Me.CurrentTarget.Name.Contains("Training Dummy")), "A Murder of Crows"),
+                                castSpell("A Murder of Crows", ret => BeastMasterSettings.Instance.TL4_AMOC && !IsMyAuraActive(Me.CurrentTarget, "A Murder of Crows") && IsTargetBoss() || (IsTargetEasyBoss() && Me.CurrentTarget.HealthPercent < 20) || CalculateTimeToDeath(Me.CurrentTarget) > 32, "A Murder of Crows"),
 
                                 new Decorator(ret => BeastMasterSettings.Instance.FF && Me.GotAlivePet && Me.Pet.HasAura("Frenzy") && !Me.HasAura("The Beast Within")
                                               && ((SpellManager.Spells["Bestial Wrath"].Cooldown && SpellManager.Spells["Bestial Wrath"].CooldownTimeLeft.TotalSeconds > 9)

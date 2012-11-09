@@ -169,11 +169,26 @@ namespace TheBeastMasterTree
         [Setting, DefaultValue(15)]
         public int DetHealth { get; set; }
 
+        [Setting, DefaultValue(60)]
+        public int HealthStone { get; set; }
+
         [Setting, DefaultValue(150)]
         public int BossHealth { get; set; }
 
+        [Setting, DefaultValue(50)]
+        public int ItemsHealth { get; set; }
+
         [Setting, DefaultValue(true)]
         public bool AspectSwitching { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool LIFES { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool ALCR { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool HEALP { get; set; }
 		
 		[Setting, DefaultValue(true)]
         public bool ARC { get; set; }

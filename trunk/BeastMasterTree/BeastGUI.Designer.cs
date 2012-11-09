@@ -1,4 +1,6 @@
-﻿namespace TheBeastMasterTree
+﻿using System;
+
+namespace TheBeastMasterTree
 {
     partial class BeastGUI
     {
@@ -28,18 +30,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Arcane = new System.Windows.Forms.CheckBox();
-            this.Readiness = new System.Windows.Forms.CheckBox();
-            this.MDFocus = new System.Windows.Forms.CheckBox();
-            this.KillCom = new System.Windows.Forms.CheckBox();
-            this.HMark = new System.Windows.Forms.CheckBox();
-            this.Concussive = new System.Windows.Forms.CheckBox();
-            this.Deterrence = new System.Windows.Forms.CheckBox();
-            this.KillShot = new System.Windows.Forms.CheckBox();
-            this.BWrath = new System.Windows.Forms.CheckBox();
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BeastGUI));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.ItemsHealth = new System.Windows.Forms.NumericUpDown();
+            this.label32 = new System.Windows.Forms.Label();
+            this.AlchRejuv = new System.Windows.Forms.CheckBox();
+            this.HealingPot = new System.Windows.Forms.CheckBox();
+            this.LifeSpirit = new System.Windows.Forms.CheckBox();
+            this.HealthStone = new System.Windows.Forms.NumericUpDown();
+            this.label15 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.BossHealth = new System.Windows.Forms.NumericUpDown();
@@ -58,6 +61,9 @@
             this.label9 = new System.Windows.Forms.Label();
             this.FDBox = new System.Windows.Forms.ComboBox();
             this.AspectSwitching = new System.Windows.Forms.CheckBox();
+            this.Arcane = new System.Windows.Forms.CheckBox();
+            this.MDFocus = new System.Windows.Forms.CheckBox();
+            this.KillCom = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.AoEDire = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -65,9 +71,13 @@
             this.Launcher = new System.Windows.Forms.CheckBox();
             this.AoELynx = new System.Windows.Forms.CheckBox();
             this.MultiShot = new System.Windows.Forms.CheckBox();
+            this.HMark = new System.Windows.Forms.CheckBox();
+            this.Concussive = new System.Windows.Forms.CheckBox();
+            this.Deterrence = new System.Windows.Forms.CheckBox();
+            this.KillShot = new System.Windows.Forms.CheckBox();
+            this.BWrath = new System.Windows.Forms.CheckBox();
             this.label13 = new System.Windows.Forms.Label();
             this.FocusShots = new System.Windows.Forms.NumericUpDown();
-            this.linkLabel5 = new System.Windows.Forms.LinkLabel();
             this.SaveButton2 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
@@ -80,6 +90,7 @@
             this.Racial = new System.Windows.Forms.CheckBox();
             this.Trinket2 = new System.Windows.Forms.CheckBox();
             this.Trinket1 = new System.Windows.Forms.CheckBox();
+            this.Readiness = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.Rabid = new System.Windows.Forms.CheckBox();
             this.PetAtk = new System.Windows.Forms.CheckBox();
@@ -95,8 +106,21 @@
             this.RevivePet = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.label7 = new System.Windows.Forms.Label();
+            this.linkLabel5 = new System.Windows.Forms.LinkLabel();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.SaveButton = new System.Windows.Forms.Button();
@@ -139,9 +163,13 @@
             this.TL4_Crows = new System.Windows.Forms.RadioButton();
             this.TL4_Blink = new System.Windows.Forms.RadioButton();
             this.label18 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ItemsHealth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HealthStone)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BossHealth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DetHealth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FFS)).BeginInit();
@@ -163,136 +191,35 @@
             this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
-            // Arcane
-            // 
-            this.Arcane.AutoSize = true;
-            this.Arcane.Location = new System.Drawing.Point(137, 114);
-            this.Arcane.Name = "Arcane";
-            this.Arcane.Size = new System.Drawing.Size(85, 17);
-            this.Arcane.TabIndex = 24;
-            this.Arcane.Text = "Arcane Shot";
-            this.Arcane.UseVisualStyleBackColor = true;
-            this.Arcane.CheckedChanged += new System.EventHandler(this.Arcane_CheckedChanged);
-            // 
-            // Readiness
-            // 
-            this.Readiness.AutoSize = true;
-            this.Readiness.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Readiness.Location = new System.Drawing.Point(7, 161);
-            this.Readiness.Name = "Readiness";
-            this.Readiness.Size = new System.Drawing.Size(76, 17);
-            this.Readiness.TabIndex = 24;
-            this.Readiness.Text = "Readiness";
-            this.Readiness.UseVisualStyleBackColor = true;
-            this.Readiness.CheckedChanged += new System.EventHandler(this.Readiness_CheckedChanged);
-            // 
-            // MDFocus
-            // 
-            this.MDFocus.AutoSize = true;
-            this.MDFocus.Location = new System.Drawing.Point(17, 130);
-            this.MDFocus.Name = "MDFocus";
-            this.MDFocus.Size = new System.Drawing.Size(115, 17);
-            this.MDFocus.TabIndex = 24;
-            this.MDFocus.Text = "Misdirect on Focus";
-            this.MDFocus.UseVisualStyleBackColor = true;
-            this.MDFocus.CheckedChanged += new System.EventHandler(this.MDFocus_CheckedChanged);
-            // 
-            // KillCom
-            // 
-            this.KillCom.AutoSize = true;
-            this.KillCom.Location = new System.Drawing.Point(17, 151);
-            this.KillCom.Name = "KillCom";
-            this.KillCom.Size = new System.Drawing.Size(89, 17);
-            this.KillCom.TabIndex = 24;
-            this.KillCom.Text = "Kill Command";
-            this.KillCom.UseVisualStyleBackColor = true;
-            this.KillCom.CheckedChanged += new System.EventHandler(this.KillCom_CheckedChanged);
-            // 
-            // HMark
-            // 
-            this.HMark.AutoSize = true;
-            this.HMark.Location = new System.Drawing.Point(17, 108);
-            this.HMark.Name = "HMark";
-            this.HMark.Size = new System.Drawing.Size(92, 17);
-            this.HMark.TabIndex = 24;
-            this.HMark.Text = "Hunter\'s Mark";
-            this.HMark.UseVisualStyleBackColor = true;
-            this.HMark.CheckedChanged += new System.EventHandler(this.HMark_CheckedChanged);
-            // 
-            // Concussive
-            // 
-            this.Concussive.AutoSize = true;
-            this.Concussive.Location = new System.Drawing.Point(17, 87);
-            this.Concussive.Name = "Concussive";
-            this.Concussive.Size = new System.Drawing.Size(106, 17);
-            this.Concussive.TabIndex = 24;
-            this.Concussive.Text = "Concussive Shot";
-            this.Concussive.UseVisualStyleBackColor = true;
-            this.Concussive.CheckedChanged += new System.EventHandler(this.Concussive_CheckedChanged);
-            // 
-            // Deterrence
-            // 
-            this.Deterrence.AutoSize = true;
-            this.Deterrence.Location = new System.Drawing.Point(137, 71);
-            this.Deterrence.Name = "Deterrence";
-            this.Deterrence.Size = new System.Drawing.Size(105, 17);
-            this.Deterrence.TabIndex = 24;
-            this.Deterrence.Text = "Deterrence at %:";
-            this.Deterrence.UseVisualStyleBackColor = true;
-            this.Deterrence.CheckedChanged += new System.EventHandler(this.Deterrence_CheckedChanged);
-            // 
-            // KillShot
-            // 
-            this.KillShot.AutoSize = true;
-            this.KillShot.Location = new System.Drawing.Point(137, 135);
-            this.KillShot.Name = "KillShot";
-            this.KillShot.Size = new System.Drawing.Size(64, 17);
-            this.KillShot.TabIndex = 24;
-            this.KillShot.Text = "Kill Shot";
-            this.KillShot.UseVisualStyleBackColor = true;
-            this.KillShot.CheckedChanged += new System.EventHandler(this.KillShot_CheckedChanged);
-            // 
-            // BWrath
-            // 
-            this.BWrath.AutoSize = true;
-            this.BWrath.Location = new System.Drawing.Point(137, 92);
-            this.BWrath.Name = "BWrath";
-            this.BWrath.Size = new System.Drawing.Size(89, 17);
-            this.BWrath.TabIndex = 24;
-            this.BWrath.Text = "Bestial Wrath";
-            this.BWrath.UseVisualStyleBackColor = true;
-            this.BWrath.CheckedChanged += new System.EventHandler(this.BWrath_CheckedChanged);
-            // 
             // tabControl1
             // 
-            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Location = new System.Drawing.Point(-3, -1);
+            this.tabControl1.Location = new System.Drawing.Point(12, 11);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(486, 457);
+            this.tabControl1.Size = new System.Drawing.Size(501, 497);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage2
             // 
-            this.tabPage2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabPage2.BackColor = System.Drawing.Color.White;
             this.tabPage2.Controls.Add(this.groupBox6);
             this.tabPage2.Controls.Add(this.label5);
             this.tabPage2.Controls.Add(this.linkLabel2);
             this.tabPage2.Controls.Add(this.groupBox5);
             this.tabPage2.Controls.Add(this.groupBox3);
             this.tabPage2.Controls.Add(this.button1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(478, 428);
+            this.tabPage2.Size = new System.Drawing.Size(493, 471);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Config";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.groupBox7);
             this.groupBox6.Controls.Add(this.label12);
             this.groupBox6.Controls.Add(this.label11);
             this.groupBox6.Controls.Add(this.BossHealth);
@@ -322,18 +249,108 @@
             this.groupBox6.Controls.Add(this.BWrath);
             this.groupBox6.Controls.Add(this.label13);
             this.groupBox6.Controls.Add(this.FocusShots);
-            this.groupBox6.Controls.Add(this.linkLabel5);
             this.groupBox6.Controls.Add(this.SaveButton2);
             this.groupBox6.Location = new System.Drawing.Point(167, 34);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(306, 386);
+            this.groupBox6.Size = new System.Drawing.Size(320, 431);
             this.groupBox6.TabIndex = 15;
             this.groupBox6.TabStop = false;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.ItemsHealth);
+            this.groupBox7.Controls.Add(this.label32);
+            this.groupBox7.Controls.Add(this.AlchRejuv);
+            this.groupBox7.Controls.Add(this.HealingPot);
+            this.groupBox7.Controls.Add(this.LifeSpirit);
+            this.groupBox7.Controls.Add(this.HealthStone);
+            this.groupBox7.Controls.Add(this.label15);
+            this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox7.Location = new System.Drawing.Point(6, 311);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(215, 114);
+            this.groupBox7.TabIndex = 44;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Items";
+            // 
+            // ItemsHealth
+            // 
+            this.ItemsHealth.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ItemsHealth.Location = new System.Drawing.Point(87, 88);
+            this.ItemsHealth.Name = "ItemsHealth";
+            this.ItemsHealth.Size = new System.Drawing.Size(52, 20);
+            this.ItemsHealth.TabIndex = 46;
+            this.ItemsHealth.ValueChanged += new System.EventHandler(this.ItemsHealth_ValueChanged);
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label32.Location = new System.Drawing.Point(7, 91);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(76, 13);
+            this.label32.TabIndex = 47;
+            this.label32.Text = "Use items at %";
+            // 
+            // AlchRejuv
+            // 
+            this.AlchRejuv.AutoSize = true;
+            this.AlchRejuv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AlchRejuv.Location = new System.Drawing.Point(8, 50);
+            this.AlchRejuv.Name = "AlchRejuv";
+            this.AlchRejuv.Size = new System.Drawing.Size(144, 17);
+            this.AlchRejuv.TabIndex = 45;
+            this.AlchRejuv.Text = "Alchemist\'s Rejuvenation";
+            this.AlchRejuv.UseVisualStyleBackColor = true;
+            this.AlchRejuv.CheckedChanged += new System.EventHandler(this.AlchRejuv_CheckedChanged);
+            // 
+            // HealingPot
+            // 
+            this.HealingPot.AutoSize = true;
+            this.HealingPot.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HealingPot.Location = new System.Drawing.Point(8, 69);
+            this.HealingPot.Name = "HealingPot";
+            this.HealingPot.Size = new System.Drawing.Size(130, 17);
+            this.HealingPot.TabIndex = 44;
+            this.HealingPot.Text = "Master Healing Potion";
+            this.HealingPot.UseVisualStyleBackColor = true;
+            this.HealingPot.CheckedChanged += new System.EventHandler(this.HealingPot_CheckedChanged);
+            // 
+            // LifeSpirit
+            // 
+            this.LifeSpirit.AutoSize = true;
+            this.LifeSpirit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LifeSpirit.Location = new System.Drawing.Point(8, 32);
+            this.LifeSpirit.Name = "LifeSpirit";
+            this.LifeSpirit.Size = new System.Drawing.Size(69, 17);
+            this.LifeSpirit.TabIndex = 5;
+            this.LifeSpirit.Text = "Life Spirit";
+            this.LifeSpirit.UseVisualStyleBackColor = true;
+            this.LifeSpirit.CheckedChanged += new System.EventHandler(this.LifeSpirit_CheckedChanged);
+            // 
+            // HealthStone
+            // 
+            this.HealthStone.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HealthStone.Location = new System.Drawing.Point(124, 14);
+            this.HealthStone.Name = "HealthStone";
+            this.HealthStone.Size = new System.Drawing.Size(52, 20);
+            this.HealthStone.TabIndex = 42;
+            this.HealthStone.ValueChanged += new System.EventHandler(this.HealthStone_ValueChanged);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(5, 17);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(114, 13);
+            this.label15.TabIndex = 43;
+            this.label15.Text = "Use Health Stone at %";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(150, 43);
+            this.label12.Location = new System.Drawing.Point(150, 41);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(86, 13);
             this.label12.TabIndex = 41;
@@ -342,7 +359,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(15, 42);
+            this.label11.Location = new System.Drawing.Point(15, 40);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(76, 13);
             this.label11.TabIndex = 40;
@@ -350,12 +367,15 @@
             // 
             // BossHealth
             // 
-            this.BossHealth.Location = new System.Drawing.Point(94, 39);
+            this.BossHealth.Location = new System.Drawing.Point(94, 37);
+            this.BossHealth.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
             this.BossHealth.Name = "BossHealth";
             this.BossHealth.Size = new System.Drawing.Size(52, 20);
             this.BossHealth.TabIndex = 39;
-            this.BossHealth.Maximum = 500;
-            this.BossHealth.Minimum = 0;
             this.BossHealth.ValueChanged += new System.EventHandler(this.BossHealth_ValueChanged);
             // 
             // DetHealth
@@ -381,7 +401,7 @@
             // Distract
             // 
             this.Distract.AutoSize = true;
-            this.Distract.Location = new System.Drawing.Point(17, 173);
+            this.Distract.Location = new System.Drawing.Point(17, 165);
             this.Distract.Name = "Distract";
             this.Distract.Size = new System.Drawing.Size(101, 17);
             this.Distract.TabIndex = 37;
@@ -392,7 +412,7 @@
             // ScatterShot
             // 
             this.ScatterShot.AutoSize = true;
-            this.ScatterShot.Location = new System.Drawing.Point(127, 318);
+            this.ScatterShot.Location = new System.Drawing.Point(132, 290);
             this.ScatterShot.Name = "ScatterShot";
             this.ScatterShot.Size = new System.Drawing.Size(69, 13);
             this.ScatterShot.TabIndex = 36;
@@ -403,7 +423,7 @@
             this.ScatBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ScatBox.DropDownWidth = 95;
             this.ScatBox.FormattingEnabled = true;
-            this.ScatBox.Location = new System.Drawing.Point(204, 315);
+            this.ScatBox.Location = new System.Drawing.Point(207, 286);
             this.ScatBox.Name = "ScatBox";
             this.ScatBox.Size = new System.Drawing.Size(98, 21);
             this.ScatBox.TabIndex = 35;
@@ -414,7 +434,7 @@
             this.IntiBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.IntiBox.DropDownWidth = 95;
             this.IntiBox.FormattingEnabled = true;
-            this.IntiBox.Location = new System.Drawing.Point(189, 288);
+            this.IntiBox.Location = new System.Drawing.Point(192, 259);
             this.IntiBox.Name = "IntiBox";
             this.IntiBox.Size = new System.Drawing.Size(113, 21);
             this.IntiBox.TabIndex = 34;
@@ -423,7 +443,7 @@
             // Intimidate
             // 
             this.Intimidate.AutoSize = true;
-            this.Intimidate.Location = new System.Drawing.Point(129, 291);
+            this.Intimidate.Location = new System.Drawing.Point(132, 262);
             this.Intimidate.Name = "Intimidate";
             this.Intimidate.Size = new System.Drawing.Size(55, 13);
             this.Intimidate.TabIndex = 33;
@@ -434,7 +454,7 @@
             this.SerBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SerBox.DropDownWidth = 95;
             this.SerBox.FormattingEnabled = true;
-            this.SerBox.Location = new System.Drawing.Point(189, 259);
+            this.SerBox.Location = new System.Drawing.Point(192, 230);
             this.SerBox.Name = "SerBox";
             this.SerBox.Size = new System.Drawing.Size(113, 21);
             this.SerBox.TabIndex = 32;
@@ -443,7 +463,7 @@
             // Serpent
             // 
             this.Serpent.AutoSize = true;
-            this.Serpent.Location = new System.Drawing.Point(136, 262);
+            this.Serpent.Location = new System.Drawing.Point(140, 233);
             this.Serpent.Name = "Serpent";
             this.Serpent.Size = new System.Drawing.Size(47, 13);
             this.Serpent.TabIndex = 31;
@@ -496,7 +516,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(139, 235);
+            this.label9.Location = new System.Drawing.Point(139, 206);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(68, 13);
             this.label9.TabIndex = 26;
@@ -507,7 +527,7 @@
             this.FDBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.FDBox.DropDownWidth = 95;
             this.FDBox.FormattingEnabled = true;
-            this.FDBox.Location = new System.Drawing.Point(207, 232);
+            this.FDBox.Location = new System.Drawing.Point(210, 203);
             this.FDBox.Name = "FDBox";
             this.FDBox.Size = new System.Drawing.Size(95, 21);
             this.FDBox.TabIndex = 25;
@@ -516,13 +536,46 @@
             // AspectSwitching
             // 
             this.AspectSwitching.AutoSize = true;
-            this.AspectSwitching.Location = new System.Drawing.Point(17, 66);
+            this.AspectSwitching.Location = new System.Drawing.Point(17, 60);
             this.AspectSwitching.Name = "AspectSwitching";
             this.AspectSwitching.Size = new System.Drawing.Size(106, 17);
             this.AspectSwitching.TabIndex = 24;
             this.AspectSwitching.Text = "Aspect switching";
             this.AspectSwitching.UseVisualStyleBackColor = true;
             this.AspectSwitching.CheckedChanged += new System.EventHandler(this.AspectSwitching_CheckedChanged);
+            // 
+            // Arcane
+            // 
+            this.Arcane.AutoSize = true;
+            this.Arcane.Location = new System.Drawing.Point(137, 114);
+            this.Arcane.Name = "Arcane";
+            this.Arcane.Size = new System.Drawing.Size(85, 17);
+            this.Arcane.TabIndex = 24;
+            this.Arcane.Text = "Arcane Shot";
+            this.Arcane.UseVisualStyleBackColor = true;
+            this.Arcane.CheckedChanged += new System.EventHandler(this.Arcane_CheckedChanged);
+            // 
+            // MDFocus
+            // 
+            this.MDFocus.AutoSize = true;
+            this.MDFocus.Location = new System.Drawing.Point(17, 123);
+            this.MDFocus.Name = "MDFocus";
+            this.MDFocus.Size = new System.Drawing.Size(115, 17);
+            this.MDFocus.TabIndex = 24;
+            this.MDFocus.Text = "Misdirect on Focus";
+            this.MDFocus.UseVisualStyleBackColor = true;
+            this.MDFocus.CheckedChanged += new System.EventHandler(this.MDFocus_CheckedChanged);
+            // 
+            // KillCom
+            // 
+            this.KillCom.AutoSize = true;
+            this.KillCom.Location = new System.Drawing.Point(17, 144);
+            this.KillCom.Name = "KillCom";
+            this.KillCom.Size = new System.Drawing.Size(89, 17);
+            this.KillCom.TabIndex = 24;
+            this.KillCom.Text = "Kill Command";
+            this.KillCom.UseVisualStyleBackColor = true;
+            this.KillCom.CheckedChanged += new System.EventHandler(this.KillCom_CheckedChanged);
             // 
             // groupBox4
             // 
@@ -532,8 +585,8 @@
             this.groupBox4.Controls.Add(this.Launcher);
             this.groupBox4.Controls.Add(this.AoELynx);
             this.groupBox4.Controls.Add(this.MultiShot);
-            this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.groupBox4.Location = new System.Drawing.Point(6, 216);
+            this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox4.Location = new System.Drawing.Point(6, 184);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(117, 126);
             this.groupBox4.TabIndex = 2;
@@ -612,10 +665,65 @@
             this.MultiShot.UseVisualStyleBackColor = true;
             this.MultiShot.CheckedChanged += new System.EventHandler(this.MultiShot_CheckedChanged);
             // 
+            // HMark
+            // 
+            this.HMark.AutoSize = true;
+            this.HMark.Location = new System.Drawing.Point(17, 102);
+            this.HMark.Name = "HMark";
+            this.HMark.Size = new System.Drawing.Size(92, 17);
+            this.HMark.TabIndex = 24;
+            this.HMark.Text = "Hunter\'s Mark";
+            this.HMark.UseVisualStyleBackColor = true;
+            this.HMark.CheckedChanged += new System.EventHandler(this.HMark_CheckedChanged);
+            // 
+            // Concussive
+            // 
+            this.Concussive.AutoSize = true;
+            this.Concussive.Location = new System.Drawing.Point(17, 81);
+            this.Concussive.Name = "Concussive";
+            this.Concussive.Size = new System.Drawing.Size(106, 17);
+            this.Concussive.TabIndex = 24;
+            this.Concussive.Text = "Concussive Shot";
+            this.Concussive.UseVisualStyleBackColor = true;
+            this.Concussive.CheckedChanged += new System.EventHandler(this.Concussive_CheckedChanged);
+            // 
+            // Deterrence
+            // 
+            this.Deterrence.AutoSize = true;
+            this.Deterrence.Location = new System.Drawing.Point(137, 71);
+            this.Deterrence.Name = "Deterrence";
+            this.Deterrence.Size = new System.Drawing.Size(105, 17);
+            this.Deterrence.TabIndex = 24;
+            this.Deterrence.Text = "Deterrence at %:";
+            this.Deterrence.UseVisualStyleBackColor = true;
+            this.Deterrence.CheckedChanged += new System.EventHandler(this.Deterrence_CheckedChanged);
+            // 
+            // KillShot
+            // 
+            this.KillShot.AutoSize = true;
+            this.KillShot.Location = new System.Drawing.Point(137, 135);
+            this.KillShot.Name = "KillShot";
+            this.KillShot.Size = new System.Drawing.Size(64, 17);
+            this.KillShot.TabIndex = 24;
+            this.KillShot.Text = "Kill Shot";
+            this.KillShot.UseVisualStyleBackColor = true;
+            this.KillShot.CheckedChanged += new System.EventHandler(this.KillShot_CheckedChanged);
+            // 
+            // BWrath
+            // 
+            this.BWrath.AutoSize = true;
+            this.BWrath.Location = new System.Drawing.Point(137, 92);
+            this.BWrath.Name = "BWrath";
+            this.BWrath.Size = new System.Drawing.Size(89, 17);
+            this.BWrath.TabIndex = 24;
+            this.BWrath.Text = "Bestial Wrath";
+            this.BWrath.UseVisualStyleBackColor = true;
+            this.BWrath.CheckedChanged += new System.EventHandler(this.BWrath_CheckedChanged);
+            // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(72, 16);
+            this.label13.Location = new System.Drawing.Point(72, 15);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(185, 13);
             this.label13.TabIndex = 23;
@@ -623,31 +731,15 @@
             // 
             // FocusShots
             // 
-            this.FocusShots.Location = new System.Drawing.Point(16, 14);
+            this.FocusShots.Location = new System.Drawing.Point(16, 13);
             this.FocusShots.Name = "FocusShots";
             this.FocusShots.Size = new System.Drawing.Size(52, 20);
             this.FocusShots.TabIndex = 22;
             this.FocusShots.ValueChanged += new System.EventHandler(this.FocusShots_ValueChanged);
             // 
-            // linkLabel5
-            // 
-            this.linkLabel5.AutoSize = true;
-            this.linkLabel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.linkLabel5.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.linkLabel5.Font = new System.Drawing.Font("Cambria", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel5.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.linkLabel5.LinkColor = System.Drawing.Color.Black;
-            this.linkLabel5.Location = new System.Drawing.Point(10, 349);
-            this.linkLabel5.Name = "linkLabel5";
-            this.linkLabel5.Size = new System.Drawing.Size(156, 24);
-            this.linkLabel5.TabIndex = 16;
-            this.linkLabel5.TabStop = true;
-            this.linkLabel5.Text = "Submit feedback";
-            this.linkLabel5.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel5_LinkClicked);
-            // 
             // SaveButton2
             // 
-            this.SaveButton2.Location = new System.Drawing.Point(227, 358);
+            this.SaveButton2.Location = new System.Drawing.Point(238, 400);
             this.SaveButton2.Name = "SaveButton2";
             this.SaveButton2.Size = new System.Drawing.Size(75, 23);
             this.SaveButton2.TabIndex = 12;
@@ -659,7 +751,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Candara", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.label5.ForeColor = System.Drawing.Color.Firebrick;
             this.label5.Location = new System.Drawing.Point(185, 1);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(255, 39);
@@ -687,20 +779,19 @@
             this.groupBox5.Controls.Add(this.Trinket2);
             this.groupBox5.Controls.Add(this.Trinket1);
             this.groupBox5.Controls.Add(this.Readiness);
-            this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.groupBox5.Location = new System.Drawing.Point(11, 219);
+            this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox5.Location = new System.Drawing.Point(11, 244);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(150, 201);
+            this.groupBox5.Size = new System.Drawing.Size(150, 221);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Cooldowns";
-            this.groupBox5.Enter += new System.EventHandler(this.groupBox5_Enter);
             // 
             // Belt
             // 
             this.Belt.AutoSize = true;
             this.Belt.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Belt.Location = new System.Drawing.Point(7, 141);
+            this.Belt.Location = new System.Drawing.Point(7, 147);
             this.Belt.Name = "Belt";
             this.Belt.Size = new System.Drawing.Size(87, 17);
             this.Belt.TabIndex = 26;
@@ -712,7 +803,7 @@
             // 
             this.LifeBlood.AutoSize = true;
             this.LifeBlood.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.LifeBlood.Location = new System.Drawing.Point(7, 79);
+            this.LifeBlood.Location = new System.Drawing.Point(7, 82);
             this.LifeBlood.Name = "LifeBlood";
             this.LifeBlood.Size = new System.Drawing.Size(69, 17);
             this.LifeBlood.TabIndex = 5;
@@ -724,7 +815,7 @@
             // 
             this.Rapid.AutoSize = true;
             this.Rapid.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Rapid.Location = new System.Drawing.Point(7, 58);
+            this.Rapid.Location = new System.Drawing.Point(7, 61);
             this.Rapid.Name = "Rapid";
             this.Rapid.Size = new System.Drawing.Size(74, 17);
             this.Rapid.TabIndex = 4;
@@ -736,7 +827,7 @@
             // 
             this.Gloves.AutoSize = true;
             this.Gloves.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Gloves.Location = new System.Drawing.Point(7, 120);
+            this.Gloves.Location = new System.Drawing.Point(7, 125);
             this.Gloves.Name = "Gloves";
             this.Gloves.Size = new System.Drawing.Size(102, 17);
             this.Gloves.TabIndex = 3;
@@ -748,7 +839,7 @@
             // 
             this.CallWild.AutoSize = true;
             this.CallWild.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CallWild.Location = new System.Drawing.Point(7, 181);
+            this.CallWild.Location = new System.Drawing.Point(7, 189);
             this.CallWild.Name = "CallWild";
             this.CallWild.Size = new System.Drawing.Size(74, 17);
             this.CallWild.TabIndex = 25;
@@ -760,7 +851,7 @@
             // 
             this.Racial.AutoSize = true;
             this.Racial.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Racial.Location = new System.Drawing.Point(7, 99);
+            this.Racial.Location = new System.Drawing.Point(7, 103);
             this.Racial.Name = "Racial";
             this.Racial.Size = new System.Drawing.Size(78, 17);
             this.Racial.TabIndex = 2;
@@ -772,7 +863,7 @@
             // 
             this.Trinket2.AutoSize = true;
             this.Trinket2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.Trinket2.Location = new System.Drawing.Point(7, 39);
+            this.Trinket2.Location = new System.Drawing.Point(7, 40);
             this.Trinket2.Name = "Trinket2";
             this.Trinket2.Size = new System.Drawing.Size(68, 17);
             this.Trinket2.TabIndex = 1;
@@ -792,6 +883,18 @@
             this.Trinket1.UseVisualStyleBackColor = true;
             this.Trinket1.CheckedChanged += new System.EventHandler(this.Trinket1_CheckedChanged);
             // 
+            // Readiness
+            // 
+            this.Readiness.AutoSize = true;
+            this.Readiness.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Readiness.Location = new System.Drawing.Point(7, 168);
+            this.Readiness.Name = "Readiness";
+            this.Readiness.Size = new System.Drawing.Size(76, 17);
+            this.Readiness.TabIndex = 24;
+            this.Readiness.Text = "Readiness";
+            this.Readiness.UseVisualStyleBackColor = true;
+            this.Readiness.CheckedChanged += new System.EventHandler(this.Readiness_CheckedChanged);
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.Rabid);
@@ -806,10 +909,10 @@
             this.groupBox3.Controls.Add(this.CallPet);
             this.groupBox3.Controls.Add(this.MendPet);
             this.groupBox3.Controls.Add(this.RevivePet);
-            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(11, 3);
+            this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox3.Location = new System.Drawing.Point(11, 4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(150, 210);
+            this.groupBox3.Size = new System.Drawing.Size(150, 234);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Pet options";
@@ -818,7 +921,7 @@
             // 
             this.Rabid.AutoSize = true;
             this.Rabid.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Rabid.Location = new System.Drawing.Point(6, 189);
+            this.Rabid.Location = new System.Drawing.Point(6, 202);
             this.Rabid.Name = "Rabid";
             this.Rabid.Size = new System.Drawing.Size(54, 17);
             this.Rabid.TabIndex = 31;
@@ -830,7 +933,7 @@
             // 
             this.PetAtk.AutoSize = true;
             this.PetAtk.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PetAtk.Location = new System.Drawing.Point(6, 169);
+            this.PetAtk.Location = new System.Drawing.Point(6, 181);
             this.PetAtk.Name = "PetAtk";
             this.PetAtk.Size = new System.Drawing.Size(128, 17);
             this.PetAtk.TabIndex = 30;
@@ -842,7 +945,7 @@
             // 
             this.Frost.AutoSize = true;
             this.Frost.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Frost.Location = new System.Drawing.Point(6, 130);
+            this.Frost.Location = new System.Drawing.Point(6, 140);
             this.Frost.Name = "Frost";
             this.Frost.Size = new System.Drawing.Size(108, 17);
             this.Frost.TabIndex = 29;
@@ -854,7 +957,7 @@
             // 
             this.Burrow.AutoSize = true;
             this.Burrow.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Burrow.Location = new System.Drawing.Point(6, 150);
+            this.Burrow.Location = new System.Drawing.Point(6, 161);
             this.Burrow.Name = "Burrow";
             this.Burrow.Size = new System.Drawing.Size(93, 17);
             this.Burrow.TabIndex = 28;
@@ -866,7 +969,7 @@
             // 
             this.SpiritMend.AutoSize = true;
             this.SpiritMend.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SpiritMend.Location = new System.Drawing.Point(6, 110);
+            this.SpiritMend.Location = new System.Drawing.Point(6, 119);
             this.SpiritMend.Name = "SpiritMend";
             this.SpiritMend.Size = new System.Drawing.Size(79, 17);
             this.SpiritMend.TabIndex = 27;
@@ -878,7 +981,7 @@
             // 
             this.Misdirect.AutoSize = true;
             this.Misdirect.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Misdirect.Location = new System.Drawing.Point(6, 91);
+            this.Misdirect.Location = new System.Drawing.Point(6, 99);
             this.Misdirect.Name = "Misdirect";
             this.Misdirect.Size = new System.Drawing.Size(102, 17);
             this.Misdirect.TabIndex = 26;
@@ -890,7 +993,7 @@
             this.label2.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 73);
+            this.label2.Location = new System.Drawing.Point(6, 80);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 13);
             this.label2.TabIndex = 24;
@@ -899,7 +1002,7 @@
             // MendHealth
             // 
             this.MendHealth.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MendHealth.Location = new System.Drawing.Point(76, 71);
+            this.MendHealth.Location = new System.Drawing.Point(76, 78);
             this.MendHealth.Name = "MendHealth";
             this.MendHealth.Size = new System.Drawing.Size(52, 20);
             this.MendHealth.TabIndex = 23;
@@ -908,7 +1011,7 @@
             // PET
             // 
             this.PET.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PET.Location = new System.Drawing.Point(75, 15);
+            this.PET.Location = new System.Drawing.Point(75, 19);
             this.PET.Maximum = new decimal(new int[] {
             5,
             0,
@@ -933,7 +1036,7 @@
             // 
             this.CallPet.AutoSize = true;
             this.CallPet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.CallPet.Location = new System.Drawing.Point(6, 16);
+            this.CallPet.Location = new System.Drawing.Point(6, 20);
             this.CallPet.Name = "CallPet";
             this.CallPet.Size = new System.Drawing.Size(62, 17);
             this.CallPet.TabIndex = 4;
@@ -945,7 +1048,7 @@
             // 
             this.MendPet.AutoSize = true;
             this.MendPet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MendPet.Location = new System.Drawing.Point(6, 54);
+            this.MendPet.Location = new System.Drawing.Point(6, 60);
             this.MendPet.Name = "MendPet";
             this.MendPet.Size = new System.Drawing.Size(72, 17);
             this.MendPet.TabIndex = 2;
@@ -957,7 +1060,7 @@
             // 
             this.RevivePet.AutoSize = true;
             this.RevivePet.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RevivePet.Location = new System.Drawing.Point(6, 35);
+            this.RevivePet.Location = new System.Drawing.Point(6, 40);
             this.RevivePet.Name = "RevivePet";
             this.RevivePet.Size = new System.Drawing.Size(79, 17);
             this.RevivePet.TabIndex = 1;
@@ -976,61 +1079,272 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.label7);
+            this.tabPage1.BackColor = System.Drawing.Color.White;
+            this.tabPage1.Controls.Add(this.linkLabel5);
+            this.tabPage1.Controls.Add(this.label22);
+            this.tabPage1.Controls.Add(this.label31);
+            this.tabPage1.Controls.Add(this.label30);
+            this.tabPage1.Controls.Add(this.label29);
+            this.tabPage1.Controls.Add(this.label28);
+            this.tabPage1.Controls.Add(this.label27);
+            this.tabPage1.Controls.Add(this.label26);
+            this.tabPage1.Controls.Add(this.label25);
+            this.tabPage1.Controls.Add(this.label24);
+            this.tabPage1.Controls.Add(this.label23);
+            this.tabPage1.Controls.Add(this.label20);
+            this.tabPage1.Controls.Add(this.label19);
             this.tabPage1.Controls.Add(this.label14);
+            this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Controls.Add(this.label10);
             this.tabPage1.Controls.Add(this.linkLabel1);
             this.tabPage1.Controls.Add(this.SaveButton);
             this.tabPage1.Controls.Add(this.label4);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.groupBox2);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(478, 428);
+            this.tabPage1.Size = new System.Drawing.Size(493, 471);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Beast Master";
-            this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // label7
+            // linkLabel5
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(29, 309);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(114, 13);
-            this.label7.TabIndex = 26;
-            this.label7.Text = "Recommendations:";
+            this.linkLabel5.AutoSize = true;
+            this.linkLabel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.linkLabel5.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.linkLabel5.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel5.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabel5.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.linkLabel5.Location = new System.Drawing.Point(288, 443);
+            this.linkLabel5.Name = "linkLabel5";
+            this.linkLabel5.Size = new System.Drawing.Size(118, 21);
+            this.linkLabel5.TabIndex = 42;
+            this.linkLabel5.TabStop = true;
+            this.linkLabel5.Text = "Submit feedback";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label22.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label22.Location = new System.Drawing.Point(369, 387);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(111, 30);
+            this.label22.TabIndex = 41;
+            this.label22.Text = "If none mentioned, \r\nuse preferred.";
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.BackColor = System.Drawing.Color.LemonChiffon;
+            this.label31.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label31.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label31.Location = new System.Drawing.Point(81, 409);
+            this.label31.Name = "label31";
+            this.label31.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.label31.Size = new System.Drawing.Size(59, 27);
+            this.label31.TabIndex = 40;
+            this.label31.Text = "Minor";
+            this.toolTip1.SetToolTip(this.label31, "[Aspect of the Cheetah]\r\n- Lets us run faster without getting dazed, increases mobility.\r\n[Aspect of" +
+                "the Pack]\r\n- Increases Packs range, useful as a group speed buff between combats.\r\n[Revive Pet]\r\n- Useful for reviving pet when you are under attack.");
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.BackColor = System.Drawing.Color.Khaki;
+            this.label30.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label30.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label30.Location = new System.Drawing.Point(15, 409);
+            this.label30.Name = "label30";
+            this.label30.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.label30.Size = new System.Drawing.Size(59, 27);
+            this.label30.TabIndex = 39;
+            this.label30.Text = "Major";
+            this.toolTip1.SetToolTip(this.label30, "[Marked for Death]\r\n- Applies Hunters Mark automatically, saving time thus increasing DPS.\r\n[Animal Bond]\r\n- Inc" +
+    "reases healing taken, thus survivability.\r\n[Misdirection]\r\n- Let's us redirect threat to our Pet more often, increases survivability.\r\n[Dise" +
+    "ngage]\r\n- Fun, although mostly useless talent.\r\n[Deterrence]\r\n- Useful for damage reduction, increases survivability.\r\n[Mending]\r\n- Incre" +
+    "ases Pets survivability, good for Soloing.\r\n[Path Finding]\r\n- Increases running speed, thus Mobility.\r\n[Distracting Shot]\r\n- Distracts your" +
+    " target to attack your Pet, increases survivability.");
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.BackColor = System.Drawing.Color.SteelBlue;
+            this.label29.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label29.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label29.Location = new System.Drawing.Point(348, 348);
+            this.label29.Name = "label29";
+            this.label29.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.label29.Size = new System.Drawing.Size(59, 27);
+            this.label29.TabIndex = 38;
+            this.label29.Text = "LVL90";
+            this.toolTip1.SetToolTip(this.label29, "[Glaive Toss]\r\n- Best DPS, great for AoE, doesn\'t waste time casting.\r\n[Power Sho" +
+        "t]\r\n- Long cast makes this undesireable.\r\n[Barrage]\r\n- Channels, Good for Burst," +
+        " can be used while moving (Fox)");
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.label28.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label28.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label28.Location = new System.Drawing.Point(281, 348);
+            this.label28.Name = "label28";
+            this.label28.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.label28.Size = new System.Drawing.Size(59, 27);
+            this.label28.TabIndex = 37;
+            this.label28.Text = "LVL75";
+            this.toolTip1.SetToolTip(this.label28, "[A Murder of Crows]\r\n- Best on long duration fights (Raid bosses).\r\n[Blink Strike" +
+        "]\r\n- Great for Pet control, useful in soloing.\r\n[Lynx Rush]\r\n- Great for fast bu" +
+        "rst of DPS, useful in AoE.");
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.BackColor = System.Drawing.Color.SkyBlue;
+            this.label27.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label27.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.Location = new System.Drawing.Point(214, 348);
+            this.label27.Name = "label27";
+            this.label27.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.label27.Size = new System.Drawing.Size(59, 27);
+            this.label27.TabIndex = 36;
+            this.label27.Text = "LVL60";
+            this.toolTip1.SetToolTip(this.label27, "[Fervor]\r\n- High and fast Focus Regen.\r\n[Dire Beast]\r\n- Direct additional DPS, lo" +
+        "w focus Regen.\r\n[Thrill of the Hunt]\r\n- Useful in AoE Situations.");
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.BackColor = System.Drawing.Color.PowderBlue;
+            this.label26.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label26.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label26.Location = new System.Drawing.Point(148, 348);
+            this.label26.Name = "label26";
+            this.label26.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.label26.Size = new System.Drawing.Size(59, 27);
+            this.label26.TabIndex = 35;
+            this.label26.Text = "LVL45";
+            this.toolTip1.SetToolTip(this.label26, "[Exhilaration]\r\n- A fast 30% Heal (good for PvP).\r\n[Aspect of the Iron Hawk]\r\n- B" +
+        "est in high damage situations (Raid Bosses).\r\n[Spirit Bond]\r\n- Heals you and pet" +
+        " Passively (Soloing)");
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.BackColor = System.Drawing.Color.PaleTurquoise;
+            this.label25.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label25.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.Location = new System.Drawing.Point(82, 348);
+            this.label25.Name = "label25";
+            this.label25.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.label25.Size = new System.Drawing.Size(59, 27);
+            this.label25.TabIndex = 34;
+            this.label25.Text = "LVL30";
+            this.toolTip1.SetToolTip(this.label25, "[Silencing Shot]\r\n- Useful is a Silence is required.\r\n[Wyvern Sting]\r\n- Useuful i" +
+        "f an extra Crowd Control is required.\r\n[Binding Shot]\r\n- Useful for controlling " +
+        "Adds.");
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.BackColor = System.Drawing.Color.LightCyan;
+            this.label24.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label24.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(16, 348);
+            this.label24.Name = "label24";
+            this.label24.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.label24.Size = new System.Drawing.Size(59, 27);
+            this.label24.TabIndex = 33;
+            this.label24.Text = "LVL15";
+            this.toolTip1.SetToolTip(this.label24, "[Posthaste]\r\n- Useful when you need to move somewhere fast.\r\n[Narrow Escape]\r\n- U" +
+        "seful for controlling Adds.\r\n[Crouching Tiger, Hidden Chimera]\r\n- Useful if you " +
+        "need to deterrence often.");
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label23.Location = new System.Drawing.Point(7, 381);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(150, 23);
+            this.label23.TabIndex = 31;
+            this.label23.Text = "Glyphs Explained:";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label20.Location = new System.Drawing.Point(204, 381);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(162, 23);
+            this.label20.TabIndex = 29;
+            this.label20.Text = "Recommendations:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.BackColor = System.Drawing.Color.PaleGreen;
+            this.label19.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label19.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(289, 408);
+            this.label19.Name = "label19";
+            this.label19.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.label19.Size = new System.Drawing.Size(68, 27);
+            this.label19.TabIndex = 28;
+            this.label19.Text = "Soloing";
+            this.toolTip1.SetToolTip(this.label19, "[Talents]\r\n- [Spirit Bond]\r\n- [Fervor]\r\n- [Blink Strike]\r\n- [Glaive Toss]\r\n [Glyp" +
+        "hs]\r\n- [Marked for Death]\r\n- [Misdirection]");
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(31, 344);
+            this.label14.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label14.Location = new System.Drawing.Point(164, 326);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(155, 13);
-            this.label14.TabIndex = 25;
-            this.label14.Text = "Glyphs: Marked For Death";
+            this.label14.Size = new System.Drawing.Size(118, 15);
+            this.label14.TabIndex = 27;
+            this.label14.Text = "Mouse over for info.";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label7.Location = new System.Drawing.Point(10, 321);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(153, 23);
+            this.label7.TabIndex = 26;
+            this.label7.Text = "Talents Explained:";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(29, 326);
+            this.label10.BackColor = System.Drawing.Color.LightCoral;
+            this.label10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label10.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(211, 408);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(391, 13);
+            this.label10.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
+            this.label10.Size = new System.Drawing.Size(70, 27);
             this.label10.TabIndex = 24;
-            this.label10.Text = "Talents: Silencing Shot, Iron Hawk, Fervor, Lynx Rush, Glaive Toss";
+            this.label10.Text = "Raiding";
+            this.toolTip1.SetToolTip(this.label10, "[Talents]\r\n -[Binding Shot]\r\n- [Iron Hawk]\r\n- [Fervor]\r\n- [A Murder of Crows]\r\n- " +
+        "[Glaive Toss]\r\n [Glyphs]\r\n- [Marked for Death]\r\n- [Animal Bond]");
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Font = new System.Drawing.Font("Franklin Gothic Medium", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.SystemColors.Highlight;
-            this.linkLabel1.Location = new System.Drawing.Point(197, 354);
+            this.linkLabel1.Location = new System.Drawing.Point(171, 435);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(109, 30);
+            this.linkLabel1.Size = new System.Drawing.Size(119, 33);
             this.linkLabel1.TabIndex = 19;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "FallDown";
@@ -1038,7 +1352,7 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(400, 356);
+            this.SaveButton.Location = new System.Drawing.Point(413, 442);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(75, 23);
             this.SaveButton.TabIndex = 7;
@@ -1049,10 +1363,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Franklin Gothic Medium", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(17, 358);
+            this.label4.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.Gray;
+            this.label4.Location = new System.Drawing.Point(4, 440);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(182, 26);
+            this.label4.Size = new System.Drawing.Size(174, 26);
             this.label4.TabIndex = 5;
             this.label4.Text = "A Custom Class by:";
             // 
@@ -1535,12 +1850,20 @@
             this.label18.TabIndex = 14;
             this.label18.Text = "________________________________________________________________";
             // 
+            // toolTip1
+            // 
+            this.toolTip1.AutoPopDelay = 30000;
+            this.toolTip1.InitialDelay = 50;
+            this.toolTip1.ReshowDelay = 0;
+            // 
             // BeastGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(481, 453);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(524, 520);
             this.Controls.Add(this.tabControl1);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "BeastGUI";
             this.Text = "The Beast Master";
             this.Load += new System.EventHandler(this.BeastForm1_Load);
@@ -1549,6 +1872,10 @@
             this.tabPage2.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ItemsHealth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HealthStone)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BossHealth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DetHealth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FFS)).EndInit();
@@ -1586,8 +1913,6 @@
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel1;
@@ -1596,62 +1921,8 @@
         private System.Windows.Forms.RadioButton Party;
         private System.Windows.Forms.RadioButton DSLFR;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.CheckBox LifeBlood;
-        private System.Windows.Forms.CheckBox Rapid;
-        private System.Windows.Forms.CheckBox Gloves;
-        private System.Windows.Forms.CheckBox Racial;
-        private System.Windows.Forms.CheckBox Trinket2;
-        private System.Windows.Forms.CheckBox Trinket1;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.NumericUpDown Mobs;
-        private System.Windows.Forms.CheckBox Launcher;
-		private System.Windows.Forms.CheckBox AoELynx;
-        private System.Windows.Forms.CheckBox MultiShot;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.CheckBox MendPet;
-        private System.Windows.Forms.CheckBox RevivePet;
-        private System.Windows.Forms.CheckBox CallPet;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.LinkLabel linkLabel5;
-        private System.Windows.Forms.Button SaveButton2;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.LinkLabel linkLabel2;
-        private System.Windows.Forms.NumericUpDown PET;
-        private System.Windows.Forms.CheckBox AspectSwitching;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.NumericUpDown FocusShots;
-		private System.Windows.Forms.CheckBox Arcane;
-		private System.Windows.Forms.CheckBox Readiness;
-		private System.Windows.Forms.CheckBox MDFocus;
-		private System.Windows.Forms.CheckBox KillCom;
-		private System.Windows.Forms.CheckBox HMark;
-		private System.Windows.Forms.CheckBox Concussive;
-		private System.Windows.Forms.CheckBox Deterrence;
-		private System.Windows.Forms.CheckBox KillShot;
-        private System.Windows.Forms.CheckBox BWrath;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown MendHealth;
-        private System.Windows.Forms.CheckBox CallWild;
-        private System.Windows.Forms.CheckBox Misdirect;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox FDBox;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label SSStacks;
-        private System.Windows.Forms.NumericUpDown FFS;
-        private System.Windows.Forms.CheckBox FocusFire;
-        private System.Windows.Forms.ComboBox IntiBox;
-        private System.Windows.Forms.Label Intimidate;
-        private System.Windows.Forms.ComboBox SerBox;
-        private System.Windows.Forms.Label Serpent;
-        private System.Windows.Forms.CheckBox SpiritMend;
-        private System.Windows.Forms.Label ScatterShot;
-        private System.Windows.Forms.ComboBox ScatBox;
-        private System.Windows.Forms.CheckBox AoEDire;
-        private System.Windows.Forms.CheckBox Burrow;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.RadioButton TL1_Binding;
         private System.Windows.Forms.RadioButton TL1_Silence;
@@ -1685,16 +1956,93 @@
         private System.Windows.Forms.RadioButton TL5_Power;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.CheckBox Distract;
-        private System.Windows.Forms.CheckBox Frost;
-        private System.Windows.Forms.CheckBox StExplosive;
-        private System.Windows.Forms.NumericUpDown DetHealth;
-        private System.Windows.Forms.CheckBox Belt;
-        private System.Windows.Forms.CheckBox PetAtk;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.NumericUpDown BossHealth;
+        private System.Windows.Forms.NumericUpDown DetHealth;
+        private System.Windows.Forms.CheckBox StExplosive;
+        private System.Windows.Forms.CheckBox Distract;
+        private System.Windows.Forms.Label ScatterShot;
+        private System.Windows.Forms.ComboBox ScatBox;
+        private System.Windows.Forms.ComboBox IntiBox;
+        private System.Windows.Forms.Label Intimidate;
+        private System.Windows.Forms.ComboBox SerBox;
+        private System.Windows.Forms.Label Serpent;
+        private System.Windows.Forms.Label SSStacks;
+        private System.Windows.Forms.NumericUpDown FFS;
+        private System.Windows.Forms.CheckBox FocusFire;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox FDBox;
+        private System.Windows.Forms.CheckBox AspectSwitching;
+        private System.Windows.Forms.CheckBox Arcane;
+        private System.Windows.Forms.CheckBox MDFocus;
+        private System.Windows.Forms.CheckBox KillCom;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.CheckBox AoEDire;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.NumericUpDown Mobs;
+        private System.Windows.Forms.CheckBox Launcher;
+        private System.Windows.Forms.CheckBox AoELynx;
+        private System.Windows.Forms.CheckBox MultiShot;
+        private System.Windows.Forms.CheckBox HMark;
+        private System.Windows.Forms.CheckBox Concussive;
+        private System.Windows.Forms.CheckBox Deterrence;
+        private System.Windows.Forms.CheckBox KillShot;
+        private System.Windows.Forms.CheckBox BWrath;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.NumericUpDown FocusShots;
+        private System.Windows.Forms.Button SaveButton2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.CheckBox Belt;
+        private System.Windows.Forms.CheckBox LifeBlood;
+        private System.Windows.Forms.CheckBox Rapid;
+        private System.Windows.Forms.CheckBox Gloves;
+        private System.Windows.Forms.CheckBox CallWild;
+        private System.Windows.Forms.CheckBox Racial;
+        private System.Windows.Forms.CheckBox Trinket2;
+        private System.Windows.Forms.CheckBox Trinket1;
+        private System.Windows.Forms.CheckBox Readiness;
+        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox Rabid;
+        private System.Windows.Forms.CheckBox PetAtk;
+        private System.Windows.Forms.CheckBox Frost;
+        private System.Windows.Forms.CheckBox Burrow;
+        private System.Windows.Forms.CheckBox SpiritMend;
+        private System.Windows.Forms.CheckBox Misdirect;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown MendHealth;
+        private System.Windows.Forms.NumericUpDown PET;
+        private System.Windows.Forms.CheckBox CallPet;
+        private System.Windows.Forms.CheckBox MendPet;
+        private System.Windows.Forms.CheckBox RevivePet;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.NumericUpDown HealthStone;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.CheckBox AlchRejuv;
+        private System.Windows.Forms.CheckBox HealingPot;
+        private System.Windows.Forms.CheckBox LifeSpirit;
+        private System.Windows.Forms.LinkLabel linkLabel5;
+        private System.Windows.Forms.NumericUpDown ItemsHealth;
+        private System.Windows.Forms.Label label32;
     }
 }
 
