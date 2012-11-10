@@ -189,6 +189,9 @@ namespace TheBeastMasterTree
 
         [Setting, DefaultValue(false)]
         public bool HEALP { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool VSB { get; set; }
 		
 		[Setting, DefaultValue(true)]
         public bool ARC { get; set; }

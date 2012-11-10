@@ -193,6 +193,7 @@ namespace TheBeastMasterTree
             LifeSpirit.Checked = BeastMasterSettings.Instance.LIFES;
             HealingPot.Checked = BeastMasterSettings.Instance.HEALP;
             AlchRejuv.Checked = BeastMasterSettings.Instance.ALCR;
+            Virmen.Checked = BeastMasterSettings.Instance.VSB;
             Rabid.Checked = BeastMasterSettings.Instance.RBD;
             PetAtk.Checked = BeastMasterSettings.Instance.PAT;
             Racial.Checked = BeastMasterSettings.Instance.RS;
@@ -729,6 +730,17 @@ namespace TheBeastMasterTree
             else
             {
                 BeastMasterSettings.Instance.HEALP = false;
+            }
+        }
+        private void Virmen_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Virmen.Checked == true)
+            {
+                BeastMasterSettings.Instance.VSB = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.VSB = false;
             }
         }
         private void Rabid_CheckedChanged(object sender, EventArgs e)
