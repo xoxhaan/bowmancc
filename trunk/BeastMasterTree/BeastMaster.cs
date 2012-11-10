@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 5, 0);
+        public static readonly Version Version = new Version(2, 5, 2);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -611,6 +611,8 @@ namespace TheBeastMasterTree
 
                                 UseBagItem("Healthstone", ret => Me.HealthPercent < BeastMasterSettings.Instance.HealthStone && Me.IsAlive, "Healthstone"),
 
+                                UseBagItem("Virmen's Bite", ret => IsTargetBoss() && !Me.HasAura("Virmen's Bite"), "Virmen's Bite"),
+
                                 new Decorator(ret => Me.HealthPercent < BeastMasterSettings.Instance.ItemsHealth,
                                     new PrioritySelector(
                                         UseBagItem("Life Spirit", ret => BeastMasterSettings.Instance.LIFES && Me.IsAlive, "Life Spirit"),
@@ -925,7 +927,7 @@ namespace TheBeastMasterTree
                                 }
                                 )),
 
-                                new Decorator(ret => !Me.IsCasting && (!BeastMasterSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].Cooldown) && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1 || Me.CurrentFocus < 20 || (!Me.HasAura("Bestial Wrath") && Me.CurrentFocus < 40)),
+                                new Decorator(ret => !Me.IsCasting && !SpellManager.GlobalCooldown && (!BeastMasterSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].Cooldown) && (SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 1 || Me.CurrentFocus < 19 || (!Me.HasAura("Bestial Wrath") && Me.CurrentFocus < 39)),
                                     new PrioritySelector(
                                         castSpell("Steady Shot", ret => Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots / 2), "Cobra Shot")
                                     )
