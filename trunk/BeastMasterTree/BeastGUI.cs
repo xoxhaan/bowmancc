@@ -1074,5 +1074,17 @@ namespace TheBeastMasterTree
                 BeastMasterSettings.Instance.FTD = false;
             }
         }
+
+        private void VirmensBypass_CheckedChanged(object sender, EventArgs e)
+        {
+            if (VirmensBypass.Checked == true)
+            {
+                BeastMasterSettings.Instance.VBBP = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.VBBP = false;
+            }
+        }
     }
 }
