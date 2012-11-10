@@ -131,6 +131,24 @@ namespace TheBeastMasterTree
         public bool T2 { get; set; }
 
         [Setting, DefaultValue(false)]
+        public bool ITL { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool STL { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool FTL { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool ITD { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool STD { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool FTD { get; set; }
+
+        [Setting, DefaultValue(false)]
         public bool RF { get; set; }
 
         [Setting, DefaultValue(false)]
@@ -174,6 +192,9 @@ namespace TheBeastMasterTree
 
         [Setting, DefaultValue(150)]
         public int BossHealth { get; set; }
+
+        [Setting, DefaultValue(95)]
+        public int VirmenHealth { get; set; }
 
         [Setting, DefaultValue(50)]
         public int ItemsHealth { get; set; }

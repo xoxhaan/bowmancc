@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 5, 3);
+        public static readonly Version Version = new Version(2, 5, 6);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -611,7 +611,8 @@ namespace TheBeastMasterTree
 
                                 UseBagItem("Healthstone", ret => Me.HealthPercent < BeastMasterSettings.Instance.HealthStone && Me.IsAlive, "Healthstone"),
 
-                               UseBagItem("Virmen's Bite", ret => BeastMasterSettings.Instance.VSB && IsTargetBoss() && !Me.HasAura("Virmen's Bite"), "Virmen's Bite"),
+                               UseBagItem("Virmen's Bite", ret => BeastMasterSettings.Instance.VSB && IsTargetBoss() && Me.CurrentTarget.HealthPercent <= BeastMasterSettings.Instance.VirmenHealth && !Me.HasAura("Virmen's Bite") && (Me.HasAura("Bloodlust") || Me.HasAura("Heroism")
+                                || Me.HasAura("Ancient Hysteria") || Me.HasAura("Time Warp")) && (Me.HasAura("Rapid Fire") || Me.HasAura("Bestial Wrath")), "Virmen's Bite"),
 
                                 new Decorator(ret => Me.HealthPercent < BeastMasterSettings.Instance.ItemsHealth,
                                     new PrioritySelector(
@@ -880,6 +881,45 @@ namespace TheBeastMasterTree
                                     new PrioritySelector(
                                         castSelfSpell("Trap Launcher", ret => Me.HasAura("Trap Launcher"), "Trap Launcher Deactivated"),
                                         castSpell("Explosive Trap", ret => !Me.HasAura("Trap Launcher"), "Explosive Trap Dropped")
+                                    )
+                                ),
+
+                                new Decorator(ret => Me.CurrentTarget.Distance >= 5 && BeastMasterSettings.Instance.ITL && !Me.CurrentTarget.IsMoving && SpellManager.Spells["Ice Trap"].CooldownTimeLeft.TotalSeconds < 1 && Me.CurrentTarget.InLineOfSight,
+                                    new PrioritySelector(
+                                        castSelfSpell("Trap Launcher", ret => !Me.HasAura("Trap Launcher"), "Trap Launcher Activated"),
+                                        castOnUnitLocation("Explosive Trap", ret => Me.CurrentTarget, ret => Me.HasAura("Trap Launcher"), "Ice Trap Launched")
+                                    )
+                                ),
+                                new Decorator(ret => Me.CurrentTarget.Distance < 5 && BeastMasterSettings.Instance.ITD && !SpellManager.Spells["Ice Trap"].Cooldown,
+                                    new PrioritySelector(
+                                        castSelfSpell("Trap Launcher", ret => Me.HasAura("Trap Launcher"), "Trap Launcher Deactivated"),
+                                        castSpell("Explosive Trap", ret => !Me.HasAura("Trap Launcher"), "Ice Trap Dropped")
+                                    )
+                                ),
+
+                                new Decorator(ret => Me.CurrentTarget.Distance >= 5 && BeastMasterSettings.Instance.STL && !Me.CurrentTarget.IsMoving && SpellManager.Spells["Snake Trap"].CooldownTimeLeft.TotalSeconds < 1 && Me.CurrentTarget.InLineOfSight,
+                                    new PrioritySelector(
+                                        castSelfSpell("Trap Launcher", ret => !Me.HasAura("Trap Launcher"), "Trap Launcher Activated"),
+                                        castOnUnitLocation("Explosive Trap", ret => Me.CurrentTarget, ret => Me.HasAura("Trap Launcher"), "Snake Trap Launched")
+                                    )
+                                ),
+                                new Decorator(ret => Me.CurrentTarget.Distance < 5 && BeastMasterSettings.Instance.STD && !Me.CurrentTarget.IsMoving && !SpellManager.Spells["Snake Trap"].Cooldown,
+                                    new PrioritySelector(
+                                        castSelfSpell("Trap Launcher", ret => Me.HasAura("Trap Launcher"), "Trap Launcher Deactivated"),
+                                        castSpell("Explosive Trap", ret => !Me.HasAura("Trap Launcher"), "Snake Trap Dropped")
+                                    )
+                                ),
+
+                                new Decorator(ret => Me.CurrentTarget.Distance >= 5 && BeastMasterSettings.Instance.FTL && !Me.CurrentTarget.IsMoving && SpellManager.Spells["Freezing Trap"].CooldownTimeLeft.TotalSeconds < 1 && Me.CurrentTarget.InLineOfSight,
+                                    new PrioritySelector(
+                                        castSelfSpell("Trap Launcher", ret => !Me.HasAura("Trap Launcher"), "Trap Launcher Activated"),
+                                        castOnUnitLocation("Explosive Trap", ret => Me.CurrentTarget, ret => Me.HasAura("Trap Launcher"), "Freezing Trap Launched")
+                                    )
+                                ),
+                                new Decorator(ret => Me.CurrentTarget.Distance < 5 && BeastMasterSettings.Instance.FTD && !SpellManager.Spells["Freezing Trap"].Cooldown,
+                                    new PrioritySelector(
+                                        castSelfSpell("Trap Launcher", ret => Me.HasAura("Trap Launcher"), "Trap Launcher Deactivated"),
+                                        castSpell("Explosive Trap", ret => !Me.HasAura("Trap Launcher"), "Freezing Trap Dropped")
                                     )
                                 ),
 
