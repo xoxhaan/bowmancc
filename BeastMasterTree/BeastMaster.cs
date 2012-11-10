@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 5, 6);
+        public static readonly Version Version = new Version(2, 5, 7);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -612,7 +612,7 @@ namespace TheBeastMasterTree
                                 UseBagItem("Healthstone", ret => Me.HealthPercent < BeastMasterSettings.Instance.HealthStone && Me.IsAlive, "Healthstone"),
 
                                UseBagItem("Virmen's Bite", ret => BeastMasterSettings.Instance.VSB && IsTargetBoss() && Me.CurrentTarget.HealthPercent <= BeastMasterSettings.Instance.VirmenHealth && !Me.HasAura("Virmen's Bite") && (Me.HasAura("Bloodlust") || Me.HasAura("Heroism")
-                                || Me.HasAura("Ancient Hysteria") || Me.HasAura("Time Warp")) && (Me.HasAura("Rapid Fire") || Me.HasAura("Bestial Wrath")), "Virmen's Bite"),
+                                || Me.HasAura("Ancient Hysteria") || Me.HasAura("Time Warp") || BeastMasterSettings.Instance.VBBP), "Virmen's Bite"),
 
                                 new Decorator(ret => Me.HealthPercent < BeastMasterSettings.Instance.ItemsHealth,
                                     new PrioritySelector(
@@ -726,7 +726,7 @@ namespace TheBeastMasterTree
 
                                 castSpell("Stampede", ret => BeastMasterSettings.Instance.CW && IsTargetBoss() && (Me.CurrentTarget.CurrentHealth > 1000000 || CalculateTimeToDeath(Me.CurrentTarget) > 20), "Stampede"),
 
-                                castSelfSpell("Bestial Wrath", ret => Me.GotAlivePet && BeastMasterSettings.Instance.BWR && (!BeastMasterSettings.Instance.TL4_LR || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 10 
+                                castSelfSpell("Bestial Wrath", ret => Me.GotAlivePet && BeastMasterSettings.Instance.BWR && (!BeastMasterSettings.Instance.TL4_LR || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds >= 10 
                                 || !SpellManager.Spells["Lynx Rush"].Cooldown) && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.HasAura("Rapid Fire") 
                                 && !Me.HasAura("The Beast Within") && !Me.HasAura("Bloodlust") && !Me.HasAura("Heroism")
                                 && !Me.HasAura("Ancient Hysteria") && !Me.HasAura("Time Warp") && (Me.CurrentTarget.CurrentHealth > 100000 
