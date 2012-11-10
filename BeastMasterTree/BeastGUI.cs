@@ -149,6 +149,7 @@ namespace TheBeastMasterTree
             ItemsHealth.Value = new decimal(BeastMasterSettings.Instance.ItemsHealth);
             HealthStone.Value = new decimal(BeastMasterSettings.Instance.HealthStone);
             BossHealth.Value = new decimal(BeastMasterSettings.Instance.BossHealth);
+            VirmenHealth.Value = new decimal(BeastMasterSettings.Instance.VirmenHealth);
             FocusShots.Value = new decimal(BeastMasterSettings.Instance.FocusShots);
             Party.Checked = BeastMasterSettings.Instance.Party;
             DSHC.Checked = BeastMasterSettings.Instance.DSHC;
@@ -211,6 +212,12 @@ namespace TheBeastMasterTree
             SpiritMend.Checked = BeastMasterSettings.Instance.SMend;
             Burrow.Checked = BeastMasterSettings.Instance.BRA;
             Frost.Checked = BeastMasterSettings.Instance.FSB;
+            IceTL.Checked = BeastMasterSettings.Instance.ITL;
+            IceTD.Checked = BeastMasterSettings.Instance.ITD;
+            FreezingTL.Checked = BeastMasterSettings.Instance.FTL;
+            FreezingTD.Checked = BeastMasterSettings.Instance.FTD;
+            SnakeTL.Checked = BeastMasterSettings.Instance.STL;
+            SnakeTD.Checked = BeastMasterSettings.Instance.STD;
             Misdirect.Checked = BeastMasterSettings.Instance.MDPet;      
         }
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -258,6 +265,10 @@ namespace TheBeastMasterTree
         private void BossHealth_ValueChanged(object sender, EventArgs e)
         {
             BeastMasterSettings.Instance.BossHealth = (int)BossHealth.Value;
+        }
+        private void VirmenHealth_ValueChanged(object sender, EventArgs e)
+        {
+            BeastMasterSettings.Instance.VirmenHealth = (int)VirmenHealth.Value;
         }
         private void Party_CheckedChanged(object sender, EventArgs e)
         {
@@ -943,6 +954,16 @@ namespace TheBeastMasterTree
                 BeastMasterSettings.Instance.BWR = false;
             }
         }
+        private void SaveButton3_Click_1(object sender, EventArgs e)
+        {
+            BeastMasterSettings.Instance.FDCBox = (string)FDBox.SelectedItem;
+            BeastMasterSettings.Instance.SerpentBox = (string)SerBox.SelectedItem;
+            BeastMasterSettings.Instance.ScatterBox = (string)ScatBox.SelectedItem;
+            BeastMasterSettings.Instance.IntimidateBox = (string)IntiBox.SelectedItem;
+            BeastMasterSettings.Instance.Save();
+            Logging.Write(Colors.Aquamarine, "Configuration Saved");
+            Close();
+        }
         private void SaveButton2_Click_1(object sender, EventArgs e)
         {
             BeastMasterSettings.Instance.FDCBox = (string)FDBox.SelectedItem;
@@ -962,6 +983,96 @@ namespace TheBeastMasterTree
             BeastMasterSettings.Instance.Save();
             Logging.Write(Colors.Aquamarine, "Configuration Saved");
             Close();
+        }
+
+        private void Use1_Click(object sender, EventArgs e)
+        {
+            TL1_Binding.Checked = true;
+            TL2_IronHawk.Checked = true;
+            TL3_Fervor.Checked = true;
+            TL4_Crows.Checked = true;
+            TL5_Glaive.Checked = true;
+        }
+
+        private void Use2_Click(object sender, EventArgs e)
+        {
+            TL1_Binding.Checked = true;
+            TL2_SpiritBond.Checked = true;
+            TL3_Fervor.Checked = true;
+            TL4_Blink.Checked = true;
+            TL5_Glaive.Checked = true;
+        }
+
+        private void IceTL_CheckedChanged(object sender, EventArgs e)
+        {
+            if (IceTL.Checked == true)
+            {
+                BeastMasterSettings.Instance.ITL = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.ITL = false;
+            }
+        }
+
+        private void IceTD_CheckedChanged(object sender, EventArgs e)
+        {
+            if (IceTD.Checked == true)
+            {
+                BeastMasterSettings.Instance.ITD = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.ITD = false;
+            }
+        }
+
+        private void SnakeTL_CheckedChanged(object sender, EventArgs e)
+        {
+            if (SnakeTL.Checked == true)
+            {
+                BeastMasterSettings.Instance.STL = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.STL = false;
+            }
+        }
+
+        private void SnakeTD_CheckedChanged(object sender, EventArgs e)
+        {
+            if (SnakeTD.Checked == true)
+            {
+                BeastMasterSettings.Instance.STD = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.STD = false;
+            }
+        }
+
+        private void FreezingTL_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FreezingTL.Checked == true)
+            {
+                BeastMasterSettings.Instance.FTL = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.FTL = false;
+            }
+        }
+
+        private void FreezingTD_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FreezingTD.Checked == true)
+            {
+                BeastMasterSettings.Instance.FTD = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.FTD = false;
+            }
         }
     }
 }

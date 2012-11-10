@@ -55,20 +55,18 @@ namespace TheBeastMasterTree
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.Virmen = new System.Windows.Forms.CheckBox();
-            this.ItemsHealth = new System.Windows.Forms.NumericUpDown();
-            this.label32 = new System.Windows.Forms.Label();
-            this.AlchRejuv = new System.Windows.Forms.CheckBox();
-            this.HealingPot = new System.Windows.Forms.CheckBox();
-            this.LifeSpirit = new System.Windows.Forms.CheckBox();
-            this.HealthStone = new System.Windows.Forms.NumericUpDown();
-            this.label15 = new System.Windows.Forms.Label();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.StExplosive = new System.Windows.Forms.CheckBox();
+            this.FreezingTD = new System.Windows.Forms.CheckBox();
+            this.FreezingTL = new System.Windows.Forms.CheckBox();
+            this.SnakeTD = new System.Windows.Forms.CheckBox();
+            this.SnakeTL = new System.Windows.Forms.CheckBox();
+            this.IceTD = new System.Windows.Forms.CheckBox();
+            this.IceTL = new System.Windows.Forms.CheckBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.BossHealth = new System.Windows.Forms.NumericUpDown();
             this.DetHealth = new System.Windows.Forms.NumericUpDown();
-            this.StExplosive = new System.Windows.Forms.CheckBox();
             this.Distract = new System.Windows.Forms.CheckBox();
             this.ScatterShot = new System.Windows.Forms.Label();
             this.ScatBox = new System.Windows.Forms.ComboBox();
@@ -127,7 +125,8 @@ namespace TheBeastMasterTree
             this.RevivePet = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.linkLabel5 = new System.Windows.Forms.LinkLabel();
+            this.Use2 = new System.Windows.Forms.Button();
+            this.Use1 = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
@@ -143,16 +142,7 @@ namespace TheBeastMasterTree
             this.label14 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.SaveButton = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.DSNOR = new System.Windows.Forms.RadioButton();
-            this.DSHC = new System.Windows.Forms.RadioButton();
-            this.Party = new System.Windows.Forms.RadioButton();
-            this.label6 = new System.Windows.Forms.Label();
-            this.DSLFR = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel6 = new System.Windows.Forms.Panel();
             this.TL5_None = new System.Windows.Forms.RadioButton();
@@ -184,14 +174,38 @@ namespace TheBeastMasterTree
             this.TL4_Crows = new System.Windows.Forms.RadioButton();
             this.TL4_Blink = new System.Windows.Forms.RadioButton();
             this.label18 = new System.Windows.Forms.Label();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.SaveButton3 = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
+            this.linkLabel5 = new System.Windows.Forms.LinkLabel();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.VirmenHealth = new System.Windows.Forms.NumericUpDown();
+            this.Virmen = new System.Windows.Forms.CheckBox();
+            this.ItemsHealth = new System.Windows.Forms.NumericUpDown();
+            this.label32 = new System.Windows.Forms.Label();
+            this.AlchRejuv = new System.Windows.Forms.CheckBox();
+            this.HealingPot = new System.Windows.Forms.CheckBox();
+            this.LifeSpirit = new System.Windows.Forms.CheckBox();
+            this.HealthStone = new System.Windows.Forms.NumericUpDown();
+            this.label15 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.DSNOR = new System.Windows.Forms.RadioButton();
+            this.DSHC = new System.Windows.Forms.RadioButton();
+            this.Party = new System.Windows.Forms.RadioButton();
+            this.DSLFR = new System.Windows.Forms.RadioButton();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ItemsHealth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.HealthStone)).BeginInit();
+            this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BossHealth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DetHealth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FFS)).BeginInit();
@@ -203,20 +217,26 @@ namespace TheBeastMasterTree
             ((System.ComponentModel.ISupportInitialize)(this.MendHealth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PET)).BeginInit();
             this.tabPage1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.VirmenHealth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ItemsHealth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HealthStone)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(12, 11);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -237,17 +257,15 @@ namespace TheBeastMasterTree
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(493, 471);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Config";
+            this.tabPage2.Text = "Beast Master";
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.label21);
-            this.groupBox6.Controls.Add(this.groupBox7);
+            this.groupBox6.Controls.Add(this.groupBox8);
             this.groupBox6.Controls.Add(this.label12);
             this.groupBox6.Controls.Add(this.label11);
             this.groupBox6.Controls.Add(this.BossHealth);
             this.groupBox6.Controls.Add(this.DetHealth);
-            this.groupBox6.Controls.Add(this.StExplosive);
             this.groupBox6.Controls.Add(this.Distract);
             this.groupBox6.Controls.Add(this.ScatterShot);
             this.groupBox6.Controls.Add(this.ScatBox);
@@ -273,115 +291,112 @@ namespace TheBeastMasterTree
             this.groupBox6.Controls.Add(this.label13);
             this.groupBox6.Controls.Add(this.FocusShots);
             this.groupBox6.Controls.Add(this.SaveButton2);
-            this.groupBox6.Location = new System.Drawing.Point(167, 34);
+            this.groupBox6.Location = new System.Drawing.Point(153, 34);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(320, 431);
+            this.groupBox6.Size = new System.Drawing.Size(334, 431);
             this.groupBox6.TabIndex = 15;
             this.groupBox6.TabStop = false;
             // 
-            // groupBox7
+            // groupBox8
             // 
-            this.groupBox7.Controls.Add(this.Virmen);
-            this.groupBox7.Controls.Add(this.ItemsHealth);
-            this.groupBox7.Controls.Add(this.label32);
-            this.groupBox7.Controls.Add(this.AlchRejuv);
-            this.groupBox7.Controls.Add(this.HealingPot);
-            this.groupBox7.Controls.Add(this.LifeSpirit);
-            this.groupBox7.Controls.Add(this.HealthStone);
-            this.groupBox7.Controls.Add(this.label15);
-            this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox7.Location = new System.Drawing.Point(9, 269);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(181, 132);
-            this.groupBox7.TabIndex = 44;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Items";
+            this.groupBox8.Controls.Add(this.StExplosive);
+            this.groupBox8.Controls.Add(this.FreezingTD);
+            this.groupBox8.Controls.Add(this.FreezingTL);
+            this.groupBox8.Controls.Add(this.SnakeTD);
+            this.groupBox8.Controls.Add(this.SnakeTL);
+            this.groupBox8.Controls.Add(this.IceTD);
+            this.groupBox8.Controls.Add(this.IceTL);
+            this.groupBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox8.Location = new System.Drawing.Point(10, 269);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(176, 156);
+            this.groupBox8.TabIndex = 5;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Trap options";
             // 
-            // Virmen
+            // StExplosive
             // 
-            this.Virmen.AutoSize = true;
-            this.Virmen.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Virmen.Location = new System.Drawing.Point(8, 111);
-            this.Virmen.Name = "Virmen";
-            this.Virmen.Size = new System.Drawing.Size(86, 17);
-            this.Virmen.TabIndex = 48;
-            this.Virmen.Text = "Virmen\'s Bite";
-            this.Virmen.UseVisualStyleBackColor = true;
-            this.Virmen.CheckedChanged += new System.EventHandler(this.Virmen_CheckedChanged);
+            this.StExplosive.AutoSize = true;
+            this.StExplosive.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StExplosive.Location = new System.Drawing.Point(6, 20);
+            this.StExplosive.Name = "StExplosive";
+            this.StExplosive.Size = new System.Drawing.Size(162, 17);
+            this.StExplosive.TabIndex = 39;
+            this.StExplosive.Text = "Single Target Explosive Trap";
+            this.StExplosive.UseVisualStyleBackColor = true;
+            this.StExplosive.CheckedChanged += new System.EventHandler(this.StExplosive_CheckedChanged);
             // 
-            // ItemsHealth
+            // FreezingTD
             // 
-            this.ItemsHealth.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ItemsHealth.Location = new System.Drawing.Point(87, 88);
-            this.ItemsHealth.Name = "ItemsHealth";
-            this.ItemsHealth.Size = new System.Drawing.Size(52, 20);
-            this.ItemsHealth.TabIndex = 46;
-            this.ItemsHealth.ValueChanged += new System.EventHandler(this.ItemsHealth_ValueChanged);
+            this.FreezingTD.AutoSize = true;
+            this.FreezingTD.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FreezingTD.Location = new System.Drawing.Point(6, 132);
+            this.FreezingTD.Name = "FreezingTD";
+            this.FreezingTD.Size = new System.Drawing.Size(117, 17);
+            this.FreezingTD.TabIndex = 6;
+            this.FreezingTD.Text = "Freezing Trap Drop";
+            this.FreezingTD.UseVisualStyleBackColor = true;
+            this.FreezingTD.CheckedChanged += new System.EventHandler(this.FreezingTD_CheckedChanged);
             // 
-            // label32
+            // FreezingTL
             // 
-            this.label32.AutoSize = true;
-            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label32.Location = new System.Drawing.Point(7, 91);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(76, 13);
-            this.label32.TabIndex = 47;
-            this.label32.Text = "Use items at %";
+            this.FreezingTL.AutoSize = true;
+            this.FreezingTL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FreezingTL.Location = new System.Drawing.Point(6, 113);
+            this.FreezingTL.Name = "FreezingTL";
+            this.FreezingTL.Size = new System.Drawing.Size(139, 17);
+            this.FreezingTL.TabIndex = 5;
+            this.FreezingTL.Text = "Freezing Trap Launcher";
+            this.FreezingTL.UseVisualStyleBackColor = true;
+            this.FreezingTL.CheckedChanged += new System.EventHandler(this.FreezingTL_CheckedChanged);
             // 
-            // AlchRejuv
+            // SnakeTD
             // 
-            this.AlchRejuv.AutoSize = true;
-            this.AlchRejuv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AlchRejuv.Location = new System.Drawing.Point(8, 50);
-            this.AlchRejuv.Name = "AlchRejuv";
-            this.AlchRejuv.Size = new System.Drawing.Size(144, 17);
-            this.AlchRejuv.TabIndex = 45;
-            this.AlchRejuv.Text = "Alchemist\'s Rejuvenation";
-            this.AlchRejuv.UseVisualStyleBackColor = true;
-            this.AlchRejuv.CheckedChanged += new System.EventHandler(this.AlchRejuv_CheckedChanged);
+            this.SnakeTD.AutoSize = true;
+            this.SnakeTD.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SnakeTD.Location = new System.Drawing.Point(6, 94);
+            this.SnakeTD.Name = "SnakeTD";
+            this.SnakeTD.Size = new System.Drawing.Size(108, 17);
+            this.SnakeTD.TabIndex = 4;
+            this.SnakeTD.Text = "Snake Trap Drop";
+            this.SnakeTD.UseVisualStyleBackColor = true;
+            this.SnakeTD.CheckedChanged += new System.EventHandler(this.SnakeTD_CheckedChanged);
             // 
-            // HealingPot
+            // SnakeTL
             // 
-            this.HealingPot.AutoSize = true;
-            this.HealingPot.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HealingPot.Location = new System.Drawing.Point(8, 69);
-            this.HealingPot.Name = "HealingPot";
-            this.HealingPot.Size = new System.Drawing.Size(130, 17);
-            this.HealingPot.TabIndex = 44;
-            this.HealingPot.Text = "Master Healing Potion";
-            this.HealingPot.UseVisualStyleBackColor = true;
-            this.HealingPot.CheckedChanged += new System.EventHandler(this.HealingPot_CheckedChanged);
+            this.SnakeTL.AutoSize = true;
+            this.SnakeTL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SnakeTL.Location = new System.Drawing.Point(6, 76);
+            this.SnakeTL.Name = "SnakeTL";
+            this.SnakeTL.Size = new System.Drawing.Size(130, 17);
+            this.SnakeTL.TabIndex = 3;
+            this.SnakeTL.Text = "Snake Trap Launcher";
+            this.SnakeTL.UseVisualStyleBackColor = true;
+            this.SnakeTL.CheckedChanged += new System.EventHandler(this.SnakeTL_CheckedChanged);
             // 
-            // LifeSpirit
+            // IceTD
             // 
-            this.LifeSpirit.AutoSize = true;
-            this.LifeSpirit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LifeSpirit.Location = new System.Drawing.Point(8, 32);
-            this.LifeSpirit.Name = "LifeSpirit";
-            this.LifeSpirit.Size = new System.Drawing.Size(69, 17);
-            this.LifeSpirit.TabIndex = 5;
-            this.LifeSpirit.Text = "Life Spirit";
-            this.LifeSpirit.UseVisualStyleBackColor = true;
-            this.LifeSpirit.CheckedChanged += new System.EventHandler(this.LifeSpirit_CheckedChanged);
+            this.IceTD.AutoSize = true;
+            this.IceTD.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IceTD.Location = new System.Drawing.Point(6, 57);
+            this.IceTD.Name = "IceTD";
+            this.IceTD.Size = new System.Drawing.Size(92, 17);
+            this.IceTD.TabIndex = 2;
+            this.IceTD.Text = "Ice Trap Drop";
+            this.IceTD.UseVisualStyleBackColor = true;
+            this.IceTD.CheckedChanged += new System.EventHandler(this.IceTD_CheckedChanged);
             // 
-            // HealthStone
+            // IceTL
             // 
-            this.HealthStone.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.HealthStone.Location = new System.Drawing.Point(124, 14);
-            this.HealthStone.Name = "HealthStone";
-            this.HealthStone.Size = new System.Drawing.Size(52, 20);
-            this.HealthStone.TabIndex = 42;
-            this.HealthStone.ValueChanged += new System.EventHandler(this.HealthStone_ValueChanged);
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(5, 17);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(114, 13);
-            this.label15.TabIndex = 43;
-            this.label15.Text = "Use Health Stone at %";
+            this.IceTL.AutoSize = true;
+            this.IceTL.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IceTL.Location = new System.Drawing.Point(6, 38);
+            this.IceTL.Name = "IceTL";
+            this.IceTL.Size = new System.Drawing.Size(114, 17);
+            this.IceTL.TabIndex = 1;
+            this.IceTL.Text = "Ice Trap Launcher";
+            this.IceTL.UseVisualStyleBackColor = true;
+            this.IceTL.CheckedChanged += new System.EventHandler(this.IceTL_CheckedChanged);
             // 
             // label12
             // 
@@ -422,17 +437,6 @@ namespace TheBeastMasterTree
             this.DetHealth.Size = new System.Drawing.Size(52, 20);
             this.DetHealth.TabIndex = 30;
             this.DetHealth.ValueChanged += new System.EventHandler(this.DetHealth_ValueChanged);
-            // 
-            // StExplosive
-            // 
-            this.StExplosive.AutoSize = true;
-            this.StExplosive.Location = new System.Drawing.Point(142, 167);
-            this.StExplosive.Name = "StExplosive";
-            this.StExplosive.Size = new System.Drawing.Size(162, 17);
-            this.StExplosive.TabIndex = 38;
-            this.StExplosive.Text = "Single Target Explosive Trap";
-            this.StExplosive.UseVisualStyleBackColor = true;
-            this.StExplosive.CheckedChanged += new System.EventHandler(this.StExplosive_CheckedChanged);
             // 
             // Distract
             // 
@@ -622,9 +626,9 @@ namespace TheBeastMasterTree
             this.groupBox4.Controls.Add(this.AoELynx);
             this.groupBox4.Controls.Add(this.MultiShot);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.Location = new System.Drawing.Point(195, 269);
+            this.groupBox4.Location = new System.Drawing.Point(192, 269);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(117, 126);
+            this.groupBox4.Size = new System.Drawing.Size(135, 126);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "AoE options";
@@ -775,7 +779,7 @@ namespace TheBeastMasterTree
             // 
             // SaveButton2
             // 
-            this.SaveButton2.Location = new System.Drawing.Point(239, 402);
+            this.SaveButton2.Location = new System.Drawing.Point(252, 401);
             this.SaveButton2.Name = "SaveButton2";
             this.SaveButton2.Size = new System.Drawing.Size(75, 23);
             this.SaveButton2.TabIndex = 12;
@@ -818,7 +822,7 @@ namespace TheBeastMasterTree
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox5.Location = new System.Drawing.Point(11, 244);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(150, 221);
+            this.groupBox5.Size = new System.Drawing.Size(136, 221);
             this.groupBox5.TabIndex = 4;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Cooldowns";
@@ -948,7 +952,7 @@ namespace TheBeastMasterTree
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(11, 4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(150, 234);
+            this.groupBox3.Size = new System.Drawing.Size(136, 234);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Pet options";
@@ -1116,7 +1120,8 @@ namespace TheBeastMasterTree
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.White;
-            this.tabPage1.Controls.Add(this.linkLabel5);
+            this.tabPage1.Controls.Add(this.Use2);
+            this.tabPage1.Controls.Add(this.Use1);
             this.tabPage1.Controls.Add(this.label22);
             this.tabPage1.Controls.Add(this.label31);
             this.tabPage1.Controls.Add(this.label30);
@@ -1132,42 +1137,44 @@ namespace TheBeastMasterTree
             this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.label7);
             this.tabPage1.Controls.Add(this.label10);
-            this.tabPage1.Controls.Add(this.linkLabel1);
             this.tabPage1.Controls.Add(this.SaveButton);
-            this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.groupBox2);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(493, 471);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Beast Master";
+            this.tabPage1.Text = "Talents";
             // 
-            // linkLabel5
+            // Use2
             // 
-            this.linkLabel5.AutoSize = true;
-            this.linkLabel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.linkLabel5.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.linkLabel5.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel5.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.linkLabel5.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.linkLabel5.Location = new System.Drawing.Point(288, 443);
-            this.linkLabel5.Name = "linkLabel5";
-            this.linkLabel5.Size = new System.Drawing.Size(118, 21);
-            this.linkLabel5.TabIndex = 42;
-            this.linkLabel5.TabStop = true;
-            this.linkLabel5.Text = "Submit feedback";
+            this.Use2.Location = new System.Drawing.Point(284, 403);
+            this.Use2.Name = "Use2";
+            this.Use2.Size = new System.Drawing.Size(60, 23);
+            this.Use2.TabIndex = 51;
+            this.Use2.Text = "Use";
+            this.Use2.UseVisualStyleBackColor = true;
+            this.Use2.Click += new System.EventHandler(this.Use2_Click);
+            // 
+            // Use1
+            // 
+            this.Use1.Location = new System.Drawing.Point(206, 403);
+            this.Use1.Name = "Use1";
+            this.Use1.Size = new System.Drawing.Size(60, 23);
+            this.Use1.TabIndex = 50;
+            this.Use1.Text = "Use";
+            this.Use1.UseVisualStyleBackColor = true;
+            this.Use1.Click += new System.EventHandler(this.Use1_Click);
             // 
             // label22
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label22.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label22.Location = new System.Drawing.Point(369, 387);
+            this.label22.Location = new System.Drawing.Point(367, 348);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(111, 30);
-            this.label22.TabIndex = 41;
+            this.label22.TabIndex = 49;
             this.label22.Text = "If none mentioned, \r\nuse preferred.";
             // 
             // label31
@@ -1176,7 +1183,7 @@ namespace TheBeastMasterTree
             this.label31.BackColor = System.Drawing.Color.LemonChiffon;
             this.label31.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label31.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label31.Location = new System.Drawing.Point(81, 409);
+            this.label31.Location = new System.Drawing.Point(97, 370);
             this.label31.Name = "label31";
             this.label31.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.label31.Size = new System.Drawing.Size(59, 27);
@@ -1190,7 +1197,7 @@ namespace TheBeastMasterTree
             this.label30.BackColor = System.Drawing.Color.Khaki;
             this.label30.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label30.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label30.Location = new System.Drawing.Point(15, 409);
+            this.label30.Location = new System.Drawing.Point(31, 370);
             this.label30.Name = "label30";
             this.label30.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.label30.Size = new System.Drawing.Size(59, 27);
@@ -1204,7 +1211,7 @@ namespace TheBeastMasterTree
             this.label29.BackColor = System.Drawing.Color.SteelBlue;
             this.label29.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label29.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label29.Location = new System.Drawing.Point(348, 348);
+            this.label29.Location = new System.Drawing.Point(358, 288);
             this.label29.Name = "label29";
             this.label29.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.label29.Size = new System.Drawing.Size(59, 27);
@@ -1220,7 +1227,7 @@ namespace TheBeastMasterTree
             this.label28.BackColor = System.Drawing.Color.DeepSkyBlue;
             this.label28.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label28.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label28.Location = new System.Drawing.Point(281, 348);
+            this.label28.Location = new System.Drawing.Point(291, 288);
             this.label28.Name = "label28";
             this.label28.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.label28.Size = new System.Drawing.Size(59, 27);
@@ -1236,7 +1243,7 @@ namespace TheBeastMasterTree
             this.label27.BackColor = System.Drawing.Color.SkyBlue;
             this.label27.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label27.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.Location = new System.Drawing.Point(214, 348);
+            this.label27.Location = new System.Drawing.Point(224, 288);
             this.label27.Name = "label27";
             this.label27.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.label27.Size = new System.Drawing.Size(59, 27);
@@ -1251,7 +1258,7 @@ namespace TheBeastMasterTree
             this.label26.BackColor = System.Drawing.Color.PowderBlue;
             this.label26.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label26.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(148, 348);
+            this.label26.Location = new System.Drawing.Point(158, 288);
             this.label26.Name = "label26";
             this.label26.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.label26.Size = new System.Drawing.Size(59, 27);
@@ -1267,7 +1274,7 @@ namespace TheBeastMasterTree
             this.label25.BackColor = System.Drawing.Color.PaleTurquoise;
             this.label25.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label25.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(82, 348);
+            this.label25.Location = new System.Drawing.Point(92, 288);
             this.label25.Name = "label25";
             this.label25.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.label25.Size = new System.Drawing.Size(59, 27);
@@ -1283,7 +1290,7 @@ namespace TheBeastMasterTree
             this.label24.BackColor = System.Drawing.Color.LightCyan;
             this.label24.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label24.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(16, 348);
+            this.label24.Location = new System.Drawing.Point(26, 288);
             this.label24.Name = "label24";
             this.label24.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.label24.Size = new System.Drawing.Size(59, 27);
@@ -1298,7 +1305,7 @@ namespace TheBeastMasterTree
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label23.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label23.Location = new System.Drawing.Point(7, 381);
+            this.label23.Location = new System.Drawing.Point(23, 342);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(150, 23);
             this.label23.TabIndex = 31;
@@ -1309,7 +1316,7 @@ namespace TheBeastMasterTree
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label20.Location = new System.Drawing.Point(204, 381);
+            this.label20.Location = new System.Drawing.Point(194, 342);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(162, 23);
             this.label20.TabIndex = 29;
@@ -1321,7 +1328,7 @@ namespace TheBeastMasterTree
             this.label19.BackColor = System.Drawing.Color.PaleGreen;
             this.label19.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label19.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(289, 408);
+            this.label19.Location = new System.Drawing.Point(279, 369);
             this.label19.Name = "label19";
             this.label19.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.label19.Size = new System.Drawing.Size(68, 27);
@@ -1335,7 +1342,7 @@ namespace TheBeastMasterTree
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label14.Location = new System.Drawing.Point(164, 326);
+            this.label14.Location = new System.Drawing.Point(174, 266);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(118, 15);
             this.label14.TabIndex = 27;
@@ -1346,7 +1353,7 @@ namespace TheBeastMasterTree
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label7.Location = new System.Drawing.Point(10, 321);
+            this.label7.Location = new System.Drawing.Point(20, 261);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(153, 23);
             this.label7.TabIndex = 26;
@@ -1358,7 +1365,7 @@ namespace TheBeastMasterTree
             this.label10.BackColor = System.Drawing.Color.LightCoral;
             this.label10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label10.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(211, 408);
+            this.label10.Location = new System.Drawing.Point(201, 369);
             this.label10.Name = "label10";
             this.label10.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
             this.label10.Size = new System.Drawing.Size(70, 27);
@@ -1366,20 +1373,6 @@ namespace TheBeastMasterTree
             this.label10.Text = "Raiding";
             this.toolTip1.SetToolTip(this.label10, "[Talents]\r\n -[Binding Shot]\r\n- [Iron Hawk]\r\n- [Fervor]\r\n- [A Murder of Crows]\r\n- " +
         "[Glaive Toss]\r\n [Glyphs]\r\n- [Marked for Death]\r\n- [Animal Bond]");
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.linkLabel1.LinkColor = System.Drawing.SystemColors.Highlight;
-            this.linkLabel1.Location = new System.Drawing.Point(171, 435);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(119, 33);
-            this.linkLabel1.TabIndex = 19;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "FallDown";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // SaveButton
             // 
@@ -1391,106 +1384,6 @@ namespace TheBeastMasterTree
             this.SaveButton.UseVisualStyleBackColor = true;
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click_1);
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Gray;
-            this.label4.Location = new System.Drawing.Point(4, 440);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(174, 26);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "A Custom Class by:";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.panel1);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(20, 4);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(439, 66);
-            this.groupBox1.TabIndex = 21;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Raids and Dungeons";
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.DSNOR);
-            this.panel1.Controls.Add(this.DSHC);
-            this.panel1.Controls.Add(this.Party);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.DSLFR);
-            this.panel1.Location = new System.Drawing.Point(7, 19);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(422, 41);
-            this.panel1.TabIndex = 15;
-            // 
-            // DSNOR
-            // 
-            this.DSNOR.AutoSize = true;
-            this.DSNOR.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.DSNOR.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DSNOR.Location = new System.Drawing.Point(211, 3);
-            this.DSNOR.Name = "DSNOR";
-            this.DSNOR.Size = new System.Drawing.Size(97, 30);
-            this.DSNOR.TabIndex = 20;
-            this.DSNOR.TabStop = true;
-            this.DSNOR.Text = "Dragon Soul NOR";
-            this.DSNOR.UseVisualStyleBackColor = true;
-            this.DSNOR.CheckedChanged += new System.EventHandler(this.DSNOR_CheckedChanged);
-            // 
-            // DSHC
-            // 
-            this.DSHC.AutoSize = true;
-            this.DSHC.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.DSHC.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DSHC.Location = new System.Drawing.Point(331, 3);
-            this.DSHC.Name = "DSHC";
-            this.DSHC.Size = new System.Drawing.Size(88, 30);
-            this.DSHC.TabIndex = 19;
-            this.DSHC.TabStop = true;
-            this.DSHC.Text = "Dragon Soul HC";
-            this.DSHC.UseVisualStyleBackColor = true;
-            this.DSHC.CheckedChanged += new System.EventHandler(this.DSHC_CheckedChanged);
-            // 
-            // Party
-            // 
-            this.Party.AutoSize = true;
-            this.Party.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.Party.Checked = true;
-            this.Party.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Party.Location = new System.Drawing.Point(3, 3);
-            this.Party.Name = "Party";
-            this.Party.Size = new System.Drawing.Size(61, 30);
-            this.Party.TabIndex = 18;
-            this.Party.TabStop = true;
-            this.Party.Text = "Party/Solo";
-            this.Party.UseVisualStyleBackColor = true;
-            this.Party.CheckedChanged += new System.EventHandler(this.Party_CheckedChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(-3, -16);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(456, 16);
-            this.label6.TabIndex = 14;
-            this.label6.Text = "________________________________________________________________";
-            // 
-            // DSLFR
-            // 
-            this.DSLFR.AutoSize = true;
-            this.DSLFR.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.DSLFR.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DSLFR.Location = new System.Drawing.Point(93, 3);
-            this.DSLFR.Name = "DSLFR";
-            this.DSLFR.Size = new System.Drawing.Size(93, 30);
-            this.DSLFR.TabIndex = 17;
-            this.DSLFR.TabStop = true;
-            this.DSLFR.Text = "Dragon Soul LFR";
-            this.DSLFR.UseVisualStyleBackColor = true;
-            this.DSLFR.CheckedChanged += new System.EventHandler(this.DSLFR_CheckedChanged);
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.panel6);
@@ -1499,7 +1392,7 @@ namespace TheBeastMasterTree
             this.groupBox2.Controls.Add(this.panel3);
             this.groupBox2.Controls.Add(this.panel4);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(20, 73);
+            this.groupBox2.Location = new System.Drawing.Point(24, 9);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(439, 233);
             this.groupBox2.TabIndex = 22;
@@ -1514,7 +1407,7 @@ namespace TheBeastMasterTree
             this.panel6.Controls.Add(this.TL5_Power);
             this.panel6.Controls.Add(this.label3);
             this.panel6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel6.Location = new System.Drawing.Point(11, 191);
+            this.panel6.Location = new System.Drawing.Point(8, 191);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(422, 37);
             this.panel6.TabIndex = 38;
@@ -1537,7 +1430,7 @@ namespace TheBeastMasterTree
             // 
             this.TL5_Barrage.AutoSize = true;
             this.TL5_Barrage.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL5_Barrage.Location = new System.Drawing.Point(347, 3);
+            this.TL5_Barrage.Location = new System.Drawing.Point(350, 3);
             this.TL5_Barrage.Name = "TL5_Barrage";
             this.TL5_Barrage.Size = new System.Drawing.Size(48, 30);
             this.TL5_Barrage.TabIndex = 36;
@@ -1550,7 +1443,7 @@ namespace TheBeastMasterTree
             // 
             this.TL5_Glaive.AutoSize = true;
             this.TL5_Glaive.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL5_Glaive.Location = new System.Drawing.Point(93, 3);
+            this.TL5_Glaive.Location = new System.Drawing.Point(96, 3);
             this.TL5_Glaive.Name = "TL5_Glaive";
             this.TL5_Glaive.Size = new System.Drawing.Size(67, 30);
             this.TL5_Glaive.TabIndex = 35;
@@ -1563,7 +1456,7 @@ namespace TheBeastMasterTree
             // 
             this.TL5_Power.AutoSize = true;
             this.TL5_Power.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.TL5_Power.Location = new System.Drawing.Point(224, 3);
+            this.TL5_Power.Location = new System.Drawing.Point(227, 3);
             this.TL5_Power.Name = "TL5_Power";
             this.TL5_Power.Size = new System.Drawing.Size(61, 30);
             this.TL5_Power.TabIndex = 34;
@@ -1881,22 +1774,335 @@ namespace TheBeastMasterTree
             this.label18.TabIndex = 14;
             this.label18.Text = "________________________________________________________________";
             // 
-            // toolTip1
+            // tabPage3
             // 
-            this.toolTip1.AutoPopDelay = 30000;
-            this.toolTip1.InitialDelay = 50;
-            this.toolTip1.ReshowDelay = 0;
+            this.tabPage3.BackColor = System.Drawing.Color.White;
+            this.tabPage3.Controls.Add(this.label6);
+            this.tabPage3.Controls.Add(this.label36);
+            this.tabPage3.Controls.Add(this.label35);
+            this.tabPage3.Controls.Add(this.label34);
+            this.tabPage3.Controls.Add(this.label33);
+            this.tabPage3.Controls.Add(this.SaveButton3);
+            this.tabPage3.Controls.Add(this.label21);
+            this.tabPage3.Controls.Add(this.linkLabel5);
+            this.tabPage3.Controls.Add(this.linkLabel1);
+            this.tabPage3.Controls.Add(this.label4);
+            this.tabPage3.Controls.Add(this.groupBox7);
+            this.tabPage3.Controls.Add(this.groupBox1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(493, 471);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Misc";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label6.Location = new System.Drawing.Point(141, 229);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(293, 15);
+            this.label6.TabIndex = 56;
+            this.label6.Text = "^ Will use extrabutton actions in Dragon Soul Raid ^";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label36.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label36.Location = new System.Drawing.Point(27, 283);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(114, 23);
+            this.label36.TabIndex = 55;
+            this.label36.Text = "Other Notes:";
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label35.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label35.Location = new System.Drawing.Point(200, 27);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(263, 15);
+            this.label35.TabIndex = 54;
+            this.label35.Text = "<- Set to 0 if you don\'t want to use Health Stone";
+            // 
+            // label34
+            // 
+            this.label34.AutoSize = true;
+            this.label34.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label34.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label34.Location = new System.Drawing.Point(200, 95);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(209, 30);
+            this.label34.TabIndex = 53;
+            this.label34.Text = "<- Your health must be below to use \r\nLife Spirit / Alch. Rejuv. / Healing Pot.";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label33.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label33.Location = new System.Drawing.Point(200, 132);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(285, 15);
+            this.label33.TabIndex = 52;
+            this.label33.Text = "<- Target Health must be below to use Virmen\'s Bite";
+            // 
+            // SaveButton3
+            // 
+            this.SaveButton3.Location = new System.Drawing.Point(413, 441);
+            this.SaveButton3.Name = "SaveButton3";
+            this.SaveButton3.Size = new System.Drawing.Size(75, 23);
+            this.SaveButton3.TabIndex = 51;
+            this.SaveButton3.Text = "Save";
+            this.SaveButton3.UseVisualStyleBackColor = true;
+            this.SaveButton3.Click += new System.EventHandler(this.SaveButton3_Click_1);
             // 
             // label21
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label21.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label21.Location = new System.Drawing.Point(13, 407);
+            this.label21.Location = new System.Drawing.Point(38, 311);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(211, 15);
-            this.label21.TabIndex = 45;
-            this.label21.Text = "Set Custom Lag Tolerance to 250-400!";
+            this.label21.Size = new System.Drawing.Size(358, 45);
+            this.label21.TabIndex = 50;
+            this.label21.Text = "Setting your Custom Lag Tolerance to around 250-400 \r\nwill help the bot to queue " +
+    "up spells.\r\n(Go to Interface > Combat, to change your Custom Lag Tolerance)";
+            // 
+            // linkLabel5
+            // 
+            this.linkLabel5.AutoSize = true;
+            this.linkLabel5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.linkLabel5.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.linkLabel5.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel5.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabel5.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.linkLabel5.Location = new System.Drawing.Point(289, 440);
+            this.linkLabel5.Name = "linkLabel5";
+            this.linkLabel5.Size = new System.Drawing.Size(118, 21);
+            this.linkLabel5.TabIndex = 49;
+            this.linkLabel5.TabStop = true;
+            this.linkLabel5.Text = "Submit feedback";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabel1.LinkColor = System.Drawing.SystemColors.Highlight;
+            this.linkLabel1.Location = new System.Drawing.Point(172, 432);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(119, 33);
+            this.linkLabel1.TabIndex = 47;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "FallDown";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.Gray;
+            this.label4.Location = new System.Drawing.Point(5, 437);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(174, 26);
+            this.label4.TabIndex = 46;
+            this.label4.Text = "A Custom Class by:";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.VirmenHealth);
+            this.groupBox7.Controls.Add(this.Virmen);
+            this.groupBox7.Controls.Add(this.ItemsHealth);
+            this.groupBox7.Controls.Add(this.label32);
+            this.groupBox7.Controls.Add(this.AlchRejuv);
+            this.groupBox7.Controls.Add(this.HealingPot);
+            this.groupBox7.Controls.Add(this.LifeSpirit);
+            this.groupBox7.Controls.Add(this.HealthStone);
+            this.groupBox7.Controls.Add(this.label15);
+            this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox7.Location = new System.Drawing.Point(13, 11);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(181, 142);
+            this.groupBox7.TabIndex = 45;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Items";
+            // 
+            // VirmenHealth
+            // 
+            this.VirmenHealth.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VirmenHealth.Location = new System.Drawing.Point(118, 114);
+            this.VirmenHealth.Name = "VirmenHealth";
+            this.VirmenHealth.Size = new System.Drawing.Size(52, 20);
+            this.VirmenHealth.TabIndex = 49;
+            this.VirmenHealth.ValueChanged += new System.EventHandler(this.VirmenHealth_ValueChanged);
+            // 
+            // Virmen
+            // 
+            this.Virmen.AutoSize = true;
+            this.Virmen.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Virmen.Location = new System.Drawing.Point(8, 115);
+            this.Virmen.Name = "Virmen";
+            this.Virmen.Size = new System.Drawing.Size(112, 17);
+            this.Virmen.TabIndex = 48;
+            this.Virmen.Text = "Virmen\'s Bite at %:";
+            this.Virmen.UseVisualStyleBackColor = true;
+            this.Virmen.CheckedChanged += new System.EventHandler(this.Virmen_CheckedChanged);
+            // 
+            // ItemsHealth
+            // 
+            this.ItemsHealth.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ItemsHealth.Location = new System.Drawing.Point(87, 88);
+            this.ItemsHealth.Name = "ItemsHealth";
+            this.ItemsHealth.Size = new System.Drawing.Size(52, 20);
+            this.ItemsHealth.TabIndex = 46;
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label32.Location = new System.Drawing.Point(7, 91);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(76, 13);
+            this.label32.TabIndex = 47;
+            this.label32.Text = "Use items at %";
+            // 
+            // AlchRejuv
+            // 
+            this.AlchRejuv.AutoSize = true;
+            this.AlchRejuv.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AlchRejuv.Location = new System.Drawing.Point(8, 50);
+            this.AlchRejuv.Name = "AlchRejuv";
+            this.AlchRejuv.Size = new System.Drawing.Size(144, 17);
+            this.AlchRejuv.TabIndex = 45;
+            this.AlchRejuv.Text = "Alchemist\'s Rejuvenation";
+            this.AlchRejuv.UseVisualStyleBackColor = true;
+            this.AlchRejuv.CheckedChanged += new System.EventHandler(this.AlchRejuv_CheckedChanged);
+            // 
+            // HealingPot
+            // 
+            this.HealingPot.AutoSize = true;
+            this.HealingPot.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HealingPot.Location = new System.Drawing.Point(8, 69);
+            this.HealingPot.Name = "HealingPot";
+            this.HealingPot.Size = new System.Drawing.Size(130, 17);
+            this.HealingPot.TabIndex = 44;
+            this.HealingPot.Text = "Master Healing Potion";
+            this.HealingPot.UseVisualStyleBackColor = true;
+            this.HealingPot.CheckedChanged += new System.EventHandler(this.HealingPot_CheckedChanged);
+            // 
+            // LifeSpirit
+            // 
+            this.LifeSpirit.AutoSize = true;
+            this.LifeSpirit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LifeSpirit.Location = new System.Drawing.Point(8, 32);
+            this.LifeSpirit.Name = "LifeSpirit";
+            this.LifeSpirit.Size = new System.Drawing.Size(69, 17);
+            this.LifeSpirit.TabIndex = 5;
+            this.LifeSpirit.Text = "Life Spirit";
+            this.LifeSpirit.UseVisualStyleBackColor = true;
+            this.LifeSpirit.CheckedChanged += new System.EventHandler(this.LifeSpirit_CheckedChanged);
+            // 
+            // HealthStone
+            // 
+            this.HealthStone.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HealthStone.Location = new System.Drawing.Point(124, 14);
+            this.HealthStone.Name = "HealthStone";
+            this.HealthStone.Size = new System.Drawing.Size(52, 20);
+            this.HealthStone.TabIndex = 42;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(5, 17);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(114, 13);
+            this.label15.TabIndex = 43;
+            this.label15.Text = "Use Health Stone at %";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.panel1);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(13, 159);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(439, 66);
+            this.groupBox1.TabIndex = 22;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Raids and Dungeons";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.DSNOR);
+            this.panel1.Controls.Add(this.DSHC);
+            this.panel1.Controls.Add(this.Party);
+            this.panel1.Controls.Add(this.DSLFR);
+            this.panel1.Location = new System.Drawing.Point(7, 19);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(422, 41);
+            this.panel1.TabIndex = 15;
+            // 
+            // DSNOR
+            // 
+            this.DSNOR.AutoSize = true;
+            this.DSNOR.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.DSNOR.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DSNOR.Location = new System.Drawing.Point(211, 3);
+            this.DSNOR.Name = "DSNOR";
+            this.DSNOR.Size = new System.Drawing.Size(97, 30);
+            this.DSNOR.TabIndex = 20;
+            this.DSNOR.TabStop = true;
+            this.DSNOR.Text = "Dragon Soul NOR";
+            this.DSNOR.UseVisualStyleBackColor = true;
+            // 
+            // DSHC
+            // 
+            this.DSHC.AutoSize = true;
+            this.DSHC.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.DSHC.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DSHC.Location = new System.Drawing.Point(331, 3);
+            this.DSHC.Name = "DSHC";
+            this.DSHC.Size = new System.Drawing.Size(88, 30);
+            this.DSHC.TabIndex = 19;
+            this.DSHC.TabStop = true;
+            this.DSHC.Text = "Dragon Soul HC";
+            this.DSHC.UseVisualStyleBackColor = true;
+            // 
+            // Party
+            // 
+            this.Party.AutoSize = true;
+            this.Party.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.Party.Checked = true;
+            this.Party.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Party.Location = new System.Drawing.Point(3, 3);
+            this.Party.Name = "Party";
+            this.Party.Size = new System.Drawing.Size(61, 30);
+            this.Party.TabIndex = 18;
+            this.Party.TabStop = true;
+            this.Party.Text = "Party/Solo";
+            this.Party.UseVisualStyleBackColor = true;
+            // 
+            // DSLFR
+            // 
+            this.DSLFR.AutoSize = true;
+            this.DSLFR.CheckAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.DSLFR.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DSLFR.Location = new System.Drawing.Point(93, 3);
+            this.DSLFR.Name = "DSLFR";
+            this.DSLFR.Size = new System.Drawing.Size(93, 30);
+            this.DSLFR.TabIndex = 17;
+            this.DSLFR.TabStop = true;
+            this.DSLFR.Text = "Dragon Soul LFR";
+            this.DSLFR.UseVisualStyleBackColor = true;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.AutoPopDelay = 30000;
+            this.toolTip1.InitialDelay = 50;
+            this.toolTip1.ReshowDelay = 0;
             // 
             // BeastGUI
             // 
@@ -1914,10 +2120,8 @@ namespace TheBeastMasterTree
             this.tabPage2.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ItemsHealth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.HealthStone)).EndInit();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.BossHealth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DetHealth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FFS)).EndInit();
@@ -1933,9 +2137,6 @@ namespace TheBeastMasterTree
             ((System.ComponentModel.ISupportInitialize)(this.PET)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
@@ -1947,6 +2148,16 @@ namespace TheBeastMasterTree
             this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.VirmenHealth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ItemsHealth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HealthStone)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1956,14 +2167,6 @@ namespace TheBeastMasterTree
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Button SaveButton;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.RadioButton DSNOR;
-        private System.Windows.Forms.RadioButton DSHC;
-        private System.Windows.Forms.RadioButton Party;
-        private System.Windows.Forms.RadioButton DSLFR;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.RadioButton TL1_Binding;
@@ -1983,7 +2186,6 @@ namespace TheBeastMasterTree
         private System.Windows.Forms.RadioButton TL3_Fervor;
         private System.Windows.Forms.RadioButton TL3_Dire;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.RadioButton TL2_None;
@@ -2004,7 +2206,6 @@ namespace TheBeastMasterTree
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.NumericUpDown BossHealth;
         private System.Windows.Forms.NumericUpDown DetHealth;
-        private System.Windows.Forms.CheckBox StExplosive;
         private System.Windows.Forms.CheckBox Distract;
         private System.Windows.Forms.Label ScatterShot;
         private System.Windows.Forms.ComboBox ScatBox;
@@ -2062,9 +2263,6 @@ namespace TheBeastMasterTree
         private System.Windows.Forms.CheckBox MendPet;
         private System.Windows.Forms.CheckBox RevivePet;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.NumericUpDown HealthStone;
-        private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Label label14;
@@ -2078,15 +2276,44 @@ namespace TheBeastMasterTree
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.NumericUpDown VirmenHealth;
+        private System.Windows.Forms.CheckBox Virmen;
+        private System.Windows.Forms.NumericUpDown ItemsHealth;
+        private System.Windows.Forms.Label label32;
         private System.Windows.Forms.CheckBox AlchRejuv;
         private System.Windows.Forms.CheckBox HealingPot;
         private System.Windows.Forms.CheckBox LifeSpirit;
+        private System.Windows.Forms.NumericUpDown HealthStone;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.RadioButton DSNOR;
+        private System.Windows.Forms.RadioButton DSHC;
+        private System.Windows.Forms.RadioButton Party;
+        private System.Windows.Forms.RadioButton DSLFR;
+        private System.Windows.Forms.Label label22;
         private System.Windows.Forms.LinkLabel linkLabel5;
-        private System.Windows.Forms.NumericUpDown ItemsHealth;
-        private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.CheckBox Virmen;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Button SaveButton3;
+        private System.Windows.Forms.Button Use2;
+        private System.Windows.Forms.Button Use1;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.CheckBox FreezingTD;
+        private System.Windows.Forms.CheckBox FreezingTL;
+        private System.Windows.Forms.CheckBox SnakeTD;
+        private System.Windows.Forms.CheckBox SnakeTL;
+        private System.Windows.Forms.CheckBox IceTD;
+        private System.Windows.Forms.CheckBox IceTL;
+        private System.Windows.Forms.CheckBox StExplosive;
     }
 }
 
