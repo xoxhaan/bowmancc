@@ -611,7 +611,7 @@ namespace TheBeastMasterTree
 
                                 UseBagItem("Healthstone", ret => Me.HealthPercent < BeastMasterSettings.Instance.HealthStone && Me.IsAlive, "Healthstone"),
 
-                                UseBagItem("Virmen's Bite", ret => IsTargetBoss() && !Me.HasAura("Virmen's Bite"), "Virmen's Bite"),
+                               /* UseBagItem("Virmen's Bite", ret => IsTargetBoss() && !Me.HasAura("Virmen's Bite"), "Virmen's Bite"),*/
 
                                 new Decorator(ret => Me.HealthPercent < BeastMasterSettings.Instance.ItemsHealth,
                                     new PrioritySelector(
