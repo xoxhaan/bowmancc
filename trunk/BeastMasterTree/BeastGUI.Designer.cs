@@ -52,11 +52,11 @@ namespace TheBeastMasterTree
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BeastGUI));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.Virmen = new System.Windows.Forms.CheckBox();
             this.ItemsHealth = new System.Windows.Forms.NumericUpDown();
             this.label32 = new System.Windows.Forms.Label();
             this.AlchRejuv = new System.Windows.Forms.CheckBox();
@@ -185,6 +185,7 @@ namespace TheBeastMasterTree
             this.TL4_Blink = new System.Windows.Forms.RadioButton();
             this.label18 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label21 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -240,6 +241,7 @@ namespace TheBeastMasterTree
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.label21);
             this.groupBox6.Controls.Add(this.groupBox7);
             this.groupBox6.Controls.Add(this.label12);
             this.groupBox6.Controls.Add(this.label11);
@@ -279,6 +281,7 @@ namespace TheBeastMasterTree
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.Virmen);
             this.groupBox7.Controls.Add(this.ItemsHealth);
             this.groupBox7.Controls.Add(this.label32);
             this.groupBox7.Controls.Add(this.AlchRejuv);
@@ -287,12 +290,24 @@ namespace TheBeastMasterTree
             this.groupBox7.Controls.Add(this.HealthStone);
             this.groupBox7.Controls.Add(this.label15);
             this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox7.Location = new System.Drawing.Point(6, 311);
+            this.groupBox7.Location = new System.Drawing.Point(9, 269);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(215, 114);
+            this.groupBox7.Size = new System.Drawing.Size(181, 132);
             this.groupBox7.TabIndex = 44;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Items";
+            // 
+            // Virmen
+            // 
+            this.Virmen.AutoSize = true;
+            this.Virmen.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Virmen.Location = new System.Drawing.Point(8, 111);
+            this.Virmen.Name = "Virmen";
+            this.Virmen.Size = new System.Drawing.Size(86, 17);
+            this.Virmen.TabIndex = 48;
+            this.Virmen.Text = "Virmen\'s Bite";
+            this.Virmen.UseVisualStyleBackColor = true;
+            this.Virmen.CheckedChanged += new System.EventHandler(this.Virmen_CheckedChanged);
             // 
             // ItemsHealth
             // 
@@ -371,7 +386,7 @@ namespace TheBeastMasterTree
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(150, 41);
+            this.label12.Location = new System.Drawing.Point(150, 39);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(86, 13);
             this.label12.TabIndex = 41;
@@ -380,7 +395,7 @@ namespace TheBeastMasterTree
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(15, 40);
+            this.label11.Location = new System.Drawing.Point(15, 38);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(76, 13);
             this.label11.TabIndex = 40;
@@ -388,7 +403,7 @@ namespace TheBeastMasterTree
             // 
             // BossHealth
             // 
-            this.BossHealth.Location = new System.Drawing.Point(94, 37);
+            this.BossHealth.Location = new System.Drawing.Point(94, 35);
             this.BossHealth.Maximum = new decimal(new int[] {
             500,
             0,
@@ -402,7 +417,7 @@ namespace TheBeastMasterTree
             // DetHealth
             // 
             this.DetHealth.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DetHealth.Location = new System.Drawing.Point(244, 70);
+            this.DetHealth.Location = new System.Drawing.Point(249, 60);
             this.DetHealth.Name = "DetHealth";
             this.DetHealth.Size = new System.Drawing.Size(52, 20);
             this.DetHealth.TabIndex = 30;
@@ -411,7 +426,7 @@ namespace TheBeastMasterTree
             // StExplosive
             // 
             this.StExplosive.AutoSize = true;
-            this.StExplosive.Location = new System.Drawing.Point(137, 177);
+            this.StExplosive.Location = new System.Drawing.Point(142, 167);
             this.StExplosive.Name = "StExplosive";
             this.StExplosive.Size = new System.Drawing.Size(162, 17);
             this.StExplosive.TabIndex = 38;
@@ -433,7 +448,7 @@ namespace TheBeastMasterTree
             // ScatterShot
             // 
             this.ScatterShot.AutoSize = true;
-            this.ScatterShot.Location = new System.Drawing.Point(132, 290);
+            this.ScatterShot.Location = new System.Drawing.Point(141, 227);
             this.ScatterShot.Name = "ScatterShot";
             this.ScatterShot.Size = new System.Drawing.Size(69, 13);
             this.ScatterShot.TabIndex = 36;
@@ -444,7 +459,7 @@ namespace TheBeastMasterTree
             this.ScatBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ScatBox.DropDownWidth = 95;
             this.ScatBox.FormattingEnabled = true;
-            this.ScatBox.Location = new System.Drawing.Point(207, 286);
+            this.ScatBox.Location = new System.Drawing.Point(144, 243);
             this.ScatBox.Name = "ScatBox";
             this.ScatBox.Size = new System.Drawing.Size(98, 21);
             this.ScatBox.TabIndex = 35;
@@ -455,7 +470,7 @@ namespace TheBeastMasterTree
             this.IntiBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.IntiBox.DropDownWidth = 95;
             this.IntiBox.FormattingEnabled = true;
-            this.IntiBox.Location = new System.Drawing.Point(192, 259);
+            this.IntiBox.Location = new System.Drawing.Point(17, 242);
             this.IntiBox.Name = "IntiBox";
             this.IntiBox.Size = new System.Drawing.Size(113, 21);
             this.IntiBox.TabIndex = 34;
@@ -464,7 +479,7 @@ namespace TheBeastMasterTree
             // Intimidate
             // 
             this.Intimidate.AutoSize = true;
-            this.Intimidate.Location = new System.Drawing.Point(132, 262);
+            this.Intimidate.Location = new System.Drawing.Point(13, 226);
             this.Intimidate.Name = "Intimidate";
             this.Intimidate.Size = new System.Drawing.Size(55, 13);
             this.Intimidate.TabIndex = 33;
@@ -475,7 +490,7 @@ namespace TheBeastMasterTree
             this.SerBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SerBox.DropDownWidth = 95;
             this.SerBox.FormattingEnabled = true;
-            this.SerBox.Location = new System.Drawing.Point(192, 230);
+            this.SerBox.Location = new System.Drawing.Point(16, 201);
             this.SerBox.Name = "SerBox";
             this.SerBox.Size = new System.Drawing.Size(113, 21);
             this.SerBox.TabIndex = 32;
@@ -484,16 +499,16 @@ namespace TheBeastMasterTree
             // Serpent
             // 
             this.Serpent.AutoSize = true;
-            this.Serpent.Location = new System.Drawing.Point(140, 233);
+            this.Serpent.Location = new System.Drawing.Point(13, 185);
             this.Serpent.Name = "Serpent";
-            this.Serpent.Size = new System.Drawing.Size(47, 13);
+            this.Serpent.Size = new System.Drawing.Size(74, 13);
             this.Serpent.TabIndex = 31;
-            this.Serpent.Text = "Serpent:";
+            this.Serpent.Text = "Serpent Sting:";
             // 
             // SSStacks
             // 
             this.SSStacks.AutoSize = true;
-            this.SSStacks.Location = new System.Drawing.Point(206, 157);
+            this.SSStacks.Location = new System.Drawing.Point(211, 147);
             this.SSStacks.Name = "SSStacks";
             this.SSStacks.Size = new System.Drawing.Size(43, 13);
             this.SSStacks.TabIndex = 28;
@@ -501,7 +516,7 @@ namespace TheBeastMasterTree
             // 
             // FFS
             // 
-            this.FFS.Location = new System.Drawing.Point(251, 154);
+            this.FFS.Location = new System.Drawing.Point(256, 144);
             this.FFS.Maximum = new decimal(new int[] {
             5,
             0,
@@ -526,7 +541,7 @@ namespace TheBeastMasterTree
             // 
             this.FocusFire.AutoSize = true;
             this.FocusFire.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.FocusFire.Location = new System.Drawing.Point(137, 156);
+            this.FocusFire.Location = new System.Drawing.Point(142, 146);
             this.FocusFire.Name = "FocusFire";
             this.FocusFire.Size = new System.Drawing.Size(75, 17);
             this.FocusFire.TabIndex = 27;
@@ -537,7 +552,7 @@ namespace TheBeastMasterTree
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(139, 206);
+            this.label9.Location = new System.Drawing.Point(141, 185);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(68, 13);
             this.label9.TabIndex = 26;
@@ -548,7 +563,7 @@ namespace TheBeastMasterTree
             this.FDBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.FDBox.DropDownWidth = 95;
             this.FDBox.FormattingEnabled = true;
-            this.FDBox.Location = new System.Drawing.Point(210, 203);
+            this.FDBox.Location = new System.Drawing.Point(144, 201);
             this.FDBox.Name = "FDBox";
             this.FDBox.Size = new System.Drawing.Size(95, 21);
             this.FDBox.TabIndex = 25;
@@ -568,7 +583,7 @@ namespace TheBeastMasterTree
             // Arcane
             // 
             this.Arcane.AutoSize = true;
-            this.Arcane.Location = new System.Drawing.Point(137, 114);
+            this.Arcane.Location = new System.Drawing.Point(142, 104);
             this.Arcane.Name = "Arcane";
             this.Arcane.Size = new System.Drawing.Size(85, 17);
             this.Arcane.TabIndex = 24;
@@ -607,7 +622,7 @@ namespace TheBeastMasterTree
             this.groupBox4.Controls.Add(this.AoELynx);
             this.groupBox4.Controls.Add(this.MultiShot);
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.Location = new System.Drawing.Point(6, 184);
+            this.groupBox4.Location = new System.Drawing.Point(195, 269);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(117, 126);
             this.groupBox4.TabIndex = 2;
@@ -711,7 +726,7 @@ namespace TheBeastMasterTree
             // Deterrence
             // 
             this.Deterrence.AutoSize = true;
-            this.Deterrence.Location = new System.Drawing.Point(137, 71);
+            this.Deterrence.Location = new System.Drawing.Point(142, 61);
             this.Deterrence.Name = "Deterrence";
             this.Deterrence.Size = new System.Drawing.Size(105, 17);
             this.Deterrence.TabIndex = 24;
@@ -722,7 +737,7 @@ namespace TheBeastMasterTree
             // KillShot
             // 
             this.KillShot.AutoSize = true;
-            this.KillShot.Location = new System.Drawing.Point(137, 135);
+            this.KillShot.Location = new System.Drawing.Point(142, 125);
             this.KillShot.Name = "KillShot";
             this.KillShot.Size = new System.Drawing.Size(64, 17);
             this.KillShot.TabIndex = 24;
@@ -733,7 +748,7 @@ namespace TheBeastMasterTree
             // BWrath
             // 
             this.BWrath.AutoSize = true;
-            this.BWrath.Location = new System.Drawing.Point(137, 92);
+            this.BWrath.Location = new System.Drawing.Point(142, 82);
             this.BWrath.Name = "BWrath";
             this.BWrath.Size = new System.Drawing.Size(89, 17);
             this.BWrath.TabIndex = 24;
@@ -760,7 +775,7 @@ namespace TheBeastMasterTree
             // 
             // SaveButton2
             // 
-            this.SaveButton2.Location = new System.Drawing.Point(238, 400);
+            this.SaveButton2.Location = new System.Drawing.Point(239, 402);
             this.SaveButton2.Name = "SaveButton2";
             this.SaveButton2.Size = new System.Drawing.Size(75, 23);
             this.SaveButton2.TabIndex = 12;
@@ -1872,6 +1887,17 @@ namespace TheBeastMasterTree
             this.toolTip1.InitialDelay = 50;
             this.toolTip1.ReshowDelay = 0;
             // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label21.Location = new System.Drawing.Point(13, 407);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(211, 15);
+            this.label21.TabIndex = 45;
+            this.label21.Text = "Set Custom Lag Tolerance to 250-400!";
+            // 
             // BeastGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2059,6 +2085,8 @@ namespace TheBeastMasterTree
         private System.Windows.Forms.LinkLabel linkLabel5;
         private System.Windows.Forms.NumericUpDown ItemsHealth;
         private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.CheckBox Virmen;
+        private System.Windows.Forms.Label label21;
     }
 }
 

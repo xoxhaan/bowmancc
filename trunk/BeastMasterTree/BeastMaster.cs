@@ -22,7 +22,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 5, 2);
+        public static readonly Version Version = new Version(2, 5, 3);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -611,7 +611,7 @@ namespace TheBeastMasterTree
 
                                 UseBagItem("Healthstone", ret => Me.HealthPercent < BeastMasterSettings.Instance.HealthStone && Me.IsAlive, "Healthstone"),
 
-                               /* UseBagItem("Virmen's Bite", ret => IsTargetBoss() && !Me.HasAura("Virmen's Bite"), "Virmen's Bite"),*/
+                               UseBagItem("Virmen's Bite", ret => BeastMasterSettings.Instance.VSB && IsTargetBoss() && !Me.HasAura("Virmen's Bite"), "Virmen's Bite"),
 
                                 new Decorator(ret => Me.HealthPercent < BeastMasterSettings.Instance.ItemsHealth,
                                     new PrioritySelector(
