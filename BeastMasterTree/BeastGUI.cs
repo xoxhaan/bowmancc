@@ -195,6 +195,8 @@ namespace TheBeastMasterTree
             HealingPot.Checked = BeastMasterSettings.Instance.HEALP;
             AlchRejuv.Checked = BeastMasterSettings.Instance.ALCR;
             Virmen.Checked = BeastMasterSettings.Instance.VSB;
+            VirmensBypass.Checked = BeastMasterSettings.Instance.VBBP;
+            BWrathBypass.Checked = BeastMasterSettings.Instance.BWBP;
             Rabid.Checked = BeastMasterSettings.Instance.RBD;
             PetAtk.Checked = BeastMasterSettings.Instance.PAT;
             Racial.Checked = BeastMasterSettings.Instance.RS;
@@ -1084,6 +1086,18 @@ namespace TheBeastMasterTree
             else
             {
                 BeastMasterSettings.Instance.VBBP = false;
+            }
+        }
+
+        private void BWrathBypass_CheckedChanged(object sender, EventArgs e)
+        {
+            if (BWrathBypass.Checked == true)
+            {
+                BeastMasterSettings.Instance.BWBP = true;
+            }
+            else
+            {
+                BeastMasterSettings.Instance.BWBP = false;
             }
         }
     }

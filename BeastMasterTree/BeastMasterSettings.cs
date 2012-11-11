@@ -152,6 +152,9 @@ namespace TheBeastMasterTree
         public bool VBBP { get; set; }
 
         [Setting, DefaultValue(false)]
+        public bool BWBP { get; set; }
+
+        [Setting, DefaultValue(false)]
         public bool RF { get; set; }
 
         [Setting, DefaultValue(false)]

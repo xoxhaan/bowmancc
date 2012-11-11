@@ -175,6 +175,7 @@ namespace TheBeastMasterTree
             this.TL4_Blink = new System.Windows.Forms.RadioButton();
             this.label18 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label37 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
             this.label35 = new System.Windows.Forms.Label();
@@ -186,6 +187,7 @@ namespace TheBeastMasterTree
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.VirmensBypass = new System.Windows.Forms.CheckBox();
             this.VirmenHealth = new System.Windows.Forms.NumericUpDown();
             this.Virmen = new System.Windows.Forms.CheckBox();
             this.ItemsHealth = new System.Windows.Forms.NumericUpDown();
@@ -202,8 +204,9 @@ namespace TheBeastMasterTree
             this.Party = new System.Windows.Forms.RadioButton();
             this.DSLFR = new System.Windows.Forms.RadioButton();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.VirmensBypass = new System.Windows.Forms.CheckBox();
-            this.label37 = new System.Windows.Forms.Label();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.BWrathBypass = new System.Windows.Forms.CheckBox();
+            this.label38 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -232,6 +235,7 @@ namespace TheBeastMasterTree
             ((System.ComponentModel.ISupportInitialize)(this.HealthStone)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -1192,6 +1196,7 @@ namespace TheBeastMasterTree
             this.label31.TabIndex = 40;
             this.label31.Text = "Minor";
             this.toolTip1.SetToolTip(this.label31, label31Msg);
+            //this.toolTip1.SetToolTip(this.label31, label31Msg);
             // 
             // label30
             // 
@@ -1206,6 +1211,7 @@ namespace TheBeastMasterTree
             this.label30.TabIndex = 39;
             this.label30.Text = "Major";
             this.toolTip1.SetToolTip(this.label30, label30Msg);
+            //this.toolTip1.SetToolTip(this.label30, label30Msg);
             // 
             // label29
             // 
@@ -1779,6 +1785,8 @@ namespace TheBeastMasterTree
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.White;
+            this.tabPage3.Controls.Add(this.label38);
+            this.tabPage3.Controls.Add(this.groupBox9);
             this.tabPage3.Controls.Add(this.label37);
             this.tabPage3.Controls.Add(this.label6);
             this.tabPage3.Controls.Add(this.label36);
@@ -1798,12 +1806,24 @@ namespace TheBeastMasterTree
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Misc";
             // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label37.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label37.Location = new System.Drawing.Point(198, 156);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(286, 30);
+            this.label37.TabIndex = 57;
+            this.label37.Text = "<- Will skip checking if we have Bloodlust/Heroism\r\n(Only checks if target is Bos" +
+    "s and for Health)";
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label6.Location = new System.Drawing.Point(141, 262);
+            this.label6.Location = new System.Drawing.Point(152, 355);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(293, 15);
             this.label6.TabIndex = 56;
@@ -1814,7 +1834,7 @@ namespace TheBeastMasterTree
             this.label36.AutoSize = true;
             this.label36.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label36.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label36.Location = new System.Drawing.Point(27, 299);
+            this.label36.Location = new System.Drawing.Point(16, 359);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(114, 23);
             this.label36.TabIndex = 55;
@@ -1868,7 +1888,7 @@ namespace TheBeastMasterTree
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label21.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label21.Location = new System.Drawing.Point(38, 327);
+            this.label21.Location = new System.Drawing.Point(27, 387);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(358, 45);
             this.label21.TabIndex = 50;
@@ -1933,6 +1953,18 @@ namespace TheBeastMasterTree
             this.groupBox7.TabIndex = 45;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Items";
+            // 
+            // VirmensBypass
+            // 
+            this.VirmensBypass.AutoSize = true;
+            this.VirmensBypass.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VirmensBypass.Location = new System.Drawing.Point(21, 137);
+            this.VirmensBypass.Name = "VirmensBypass";
+            this.VirmensBypass.Size = new System.Drawing.Size(146, 30);
+            this.VirmensBypass.TabIndex = 50;
+            this.VirmensBypass.Text = "Bypass Virmen\'s Bite \r\nBloodlust/Heroism Check";
+            this.VirmensBypass.UseVisualStyleBackColor = true;
+            this.VirmensBypass.CheckedChanged += new System.EventHandler(this.VirmensBypass_CheckedChanged);
             // 
             // VirmenHealth
             // 
@@ -2033,7 +2065,7 @@ namespace TheBeastMasterTree
             // 
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(13, 192);
+            this.groupBox1.Location = new System.Drawing.Point(24, 285);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(439, 66);
             this.groupBox1.TabIndex = 22;
@@ -2110,29 +2142,40 @@ namespace TheBeastMasterTree
             this.toolTip1.InitialDelay = 50;
             this.toolTip1.ReshowDelay = 0;
             // 
-            // VirmensBypass
+            // groupBox9
             // 
-            this.VirmensBypass.AutoSize = true;
-            this.VirmensBypass.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.VirmensBypass.Location = new System.Drawing.Point(21, 137);
-            this.VirmensBypass.Name = "VirmensBypass";
-            this.VirmensBypass.Size = new System.Drawing.Size(146, 30);
-            this.VirmensBypass.TabIndex = 50;
-            this.VirmensBypass.Text = "Bypass Virmen\'s Bite \r\nBloodlust/Heroism Check";
-            this.VirmensBypass.UseVisualStyleBackColor = true;
-            this.VirmensBypass.CheckedChanged += new System.EventHandler(this.VirmensBypass_CheckedChanged);
+            this.groupBox9.Controls.Add(this.BWrathBypass);
+            this.groupBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox9.Location = new System.Drawing.Point(13, 191);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(138, 87);
+            this.groupBox9.TabIndex = 58;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Misc settings";
             // 
-            // label37
+            // BWrathBypass
             // 
-            this.label37.AutoSize = true;
-            this.label37.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label37.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label37.Location = new System.Drawing.Point(198, 156);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(286, 30);
-            this.label37.TabIndex = 57;
-            this.label37.Text = "<- Will skip checking if we have Bloodlust/Heroism\r\n(Only checks if target is Bos" +
-    "s and for Health)";
+            this.BWrathBypass.AutoSize = true;
+            this.BWrathBypass.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BWrathBypass.Location = new System.Drawing.Point(8, 22);
+            this.BWrathBypass.Name = "BWrathBypass";
+            this.BWrathBypass.Size = new System.Drawing.Size(126, 17);
+            this.BWrathBypass.TabIndex = 51;
+            this.BWrathBypass.Text = "Bestial Wrath Bypass";
+            this.BWrathBypass.UseVisualStyleBackColor = true;
+            this.BWrathBypass.CheckedChanged += new System.EventHandler(this.BWrathBypass_CheckedChanged);
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label38.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label38.Location = new System.Drawing.Point(159, 211);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(308, 45);
+            this.label38.TabIndex = 59;
+            this.label38.Text = "<- Bypasses High Focus requirment for Bestial Wrath\r\nand disables use of Cobra Sh" +
+    "ot to increase Focus when\r\nBestial Wrath is coming off Cooldown.";
             // 
             // BeastGUI
             // 
@@ -2188,6 +2231,8 @@ namespace TheBeastMasterTree
             this.groupBox1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2346,6 +2391,9 @@ namespace TheBeastMasterTree
         private System.Windows.Forms.CheckBox StExplosive;
         private System.Windows.Forms.CheckBox VirmensBypass;
         private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.CheckBox BWrathBypass;
     }
 }
 
