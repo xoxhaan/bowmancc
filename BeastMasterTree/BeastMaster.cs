@@ -23,7 +23,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 6, 6);
+        public static readonly Version Version = new Version(2, 6, 7);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -752,7 +752,7 @@ namespace TheBeastMasterTree
                                 || !SpellManager.Spells["Lynx Rush"].Cooldown) && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.HasAura("Rapid Fire") 
                                 && !Me.HasAura("The Beast Within") && !Me.HasAura("Bloodlust") && !Me.HasAura("Heroism") && !Me.HasAura("Ancient Hysteria") && !Me.HasAura("Time Warp") 
                                 && (Me.CurrentTarget.CurrentHealth > 100000 || CalculateTimeToDeath(Me.CurrentTarget) > 10) 
-                                && (Me.CurrentFocus >= 80 || (SpellManager.HasSpell("Fervor") && spellCD("Fervor") < 2) || SpellManager.CanCast("Kill Command") || BeastMasterSettings.Instance.BWBP), "Bestial Wrath"),
+                                && (Me.CurrentFocus >= 75 || (SpellManager.HasSpell("Fervor") && spellCD("Fervor") < 2) || SpellManager.CanCast("Kill Command") || BeastMasterSettings.Instance.BWBP), "Bestial Wrath"),
 
                                 castSelfSpell("Readiness", ret => BeastMasterSettings.Instance.RDN 
                                 && spellCD("Rapid Fire") > 2 
@@ -867,7 +867,8 @@ namespace TheBeastMasterTree
                                 && (Me.CurrentTarget.CurrentHealth > 100000 || CalculateTimeToDeath(Me.CurrentTarget) > 10),
 
                                     castSpell("Steady Shot", ret => BeastMasterSettings.Instance.BWR && Me.CurrentFocus < 75 && !Me.HasAura("The Beast Within")
-                                    && (!BeastMasterSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].Cooldown) && spellCD("Bestial Wrath") < 5 && !SpellManager.CanCast("Kill Command") && spellCD("Kill Command") > 2 || (!SpellManager.GlobalCooldown && !Me.IsCasting), "Cobra Shot")
+                                    && (!BeastMasterSettings.Instance.TL3_FV || (SpellManager.Spells["Fervor"].CooldownTimeLeft.TotalMilliseconds > 500 && spellCD("Fervor") < 29)) 
+                                    && spellCD("Bestial Wrath") < 5 && !SpellManager.CanCast("Kill Command") && (spellCD("Kill Command") > 2 || (!SpellManager.GlobalCooldown && !Me.IsCasting)), "Cobra Shot")
                                 ),
 
                                 castSpellSleep("Serpent Sting", ret => BeastMasterSettings.Instance.SerpentBox == "Always" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1), "Serpent Sting"),
@@ -1008,7 +1009,7 @@ namespace TheBeastMasterTree
                                 )),
 
                                 new Decorator(ret => ((!Me.IsCasting && !SpellManager.GlobalCooldown && spellCD("Kill Command") > 1) || Me.CurrentFocus < 18 || (!Me.HasAura("The Beast Within") && Me.CurrentFocus < 38)) 
-                                    && (!BeastMasterSettings.Instance.TL3_FV || SpellManager.Spells["Fervor"].CooldownTimeLeft.TotalMilliseconds > 500),
+                                    && (!BeastMasterSettings.Instance.TL3_FV || (SpellManager.Spells["Fervor"].CooldownTimeLeft.TotalMilliseconds > 750 && spellCD("Fervor") < 29)),
                                     new PrioritySelector(
                                         castSpell("Steady Shot", ret => Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < BeastMasterSettings.Instance.FocusShots / 2), "Cobra Shot")
                                     )
