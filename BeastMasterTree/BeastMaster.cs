@@ -23,7 +23,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 7, 3);
+        public static readonly Version Version = new Version(2, 7, 6);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -88,11 +88,20 @@ namespace TheBeastMasterTree
 
         #region CastSpell Method
 
+        public static bool FocusCost(string spellName)
+        {
+            if ((!Me.HasAura("The Beast Within") && Me.CurrentFocus >= SpellManager.Spells[spellName].PowerCost) 
+                || (Me.HasAura("The Beast Within") && Me.CurrentFocus >= SpellManager.Spells[spellName].PowerCost / 2))
+                return true;
+            else return false;
+        }
+
         public static bool canCast(string spellName, WoWUnit target)
         {
-            if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 200 && Me.CurrentFocus >= SpellManager.Spells[spellName].PowerCost && !Me.IsChanneling && (!Me.IsCasting || Me.CurrentCastTimeLeft.TotalMilliseconds < 350))
+            if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 200 
+                && FocusCost(spellName) && !Me.IsChanneling && (!Me.IsCasting || Me.CurrentCastTimeLeft.TotalMilliseconds < 350)
+                && (SpellManager.Spells[spellName].CastTime <= 0 || !Me.IsMoving || (Me.IsMoving && Me.HasAura("Aspect of the Fox") && SpellManager.Spells[spellName].CastTime > 0)))
             {
-                SpellManager.Cast(spellName, target);
                 return true;
             }
             return false;
@@ -105,7 +114,7 @@ namespace TheBeastMasterTree
                 {
                     if (!cond(a))
                         return false;
-                    if (!SpellManager.CanCast(spellName))
+                    if (!canCast(spellName, onUnit(a)))
                         return false;
                     return onUnit(a) != null;
                 },
@@ -126,7 +135,7 @@ namespace TheBeastMasterTree
                 {
                     if (!cond(a))
                         return false;
-                    if (!SpellManager.CanCast(spellName))
+                    if (!canCast(spellName, onUnit(a)))
                         return false;
                     return onUnit(a) != null;
                 },
@@ -149,7 +158,7 @@ namespace TheBeastMasterTree
                 {
                     if (!cond(a))
                         return false;
-                    if (!SpellManager.CanCast(spellName, onUnit(a)))
+                    if (!canCast(spellName, onUnit(a)))
                         return false;
                     return onUnit(a) != null;
                 },
@@ -222,7 +231,6 @@ namespace TheBeastMasterTree
                 item.Use();
             }
         }
-        #endregion 
         
         public static Composite UseItem(uint id)
         {
@@ -248,6 +256,8 @@ namespace TheBeastMasterTree
                 new Action(a => standardLog(" [BagItem] {0} ", label)),
                 new Action(a => item.UseContainerItem())));
         }
+
+        #endregion
 
         #region Add Detection
 
@@ -425,7 +435,7 @@ namespace TheBeastMasterTree
                 {
                     if (!cond(a))
                         return false;
-                    if (SpellManager.CanCast("Revive Pet", onUnit(a)))
+                    if (!SpellManager.CanCast("Revive Pet", onUnit(a)))
                         return false;
                     return onUnit(a) != null;
                 },
@@ -447,7 +457,7 @@ namespace TheBeastMasterTree
                 {
                     if (!cond(a))
                         return false;
-                    if (SpellManager.CanCast(spellName, onUnit(a)))
+                    if (!SpellManager.CanCast(spellName, onUnit(a)))
                         return false;
                     return onUnit(a) != null;
                 },
