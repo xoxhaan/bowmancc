@@ -175,6 +175,7 @@ namespace TheBeastMasterTree
             this.TL4_Blink = new System.Windows.Forms.RadioButton();
             this.label18 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label38 = new System.Windows.Forms.Label();
             this.label37 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
@@ -204,7 +205,7 @@ namespace TheBeastMasterTree
             this.Party = new System.Windows.Forms.RadioButton();
             this.DSLFR = new System.Windows.Forms.RadioButton();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.label38 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -1780,6 +1781,7 @@ namespace TheBeastMasterTree
             // tabPage3
             // 
             this.tabPage3.BackColor = System.Drawing.Color.White;
+            this.tabPage3.Controls.Add(this.label39);
             this.tabPage3.Controls.Add(this.label38);
             this.tabPage3.Controls.Add(this.label37);
             this.tabPage3.Controls.Add(this.label6);
@@ -1799,6 +1801,17 @@ namespace TheBeastMasterTree
             this.tabPage3.Size = new System.Drawing.Size(493, 471);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Misc";
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label38.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label38.Location = new System.Drawing.Point(31, 412);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(380, 15);
+            this.label38.TabIndex = 58;
+            this.label38.Text = "Agility > Expertise (7.5%) = Ranged Hit (7.5%) > Crit > Haste > Mastery";
             // 
             // label37
             // 
@@ -1828,7 +1841,7 @@ namespace TheBeastMasterTree
             this.label36.AutoSize = true;
             this.label36.Font = new System.Drawing.Font("Calibri", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label36.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label36.Location = new System.Drawing.Point(19, 319);
+            this.label36.Location = new System.Drawing.Point(19, 289);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(114, 23);
             this.label36.TabIndex = 55;
@@ -1882,7 +1895,7 @@ namespace TheBeastMasterTree
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label21.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label21.Location = new System.Drawing.Point(30, 347);
+            this.label21.Location = new System.Drawing.Point(30, 314);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(358, 45);
             this.label21.TabIndex = 50;
@@ -2136,16 +2149,17 @@ namespace TheBeastMasterTree
             this.toolTip1.InitialDelay = 50;
             this.toolTip1.ReshowDelay = 0;
             // 
-            // label38
+            // label39
             // 
-            this.label38.AutoSize = true;
-            this.label38.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label38.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label38.Location = new System.Drawing.Point(31, 408);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(380, 15);
-            this.label38.TabIndex = 58;
-            this.label38.Text = "Agility > Expertise (7.5%) = Ranged Hit (7.5%) > Crit > Haste > Mastery";
+            this.label39.AutoSize = true;
+            this.label39.Font = new System.Drawing.Font("Calibri", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label39.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.label39.Location = new System.Drawing.Point(31, 372);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(364, 30);
+            this.label39.TabIndex = 59;
+            this.label39.Text = "Do not use \"Raidbot like (disable all frills)\" setting in LazyRaider, \r\nit will c" +
+    "ause the routine to lag.";
             // 
             // BeastGUI
             // 
@@ -2360,6 +2374,7 @@ namespace TheBeastMasterTree
         private System.Windows.Forms.CheckBox VirmensBypass;
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label label39;
     }
 }
 
