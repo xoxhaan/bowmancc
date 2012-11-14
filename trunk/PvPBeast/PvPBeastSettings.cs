@@ -184,9 +184,6 @@ namespace PvPBeast
         [Setting, DefaultValue(93)]
         public int SpiritHealth_Me { get; set; }
 
-        [Setting, DefaultValue(30)]
-        public int SpiritHealth_Pet { get; set; }
-
         [Setting, DefaultValue(70)]
         public int SpiritHealth_Focus { get; set; }
 
@@ -219,6 +216,12 @@ namespace PvPBeast
 
         [Setting, DefaultValue(false)]
         public bool FFZT { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool TRQS { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool FTRQS { get; set; }
 
         [Setting, DefaultValue(false)]
         public bool FBS { get; set; }
@@ -255,6 +258,30 @@ namespace PvPBeast
 
         [Setting, DefaultValue("Never")]
         public string SpiritMendBox { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool VBBP { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool LIFES { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool ALCR { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool HEALP { get; set; }
+
+        [Setting, DefaultValue(false)]
+        public bool VSB { get; set; }
+
+        [Setting, DefaultValue(0)]
+        public int HealthStone { get; set; }
+
+        [Setting, DefaultValue(95)]
+        public int VirmenHealth { get; set; }
+
+        [Setting, DefaultValue(0)]
+        public int ItemsHealth { get; set; }
 		
     }
 }

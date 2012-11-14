@@ -194,6 +194,14 @@ namespace PvPBeast
             SpiritHealth_Focus.Value = new decimal(PvPBeastSettings.Instance.SpiritHealth_Focus);
             TargetHealth.Value = new decimal(PvPBeastSettings.Instance.TargetHealth);
             FocusShots.Value = new decimal(PvPBeastSettings.Instance.FocusShots);
+            VirmenHealth.Value = new decimal(PvPBeastSettings.Instance.VirmenHealth);
+            ItemsHealth.Value = new decimal(PvPBeastSettings.Instance.ItemsHealth);
+            HealthStone.Value = new decimal(PvPBeastSettings.Instance.HealthStone);
+            LifeSpirit.Checked = PvPBeastSettings.Instance.LIFES;
+            HealingPot.Checked = PvPBeastSettings.Instance.HEALP;
+            AlchRejuv.Checked = PvPBeastSettings.Instance.ALCR;
+            Virmen.Checked = PvPBeastSettings.Instance.VSB;
+            VirmensBypass.Checked = PvPBeastSettings.Instance.VBBP;
             Trinket1_None.Checked = PvPBeastSettings.Instance.T1NO;
             Trinket2_None.Checked = PvPBeastSettings.Instance.T2NO;
             Trinket1Mob.Checked = PvPBeastSettings.Instance.T1MOB;
@@ -243,6 +251,8 @@ namespace PvPBeast
 			HMark.Checked = PvPBeastSettings.Instance.HM;
             WVenom.Checked = PvPBeastSettings.Instance.WVE;
 			Concussive.Checked = PvPBeastSettings.Instance.CONC;
+            TranqShot.Checked = PvPBeastSettings.Instance.TRQS;
+            FTranqShot.Checked = PvPBeastSettings.Instance.FTRQS;
             FConcussive.Checked = PvPBeastSettings.Instance.FCONC;
             FScatter.Checked = PvPBeastSettings.Instance.FSCA;
             FWyvern.Checked = PvPBeastSettings.Instance.FWVS;
@@ -261,6 +271,12 @@ namespace PvPBeast
             Launcher2.Checked = PvPBeastSettings.Instance.TL2;
             Launcher3.Checked = PvPBeastSettings.Instance.TL3;
             Launcher4.Checked = PvPBeastSettings.Instance.TL4;
+            LifeSpirit.Checked = PvPBeastSettings.Instance.LIFES;
+            HealingPot.Checked = PvPBeastSettings.Instance.HEALP;
+            AlchRejuv.Checked = PvPBeastSettings.Instance.ALCR;
+            Virmen.Checked = PvPBeastSettings.Instance.VSB;
+            VirmensBypass.Checked = PvPBeastSettings.Instance.VBBP;
+
         }
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -1056,14 +1072,99 @@ namespace PvPBeast
             Logging.Write(Colors.Aquamarine, "Configuration Saved");
             Close();
         }
-        private void label14_Click(object sender, EventArgs e)
-        {
 
+        private void TranqShot_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TranqShot.Checked == true)
+            {
+                PvPBeastSettings.Instance.TRQS = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.TRQS = false;
+            }
         }
 
-        private void label22_Click(object sender, EventArgs e)
+        private void FTranqShot_CheckedChanged(object sender, EventArgs e)
         {
+            if (FTranqShot.Checked == true)
+            {
+                PvPBeastSettings.Instance.FTRQS = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.FTRQS = false;
+            }
+        }
 
+        private void LifeSpirit_CheckedChanged(object sender, EventArgs e)
+        {
+            if (LifeSpirit.Checked == true)
+            {
+                PvPBeastSettings.Instance.LIFES = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.LIFES = false;
+            }
+        }
+        private void AlchRejuv_CheckedChanged(object sender, EventArgs e)
+        {
+            if (AlchRejuv.Checked == true)
+            {
+                PvPBeastSettings.Instance.ALCR = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.ALCR = false;
+            }
+        }
+        private void HealingPot_CheckedChanged(object sender, EventArgs e)
+        {
+            if (HealingPot.Checked == true)
+            {
+                PvPBeastSettings.Instance.HEALP = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.HEALP = false;
+            }
+        }
+        private void Virmen_CheckedChanged(object sender, EventArgs e)
+        {
+            if (Virmen.Checked == true)
+            {
+                PvPBeastSettings.Instance.VSB = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.VSB = false;
+            }
+        }
+
+        private void HealthStone_ValueChanged(object sender, EventArgs e)
+        {
+            PvPBeastSettings.Instance.HealthStone = (int)HealthStone.Value;
+        }
+        private void ItemsHealth_ValueChanged(object sender, EventArgs e)
+        {
+            PvPBeastSettings.Instance.ItemsHealth = (int)ItemsHealth.Value;
+        }
+        private void VirmenHealth_ValueChanged(object sender, EventArgs e)
+        {
+            PvPBeastSettings.Instance.VirmenHealth = (int)VirmenHealth.Value;
+        }
+
+        private void VirmensBypass_CheckedChanged(object sender, EventArgs e)
+        {
+            if (VirmensBypass.Checked == true)
+            {
+                PvPBeastSettings.Instance.VBBP = true;
+            }
+            else
+            {
+                PvPBeastSettings.Instance.VBBP = false;
+            }
         }
     }
 }
