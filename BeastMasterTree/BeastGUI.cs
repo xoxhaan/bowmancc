@@ -54,6 +54,27 @@ namespace TheBeastMasterTree
             IntiBox.Items.Add("1 + 2");
         }
 
+        public static string label31Msg
+        {
+            get
+            {
+                return "[Aspect of the Cheetah]\r\n- Lets us run faster without getting dazed, increases mobility.\r\n[Aspect of" +
+                    "the Pack]\r\n- Increases Packs range, useful as a group speed buff between combats.\r\n[Revive Pet]\r\n- Useful for reviving pet when you are being attacked.";
+            }
+        }
+
+        public static string label30Msg
+        {
+            get
+            {
+                return "[Marked for Death]\r\n- Applies Hunters Mark automatically, saving time thus increasing DPS.\r\n[Animal Bond]\r\n- Inc" +
+    "reases healing taken, thus survivability.\r\n[Misdirection]\r\n- Let's us redirect threat to our Pet more often, increases survivability.\r\n[Dise" +
+    "ngage]\r\n- Fun, although mostly useless talent.\r\n[Deterrence]\r\n- Useful for damage reduction, increases survivability.\r\n[Mending]\r\n- Incre" +
+    "ases Pets survivability, good for Soloing.\r\n[Path Finding]\r\n- Increases running speed, thus Mobility.\r\n[Distracting Shot]\r\n- Distracts your" +
+    " target to attack your Pet, increases survivability.";
+            }
+        }
+
         private void IntiBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch ((string)IntiBox.SelectedItem)
@@ -146,10 +167,14 @@ namespace TheBeastMasterTree
             FFS.Value = new decimal(BeastMasterSettings.Instance.FFS);
             MendHealth.Value = new decimal(BeastMasterSettings.Instance.MendHealth);
             DetHealth.Value = new decimal(BeastMasterSettings.Instance.DetHealth);
+            VirmenHealth.Value = new decimal(BeastMasterSettings.Instance.VirmenHealth);
             ItemsHealth.Value = new decimal(BeastMasterSettings.Instance.ItemsHealth);
             HealthStone.Value = new decimal(BeastMasterSettings.Instance.HealthStone);
-            BossHealth.Value = new decimal(BeastMasterSettings.Instance.BossHealth);
-            VirmenHealth.Value = new decimal(BeastMasterSettings.Instance.VirmenHealth);
+            LifeSpirit.Checked = BeastMasterSettings.Instance.LIFES;
+            HealingPot.Checked = BeastMasterSettings.Instance.HEALP;
+            AlchRejuv.Checked = BeastMasterSettings.Instance.ALCR;
+            Virmen.Checked = BeastMasterSettings.Instance.VSB;
+            VirmensBypass.Checked = BeastMasterSettings.Instance.VBBP;
             FocusShots.Value = new decimal(BeastMasterSettings.Instance.FocusShots);
             Party.Checked = BeastMasterSettings.Instance.Party;
             DSHC.Checked = BeastMasterSettings.Instance.DSHC;

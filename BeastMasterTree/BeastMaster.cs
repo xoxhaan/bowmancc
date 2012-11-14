@@ -23,7 +23,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 7, 6);
+        public static readonly Version Version = new Version(2, 7, 8);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -646,7 +646,7 @@ namespace TheBeastMasterTree
 
                                 UseBagItem("Healthstone", ret => Me.HealthPercent < BeastMasterSettings.Instance.HealthStone && Me.IsAlive, "Healthstone"),
 
-                               UseBagItem("Virmen's Bite", ret => BeastMasterSettings.Instance.VSB && IsTargetBoss() && Me.CurrentTarget.HealthPercent <= BeastMasterSettings.Instance.VirmenHealth && !Me.HasAura("Virmen's Bite") && (Me.HasAura("Bloodlust") || Me.HasAura("Heroism")
+                                UseBagItem("Virmen's Bite", ret => BeastMasterSettings.Instance.VSB && IsTargetBoss() && Me.CurrentTarget.HealthPercent <= BeastMasterSettings.Instance.VirmenHealth && !Me.HasAura("Virmen's Bite") && (Me.HasAura("Bloodlust") || Me.HasAura("Heroism")
                                 || Me.HasAura("Ancient Hysteria") || Me.HasAura("Time Warp") || BeastMasterSettings.Instance.VBBP), "Virmen's Bite"),
 
                                 new Decorator(ret => Me.HealthPercent < BeastMasterSettings.Instance.ItemsHealth,
@@ -667,7 +667,7 @@ namespace TheBeastMasterTree
                                 }
                                 )),
 
-                                new Decorator(ret => BeastMasterSettings.Instance.MDPet && Me.GotAlivePet && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && !IsMyAuraActive(Me, "Misdirection")
+                                new Decorator(ret => BeastMasterSettings.Instance.MDPet && Me.GotAlivePet && (Me.CurrentTarget.CurrentTargetGuid == Me.Guid || Me.CurrentTarget.ThreatInfo.RawPercent > 90) && !IsMyAuraActive(Me, "Misdirection")
                                                      && !WoWSpell.FromId(34477).Cooldown && !SpellManager.Spells["Misdirection"].Cooldown,
                                 new Action(delegate
                                     {
@@ -678,7 +678,7 @@ namespace TheBeastMasterTree
                                     )),
 
                                 new Decorator(ret => BeastMasterSettings.Instance.MDF && Me.FocusedUnit != null && Me.FocusedUnit.IsPlayer && Me.FocusedUnit != Me.Pet && !Me.HasAura("Misdirection")
-                                                     && !WoWSpell.FromId(34477).Cooldown && !SpellManager.Spells["Misdirection"].Cooldown,
+                                                     && !WoWSpell.FromId(34477).Cooldown && !SpellManager.Spells["Misdirection"].Cooldown && Me.CurrentTarget.ThreatInfo.RawPercent > 80,
                                 new Action(delegate
                                     {
                                     Lua.DoString("RunMacroText('/cast [@focus,exists] Misdirection');");

@@ -22,27 +22,6 @@ namespace TheBeastMasterTree
             base.Dispose(disposing);
         }
 
-        public static string label31Msg
-        {
-            get
-            {
-                return "[Aspect of the Cheetah]\r\n- Lets us run faster without getting dazed, increases mobility.\r\n[Aspect of" +
-                    "the Pack]\r\n- Increases Packs range, useful as a group speed buff between combats.\r\n[Revive Pet]\r\n- Useful for reviving pet when you are under attack.";
-            }
-        }
-
-        public static string label30Msg
-        {
-            get
-            {
-                return "[Marked for Death]\r\n- Applies Hunters Mark automatically, saving time thus increasing DPS.\r\n[Animal Bond]\r\n- Inc" +
-    "reases healing taken, thus survivability.\r\n[Misdirection]\r\n- Let's us redirect threat to our Pet more often, increases survivability.\r\n[Dise" +
-    "ngage]\r\n- Fun, although mostly useless talent.\r\n[Deterrence]\r\n- Useful for damage reduction, increases survivability.\r\n[Mending]\r\n- Incre" +
-    "ases Pets survivability, good for Soloing.\r\n[Path Finding]\r\n- Increases running speed, thus Mobility.\r\n[Distracting Shot]\r\n- Distracts your" +
-    " target to attack your Pet, increases survivability.";
-            }
-        }
-
         #region Windows Form Designer generated code
 
         /// <summary>
