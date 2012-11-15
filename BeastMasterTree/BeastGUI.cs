@@ -168,6 +168,7 @@ namespace TheBeastMasterTree
             MendHealth.Value = new decimal(BeastMasterSettings.Instance.MendHealth);
             DetHealth.Value = new decimal(BeastMasterSettings.Instance.DetHealth);
             VirmenHealth.Value = new decimal(BeastMasterSettings.Instance.VirmenHealth);
+            BossHealth.Value = new decimal(BeastMasterSettings.Instance.BossHealth);
             ItemsHealth.Value = new decimal(BeastMasterSettings.Instance.ItemsHealth);
             HealthStone.Value = new decimal(BeastMasterSettings.Instance.HealthStone);
             LifeSpirit.Checked = BeastMasterSettings.Instance.LIFES;
