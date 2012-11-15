@@ -23,7 +23,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 7, 8);
+        public static readonly Version Version = new Version(2, 7, 9);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
