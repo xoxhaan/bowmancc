@@ -22,7 +22,7 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 8, 9);
+        public static readonly Version Version = new Version(2, 9, 0);
 
         public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
@@ -796,6 +796,53 @@ namespace PvPBeast
 
                                 castOnUnitLocation("Binding Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FBS && validFocus() && !SpellManager.Spells["Binding Shot"].Cooldown && Me.FocusedUnit.Distance <= 30, "Binding Shot Launched"),
 
+                                UseBagItem("Healthstone", ret => Me.HealthPercent < PvPBeastSettings.Instance.HealthStone && Me.IsAlive, "Healthstone"),
+
+                                UseBagItem("Virmen's Bite", ret => PvPBeastSettings.Instance.VSB && Me.CurrentTarget.IsPlayer && Me.HealthPercent > 40 && Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.VirmenHealth
+                                    && !Me.HasAura("Virmen's Bite") && ((Me.CurrentFocus > 70 && Me.HasAura("The Beast Within")) || PvPBeastSettings.Instance.VBBP), "Virmen's Bite"),
+
+                                new Decorator(ret => Me.HealthPercent < PvPBeastSettings.Instance.ItemsHealth,
+                                    new PrioritySelector(
+                                        UseBagItem("Life Spirit", ret => PvPBeastSettings.Instance.LIFES && Me.IsAlive, "Life Spirit"),
+
+                                        UseBagItem("Alchemist's Rejuvenation", ret => PvPBeastSettings.Instance.ALCR && Me.IsAlive, "Alchemist's Rejuvenation"),
+
+                                        UseBagItem("Master Healing Potion", ret => PvPBeastSettings.Instance.HEALP && Me.IsAlive, "Master Healing Potion")
+                                )),
+
+                                castOnUnitLocation("Binding Shot", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL1_BS && Me.CurrentTarget.Distance < 15 && MeleeClass(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent < 50, "Binding Shot"),
+
+                                new Decorator(ret => Me.CurrentTarget.Distance >= 5 && Me.CurrentTarget.Distance < 40 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.InLineOfSpellSight && !Me.CurrentTarget.IsMoving,
+                                    new PrioritySelector(
+                                        castSelfSpell("Trap Launcher", ret => !Me.HasAura("Trap Launcher"), "Trap Launcher Activated"),
+                                        new Decorator(ret => Me.HasAura("Trap Launcher"),
+                                            new PrioritySelector(
+                                                castOnUnitLocation("Ice Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Ice Trap"].Cooldown, "Ice Trap Launched"),
+                                                castOnUnitLocation("Snake Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL2 && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Snake Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Snake Trap Launched"),
+                                                castOnUnitLocation("Freezing Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL3 && RangedClass(Me.CurrentTarget) && !SpellManager.Spells["Freezing Trap"].Cooldown, "Freezing Trap Launched"),
+                                                castOnUnitLocation("Explosive Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL4 && !SpellManager.Spells["Explosive Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Explosive Trap Launched")
+                                            )
+                                        )
+                                    )
+                                ),
+
+                                new Decorator(ret => Me.CurrentTarget.Distance < 5 && !Invulnerable(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.CurrentTargetGuid == Me.Guid,
+                                    new PrioritySelector(
+                                        castSelfSpell("Trap Launcher", ret => Me.HasAura("Trap Launcher"), "Trap Launcher Deactivated"),
+                                        new Decorator(ret => Me.HasAura("Trap Launcher"),
+                                            new PrioritySelector(
+                                                castSelfSpell("Ice Trap", ret => PvPBeastSettings.Instance.ICET && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Ice Trap"].Cooldown, "Ice Trap Launched"),
+                                                castSelfSpell("Snake Trap", ret => PvPBeastSettings.Instance.SNAT && !SpellManager.Spells["Snake Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Snake Trap Launched"),
+                                                castSelfSpell("Freezing Trap", ret => PvPBeastSettings.Instance.FRET && RangedClass(Me.CurrentTarget) && !SpellManager.Spells["Freezing Trap"].Cooldown, "Freezing Trap Launched"),
+                                                castSelfSpell("Explosive Trap", ret => PvPBeastSettings.Instance.EXPT && !SpellManager.Spells["Explosive Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Explosive Trap Launched")
+                                            )
+                                        )
+                                    )
+                                ),
+
+                                new Decorator(ret => Me.CurrentPendingCursorSpell == null,
+                                    new PrioritySelector(
+
                                 castOnTarget("Wyvern Sting", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FWVS && validFocus() && !Invulnerable(Me.FocusedUnit) && !Me.FocusedUnit.HasAura("Freezing Trap") && Me.FocusedUnit.Distance <= 35, "Wyvern Sting"),
 
                                 castOnTarget("Scatter Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FSCA && validFocus() && !SelfControl(Me.FocusedUnit) && Me.FocusedUnit.Distance <= 20 && !Invulnerable(Me.FocusedUnit), "Scatter Shot"),
@@ -845,20 +892,6 @@ namespace PvPBeast
                                     }
                                 )),
 
-                                UseBagItem("Healthstone", ret => Me.HealthPercent < PvPBeastSettings.Instance.HealthStone && Me.IsAlive, "Healthstone"),
-
-                                UseBagItem("Virmen's Bite", ret => PvPBeastSettings.Instance.VSB && Me.CurrentTarget.IsPlayer && Me.HealthPercent > 40 && Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.VirmenHealth 
-                                    && !Me.HasAura("Virmen's Bite") && ((Me.CurrentFocus > 70 && Me.HasAura("The Beast Within")) || PvPBeastSettings.Instance.VBBP), "Virmen's Bite"),
-
-                                new Decorator(ret => Me.HealthPercent < PvPBeastSettings.Instance.ItemsHealth,
-                                    new PrioritySelector(
-                                        UseBagItem("Life Spirit", ret => PvPBeastSettings.Instance.LIFES && Me.IsAlive, "Life Spirit"),
-
-                                        UseBagItem("Alchemist's Rejuvenation", ret => PvPBeastSettings.Instance.ALCR && Me.IsAlive, "Alchemist's Rejuvenation"),
-
-                                        UseBagItem("Master Healing Potion", ret => PvPBeastSettings.Instance.HEALP && Me.IsAlive, "Master Healing Potion")
-                                )),
-
                                 castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "1. Pet Near" && Me.CurrentTarget.GotAlivePet && Me.CurrentTarget.Pet.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.Pet.Distance <= 5, "Feign Death"),
 
                                 castSelfSpell("Feign Death", ret => PvPBeastSettings.Instance.FDCBox == "2. Target Casting" && Me.CurrentTarget.IsPlayer && Me.CurrentTarget.CurrentTargetGuid == Me.Guid && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType != WoWSpellEffectType.Heal, "Feign Death"),
@@ -883,8 +916,6 @@ namespace PvPBeast
                                 || (Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast)), "Scatter Shot"),
 
                                 castSpell("Silencing Shot", ret => PvPBeastSettings.Instance.TL1_SS && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast && (WoWSpell.FromId(Me.CurrentTarget.CastingSpellId).SpellEffect1.EffectType == WoWSpellEffectType.Heal || Me.HealthPercent < 50), "Silencing Shot"),
-
-                                castOnUnitLocation("Binding Shot", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL1_BS && Me.CurrentTarget.Distance < 15 && MeleeClass(Me.CurrentTarget), "Binding Shot"),
 
                                 castSpell("Concussive Shot", ret => PvPBeastSettings.Instance.CONC && NeedSnare(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && MyDebuffTime("Concussive Shot", Me.CurrentTarget) <= 1 && Me.CurrentTarget.Distance <= 40, "Concussive Shot"),
 
@@ -946,34 +977,7 @@ namespace PvPBeast
                                     return RunStatus.Failure;
                                 }
                                 )),
-                        
-                                new Decorator(ret => Me.CurrentTarget.Distance >= 5 && Me.CurrentTarget.Distance < 40 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.InLineOfSpellSight && !Me.CurrentTarget.IsMoving,
-                                    new PrioritySelector(
-                                        castSelfSpell("Trap Launcher", ret => !Me.HasAura("Trap Launcher"), "Trap Launcher Activated"),
-                                        new Decorator(ret => Me.HasAura("Trap Launcher"),
-                                            new PrioritySelector(
-                                                castOnUnitLocation("Ice Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Ice Trap"].Cooldown, "Ice Trap Launched"),
-                                                castOnUnitLocation("Snake Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL2 && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Snake Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Snake Trap Launched"),
-                                                castOnUnitLocation("Freezing Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL3 && RangedClass(Me.CurrentTarget) && !SpellManager.Spells["Freezing Trap"].Cooldown, "Freezing Trap Launched"),
-                                                castOnUnitLocation("Explosive Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL4 && !SpellManager.Spells["Explosive Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Explosive Trap Launched")
-                                            )
-                                        )
-                                    )
-                                ),
-                                new Decorator(ret => Me.CurrentTarget.Distance < 5 && !Invulnerable(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.CurrentTargetGuid == Me.Guid,
-                                    new PrioritySelector(
-                                        castSelfSpell("Trap Launcher", ret => Me.HasAura("Trap Launcher"), "Trap Launcher Deactivated"),
-                                        new Decorator(ret => Me.HasAura("Trap Launcher"),
-                                            new PrioritySelector(
-                                                castSelfSpell("Ice Trap", ret => PvPBeastSettings.Instance.ICET && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Ice Trap"].Cooldown, "Ice Trap Launched"),
-                                                castSelfSpell("Snake Trap", ret => PvPBeastSettings.Instance.SNAT && !SpellManager.Spells["Snake Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Snake Trap Launched"),
-                                                castSelfSpell("Freezing Trap", ret => PvPBeastSettings.Instance.FRET && RangedClass(Me.CurrentTarget) && !SpellManager.Spells["Freezing Trap"].Cooldown, "Freezing Trap Launched"),
-                                                castSelfSpell("Explosive Trap", ret => PvPBeastSettings.Instance.EXPT && !SpellManager.Spells["Explosive Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Explosive Trap Launched")
-                                            )
-                                        )
-                                    )
-                                ),
-
+                                
                         ////////////////////////////// ASPECT SWITCHING /////////////////////////////////
                         new Decorator(ret => PvPBeastSettings.Instance.AspectSwitching,
                             new PrioritySelector(
@@ -1007,7 +1011,8 @@ namespace PvPBeast
 
                                 castSpell("Blink Strike", ret => PvPBeastSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40, "Blink Strike"),
 
-                                castSpell("Glaive Toss", ret => PvPBeastSettings.Instance.TL5_GLV && (!PvPBeastSettings.Instance.ARN || !validFocus() || !SelfControl(Me.FocusedUnit) || Me.CurrentTarget.Location.Distance(Me.FocusedUnit.Location) > 5), "Glaive Toss"),
+                                castSpell("Glaive Toss", ret => PvPBeastSettings.Instance.TL5_GLV 
+                                && (!PvPBeastSettings.Instance.ARN || !validFocus() || !SelfControl(Me.FocusedUnit) || Me.CurrentTarget.Location.Distance(Me.FocusedUnit.Location) > 5), "Glaive Toss"),
 
                                 castSpell("Powershot", ret => PvPBeastSettings.Instance.TL5_PWR, "Powershot"),
 
@@ -1073,7 +1078,8 @@ namespace PvPBeast
                                     new PrioritySelector(
                                         castSpell("Steady Shot", ret => Me.CurrentFocus < PvPBeastSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < PvPBeastSettings.Instance.FocusShots / 2), "Cobra Shot")
                                     )
-                                )  
+                                )
+                                ))
                             ))
                         ))
                     ))
