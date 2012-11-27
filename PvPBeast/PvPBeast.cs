@@ -99,7 +99,7 @@ namespace PvPBeast
         {
             if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 200
                 && FocusCost(spellName) && !Me.IsChanneling && (!Me.IsCasting || Me.CurrentCastTimeLeft.TotalMilliseconds < 350)
-                && (SpellManager.Spells[spellName].CastTime <= 0 || !Me.IsMoving))
+                && (spellName != "Powershot" || !Me.IsMoving))
             {
                 return true;
             }
@@ -356,8 +356,8 @@ namespace PvPBeast
         public bool HaltFeign()
         {
             {
-                if (!Me.HasAura("Feign Death"))
-                    return true;
+            if (!Me.HasAura("Feign Death"))
+                return true;
             }
             return false;
         }
