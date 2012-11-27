@@ -99,7 +99,7 @@ namespace PvPBeast
         {
             if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 200
                 && FocusCost(spellName) && !Me.IsChanneling && (!Me.IsCasting || Me.CurrentCastTimeLeft.TotalMilliseconds < 350)
-                && (SpellManager.Spells[spellName].CastTime <= 0 || !Me.IsMoving || (Me.IsMoving && Me.HasAura("Aspect of the Fox") && SpellManager.Spells[spellName].CastTime > 0)))
+                && (SpellManager.Spells[spellName].CastTime <= 0 || !Me.IsMoving))
             {
                 return true;
             }
@@ -673,7 +673,7 @@ namespace PvPBeast
                                         return RunStatus.Failure;
                                     }
                                     )),
-                        new Decorator(ret => validTarget(Me.CurrentTarget) && Me.GotAlivePet && Me.Pet.CurrentTargetGuid != Me.CurrentTargetGuid && !Invulnerable(Me.CurrentTarget) && !SelfControl(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget),
+                        new Decorator(ret => validTarget(Me.CurrentTarget) && Me.GotAlivePet && Me.Pet.CurrentTargetGuid != Me.CurrentTargetGuid && !Invulnerable(Me.CurrentTarget) && !SelfControl(Me.CurrentTarget),
                                 new Action(delegate
                                     {
                                          Lua.DoString("PetAttack()");
@@ -727,7 +727,7 @@ namespace PvPBeast
                                                 return RunStatus.Failure;
                                             }
                                         )),
-                                        new Decorator(ret => PvPBeastSettings.Instance.T1DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget),
+                                        new Decorator(ret => PvPBeastSettings.Instance.T1DMG && !Invulnerable(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget),
                                         new Action(delegate
                                             {
                                                 Lua.DoString("RunMacroText('/use 13');");
@@ -737,7 +737,7 @@ namespace PvPBeast
                                                 return RunStatus.Failure;
                                             }
                                         )),
-                                        new Decorator(ret => PvPBeastSettings.Instance.T1DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
+                                        new Decorator(ret => PvPBeastSettings.Instance.T1DEF && !Invulnerable(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
                                         new Action(delegate
                                             {
                                                 Lua.DoString("RunMacroText('/use 13');");
@@ -760,7 +760,7 @@ namespace PvPBeast
                                                 return RunStatus.Failure;
                                             }
                                         )),
-                                        new Decorator(ret => PvPBeastSettings.Instance.T2DMG && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget),
+                                        new Decorator(ret => PvPBeastSettings.Instance.T2DMG && !Invulnerable(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget),
                                         new Action(delegate
                                             {
                                                 Lua.DoString("RunMacroText('/use 14');");
@@ -770,7 +770,7 @@ namespace PvPBeast
                                                 return RunStatus.Failure;
                                             }
                                         )),
-                                        new Decorator(ret => PvPBeastSettings.Instance.T2DEF && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
+                                        new Decorator(ret => PvPBeastSettings.Instance.T2DEF && !Invulnerable(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.HealthPercent < 50 && (Me.CurrentTarget.Distance < 20 || Me.CurrentTarget.IsCasting),
                                         new Action(delegate
                                             {
                                                 Lua.DoString("RunMacroText('/use 14');");
@@ -818,9 +818,9 @@ namespace PvPBeast
                                         new Decorator(ret => Me.HasAura("Trap Launcher"),
                                             new PrioritySelector(
                                                 castOnUnitLocation("Ice Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Ice Trap"].Cooldown, "Ice Trap Launched"),
-                                                castOnUnitLocation("Snake Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL2 && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Snake Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Snake Trap Launched"),
+                                                castOnUnitLocation("Snake Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL2 && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Snake Trap"].Cooldown, "Snake Trap Launched"),
                                                 castOnUnitLocation("Freezing Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL3 && RangedClass(Me.CurrentTarget) && !SpellManager.Spells["Freezing Trap"].Cooldown, "Freezing Trap Launched"),
-                                                castOnUnitLocation("Explosive Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL4 && !SpellManager.Spells["Explosive Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Explosive Trap Launched")
+                                                castOnUnitLocation("Explosive Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL4 && !SpellManager.Spells["Explosive Trap"].Cooldown, "Explosive Trap Launched")
                                             )
                                         )
                                     )
@@ -832,9 +832,9 @@ namespace PvPBeast
                                         new Decorator(ret => Me.HasAura("Trap Launcher"),
                                             new PrioritySelector(
                                                 castSelfSpell("Ice Trap", ret => PvPBeastSettings.Instance.ICET && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Ice Trap"].Cooldown, "Ice Trap Launched"),
-                                                castSelfSpell("Snake Trap", ret => PvPBeastSettings.Instance.SNAT && !SpellManager.Spells["Snake Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Snake Trap Launched"),
+                                                castSelfSpell("Snake Trap", ret => PvPBeastSettings.Instance.SNAT && !SpellManager.Spells["Snake Trap"].Cooldown, "Snake Trap Launched"),
                                                 castSelfSpell("Freezing Trap", ret => PvPBeastSettings.Instance.FRET && RangedClass(Me.CurrentTarget) && !SpellManager.Spells["Freezing Trap"].Cooldown, "Freezing Trap Launched"),
-                                                castSelfSpell("Explosive Trap", ret => PvPBeastSettings.Instance.EXPT && !SpellManager.Spells["Explosive Trap"].Cooldown && !DumbBear(Me.CurrentTarget), "Explosive Trap Launched")
+                                                castSelfSpell("Explosive Trap", ret => PvPBeastSettings.Instance.EXPT && !SpellManager.Spells["Explosive Trap"].Cooldown, "Explosive Trap Launched")
                                             )
                                         )
                                     )
@@ -851,9 +851,9 @@ namespace PvPBeast
                                 
                                 castOnTarget("Concussive Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FCONC && validFocus() && !SelfControl(Me.FocusedUnit) && NeedSnare(Me.FocusedUnit) && !Invulnerable(Me.FocusedUnit) && MyDebuffTime("Concussive Shot", Me.FocusedUnit) <= 1 && Me.FocusedUnit.Distance <= 40, "Concussive Shot"),
 
-                                castOnTarget("Tranquilizing Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FTRQS && validFocus() && CanBeTranqed(Me.CurrentTarget, 2) && (Me.CurrentFocus > 60 || Me.HasAura("The Beast Within")) && !SelfControl(Me.FocusedUnit) && !Invulnerable(Me.FocusedUnit) && !DumbBear(Me.FocusedUnit) && Me.FocusedUnit.Distance <= 40, "Tranquilizing Shot"),
+                                castOnTarget("Tranquilizing Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FTRQS && validFocus() && CanBeTranqed(Me.CurrentTarget, 2) && (Me.CurrentFocus > 60 || Me.HasAura("The Beast Within")) && !SelfControl(Me.FocusedUnit) && !Invulnerable(Me.FocusedUnit) && Me.FocusedUnit.Distance <= 40, "Tranquilizing Shot"),
 
-                                castSpell("Tranquilizing Shot", ret => PvPBeastSettings.Instance.TRQS && CanBeTranqed(Me.CurrentTarget, 2) && (Me.CurrentFocus > 60 || Me.HasAura("The Beast Within")) && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && Me.CurrentTarget.Distance <= 40, "Tranquilizing Shot"),
+                                castSpell("Tranquilizing Shot", ret => PvPBeastSettings.Instance.TRQS && CanBeTranqed(Me.CurrentTarget, 2) && (Me.CurrentFocus > 60 || Me.HasAura("The Beast Within")) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.Distance <= 40, "Tranquilizing Shot"),
 
                                 castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1. Interrupt" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast, "Intimidation"),
 
@@ -921,13 +921,13 @@ namespace PvPBeast
 
                                 castSpell("Fervor", ret => PvPBeastSettings.Instance.TL3_FV && (Me.CurrentFocus < 60 || (Me.HasAura("The Beast within") && Me.CurrentFocus < 40)), "Fervor"),
 
-                                castSpell("Rapid Fire", ret => PvPBeastSettings.Instance.RF && !Me.HasAura("Rapid Fire") && Me.CurrentTarget.CurrentHealth > 25000 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget), "Rapid Fire"),
+                                castSpell("Rapid Fire", ret => PvPBeastSettings.Instance.RF && !Me.HasAura("Rapid Fire") && Me.CurrentTarget.CurrentHealth > 25000 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget), "Rapid Fire"),
 
-                                castSpell("Stampede", ret => PvPBeastSettings.Instance.STAM && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && Me.CurrentTarget.Distance <= 30, "Stampede"),
+                                castSpell("Stampede", ret => PvPBeastSettings.Instance.STAM && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.Distance <= 30, "Stampede"),
 
                                 castSelfSpell("Bestial Wrath", ret => Me.GotAlivePet && PvPBeastSettings.Instance.BWR && (!PvPBeastSettings.Instance.TL4_LR || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 5
                                 || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalMilliseconds < 1500) && (!PvPBeastSettings.Instance.TL4_AMOC || SpellManager.Spells["A Murder of Crows"].CooldownTimeLeft.TotalSeconds > 5
-                                || SpellManager.Spells["A Murder Of Crows"].CooldownTimeLeft.TotalMilliseconds < 1500) && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.HasAura("The Beast Within") && HostilePlayer(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget), "Bestial Wrath"),
+                                || SpellManager.Spells["A Murder Of Crows"].CooldownTimeLeft.TotalMilliseconds < 1500) && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && !Me.HasAura("The Beast Within") && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget), "Bestial Wrath"),
 
                                 castSelfSpell("Readiness", ret => PvPBeastSettings.Instance.RDN
                                 && SpellManager.Spells["Rapid Fire"].CooldownTimeLeft.TotalSeconds > 10
@@ -950,7 +950,7 @@ namespace PvPBeast
 
                                 castSelfSpell("Lifeblood", ret => PvPBeastSettings.Instance.LB && SpellManager.HasSpell("Lifeblood") && !SpellManager.Spells["Lifeblood"].Cooldown && Me.HealthPercent < 99, "Lifeblood"),
 
-                                new Decorator(ret => PvPBeastSettings.Instance.GE && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.Inventory.Equipped.Hands != null && Me.Inventory.Equipped.Hands.Cooldown <= 0 && Me.Inventory.Equipped.Hands.Usable,
+                                new Decorator(ret => PvPBeastSettings.Instance.GE && !Invulnerable(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.Inventory.Equipped.Hands != null && Me.Inventory.Equipped.Hands.Cooldown <= 0 && Me.Inventory.Equipped.Hands.Usable,
                                 new Action(delegate
                                  {
                                      Lua.DoString("RunMacroText('/use 10');");
@@ -962,7 +962,7 @@ namespace PvPBeast
                                 )),
                              
                                 /////////////////////////////////////////Racial Skills///////////////////////////////////////////
-                                new Decorator(ret => PvPBeastSettings.Instance.RS && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && Me.Race == WoWRace.Troll && HostilePlayer(Me.CurrentTarget) && (Me.CurrentTarget.HealthPercent > 15 || PvPBeastSettings.Instance.ARN) && !SpellManager.Spells["Berserking"].Cooldown,
+                                new Decorator(ret => PvPBeastSettings.Instance.RS && !Invulnerable(Me.CurrentTarget) && Me.Race == WoWRace.Troll && HostilePlayer(Me.CurrentTarget) && (Me.CurrentTarget.HealthPercent > 15 || PvPBeastSettings.Instance.ARN) && !SpellManager.Spells["Berserking"].Cooldown,
                                 new Action(delegate
                                 {
                                     Lua.DoString("RunMacroText('/Cast Berserking');");
@@ -970,7 +970,7 @@ namespace PvPBeast
                                 }
                                 )),
 
-                                new Decorator(ret => PvPBeastSettings.Instance.RS && !Invulnerable(Me.CurrentTarget) && !DumbBear(Me.CurrentTarget) && Me.Race == WoWRace.Orc && HostilePlayer(Me.CurrentTarget) && (Me.CurrentTarget.HealthPercent > 15 || PvPBeastSettings.Instance.ARN) && !SpellManager.Spells["Blood Fury"].Cooldown,
+                                new Decorator(ret => PvPBeastSettings.Instance.RS && !Invulnerable(Me.CurrentTarget) && Me.Race == WoWRace.Orc && HostilePlayer(Me.CurrentTarget) && (Me.CurrentTarget.HealthPercent > 15 || PvPBeastSettings.Instance.ARN) && !SpellManager.Spells["Blood Fury"].Cooldown,
                                 new Action(delegate
                                 {
                                     Lua.DoString("RunMacroText('/Cast Blood Fury');");
@@ -981,8 +981,7 @@ namespace PvPBeast
                         ////////////////////////////// ASPECT SWITCHING /////////////////////////////////
                         new Decorator(ret => PvPBeastSettings.Instance.AspectSwitching,
                             new PrioritySelector(
-                                castSelfSpell("Aspect of the Hawk", ret => !Me.IsMoving && !Me.HasAura("Aspect of the Iron Hawk") && !Me.HasAura("Aspect of the Hawk"), "Aspect of the Hawk"),
-                                castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && !Me.HasAura("Aspect of the Fox") && Me.CurrentFocus < 50, "Aspect of the Fox")   
+                                castSelfSpell("Aspect of the Hawk", ret => !Me.IsMoving && !Me.HasAura("Aspect of the Iron Hawk") && !Me.HasAura("Aspect of the Hawk"), "Aspect of the Hawk")
                             )
                         ),
 

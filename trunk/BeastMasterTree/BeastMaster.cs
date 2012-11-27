@@ -23,7 +23,7 @@ namespace TheBeastMasterTree
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 7, 9);
+        public static readonly Version Version = new Version(2, 8, 0);
 
         public override string Name { get { return "The Beast Master PvE " + Version; } }
 
@@ -100,7 +100,7 @@ namespace TheBeastMasterTree
         {
             if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 200 
                 && FocusCost(spellName) && !Me.IsChanneling && (!Me.IsCasting || Me.CurrentCastTimeLeft.TotalMilliseconds < 350)
-                && (SpellManager.Spells[spellName].CastTime <= 0 || !Me.IsMoving || (Me.IsMoving && Me.HasAura("Aspect of the Fox") && SpellManager.Spells[spellName].CastTime > 0)))
+                && (SpellManager.Spells[spellName].CastTime <= 0 || !Me.IsMoving))
             {
                 return true;
             }
@@ -843,8 +843,7 @@ namespace TheBeastMasterTree
                         ////////////////////////////// ASPECT SWITCHING /////////////////////////////////
                         new Decorator(ret => BeastMasterSettings.Instance.AspectSwitching && HaltFeign() && Me.CurrentTarget != null && Me.CurrentTarget.IsAlive && !Me.Mounted,
                             new PrioritySelector(
-                                castSelfSpell("Aspect of the Hawk", ret => !Me.IsMoving && !Me.HasAura("Aspect of the Iron Hawk") && !Me.HasAura("Aspect of the Hawk"), "Aspect of the Hawk"),
-                                castSelfSpell("Aspect of the Fox", ret => Me.IsMoving && !Me.HasAura("Aspect of the Fox") && Me.CurrentFocus < 50, "Aspect of the Fox")   
+                                castSelfSpell("Aspect of the Hawk", ret => !Me.IsMoving && !Me.HasAura("Aspect of the Iron Hawk") && !Me.HasAura("Aspect of the Hawk"), "Aspect of the Hawk")
                             )
                         ),
                         //////////////////////////////// SINGLE TARGET ROTATION ////////////////////////////////////
@@ -867,7 +866,7 @@ namespace TheBeastMasterTree
 
                                 castSpell("Lynx Rush", ret => BeastMasterSettings.Instance.TL4_LR && Me.GotAlivePet && (!BeastMasterSettings.Instance.BWR || spellCD("Bestial Wrath") >= 10 || Me.HasAura("The Beast Within"))
                                 && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 25 && ((Me.CurrentTarget.MaxHealth > 400000 
-                                && (Me.CurrentTarget.CurrentHealth > 200000 || CalculateTimeToDeath(Me.CurrentTarget) > 5)) || Me.CurrentTarget.Name.Contains("Training Dummy")), "Lynx Rush"),
+                                && (Me.CurrentTarget.CurrentHealth > 200000 || CalculateTimeToDeath(Me.CurrentTarget) > 15)) || Me.CurrentTarget.Name.Contains("Training Dummy")), "Lynx Rush"),
 
                                 castSpell("Glaive Toss", ret => BeastMasterSettings.Instance.TL5_GLV, "Glaive Toss"),
 
@@ -1047,7 +1046,7 @@ namespace TheBeastMasterTree
                                  castSpell("Blink Strike", ret => BeastMasterSettings.Instance.TL4_BSTRK && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 40 && Me.CurrentFocus < 40, "Blink Strike"),
                                 
                                 castSpell("Lynx Rush", ret => BeastMasterSettings.Instance.AOELR && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25 && Me.CurrentFocus < 40 && !Me.HasAura("The Beast Within")
-                                && ((Me.CurrentTarget.MaxHealth > 30000 && (Me.CurrentTarget.CurrentHealth > 90000 || CalculateTimeToDeath(Me.CurrentTarget) > 4)) || Me.CurrentTarget.Name.Contains("Training Dummy")), "Lynx Rush, AoE"),
+                                && ((Me.CurrentTarget.MaxHealth > 30000 && (Me.CurrentTarget.CurrentHealth > 90000 || CalculateTimeToDeath(Me.CurrentTarget) > 15)) || Me.CurrentTarget.Name.Contains("Training Dummy")), "Lynx Rush, AoE"),
 
                                 new Decorator(ret => BeastMasterSettings.Instance.FSB && !WoWSpell.FromId(92380).Cooldown && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 10 && !Me.Pet.HasAura("Froststorm Breath"),
                                 new Action(delegate
