@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
+using System.Threading;
+using System.Threading.Tasks;
 using Styx;
 using Styx.Common;
 using Styx.CommonBot;
@@ -22,7 +24,7 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 9, 0);
+        public static readonly Version Version = new Version(2, 9, 2);
 
         public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
@@ -125,6 +127,28 @@ namespace PvPBeast
         public static Composite castSpell(string spellName, CanRunDecoratorDelegate cond, string label)
         {
             return castSpell(spellName, ret => Me.CurrentTarget, cond, label);
+        }
+
+        public static Composite castSpellSleep(string spellName, UnitSelection onUnit, CanRunDecoratorDelegate cond, string label)
+        {
+            return (
+                new Decorator(delegate(object a)
+                {
+                    if (!cond(a))
+                        return false;
+                    if (!canCast(spellName, onUnit(a)))
+                        return false;
+                    return onUnit(a) != null;
+                },
+                    new Sequence(
+                        new Action(a => standardLog("[Casting] {0} on {1}", label, safeName(onUnit(a)))),
+                        new Action(a => SpellManager.Cast(spellName, onUnit(a))),
+                        new Action(a => Thread.Sleep(1000)))));
+        }
+
+        public static Composite castSpellSleep(string spellName, CanRunDecoratorDelegate cond, string label)
+        {
+            return castSpellSleep(spellName, ret => Me.CurrentTarget, cond, label);
         }
 
         public static Composite castOnTarget(string spellName, UnitSelection onUnit, CanRunDecoratorDelegate cond, string label)
@@ -814,7 +838,7 @@ namespace PvPBeast
 
                                 new Decorator(ret => Me.CurrentTarget.Distance >= 5 && Me.CurrentTarget.Distance < 40 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.InLineOfSpellSight && !Me.CurrentTarget.IsMoving,
                                     new PrioritySelector(
-                                        castSelfSpell("Trap Launcher", ret => !Me.HasAura("Trap Launcher"), "Trap Launcher Activated"),
+                                        castSelfSpell("Trap Launcher", ret => !Me.HasAura("Trap Launcher") && (PvPBeastSettings.Instance.TL || PvPBeastSettings.Instance.TL2 || PvPBeastSettings.Instance.TL3 || PvPBeastSettings.Instance.TL4), "Trap Launcher Activated"),
                                         new Decorator(ret => Me.HasAura("Trap Launcher"),
                                             new PrioritySelector(
                                                 castOnUnitLocation("Ice Trap", ret => Me.CurrentTarget, ret => PvPBeastSettings.Instance.TL && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Ice Trap"].Cooldown, "Ice Trap Launched"),
@@ -828,7 +852,7 @@ namespace PvPBeast
 
                                 new Decorator(ret => Me.CurrentTarget.Distance < 5 && !Invulnerable(Me.CurrentTarget) && HostilePlayer(Me.CurrentTarget) && Me.CurrentTarget.CurrentTargetGuid == Me.Guid,
                                     new PrioritySelector(
-                                        castSelfSpell("Trap Launcher", ret => Me.HasAura("Trap Launcher"), "Trap Launcher Deactivated"),
+                                        castSelfSpell("Trap Launcher", ret => Me.HasAura("Trap Launcher") && (PvPBeastSettings.Instance.ICET || PvPBeastSettings.Instance.SNAT || PvPBeastSettings.Instance.FRET || PvPBeastSettings.Instance.EXPT), "Trap Launcher Deactivated"),
                                         new Decorator(ret => Me.HasAura("Trap Launcher"),
                                             new PrioritySelector(
                                                 castSelfSpell("Ice Trap", ret => PvPBeastSettings.Instance.ICET && MeleeClass(Me.CurrentTarget) && !SpellManager.Spells["Ice Trap"].Cooldown, "Ice Trap Launched"),
@@ -992,13 +1016,13 @@ namespace PvPBeast
 
                                 castSpell("Kill Shot", ret => PvPBeastSettings.Instance.KSH && Me.CurrentTarget.HealthPercent <= 20, "Kill Shot"),
 
-                                castSpell("Lynx Rush", ret => PvPBeastSettings.Instance.TL4_LR && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 10, "Lynx Rush"),
+                                castSpell("Lynx Rush", ret => PvPBeastSettings.Instance.TL4_LR && Me.GotAlivePet && !Me.CurrentTarget.HasAura("Lynx Rush") && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 10, "Lynx Rush"),
 
                                 castSpell("Kill Command", ret => PvPBeastSettings.Instance.KCO && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) <= 25, "Kill Command"),
 
-                                castSpell("Serpent Sting", ret => PvPBeastSettings.Instance.SerpentBox == "Always" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1), "Serpent Sting"),
+                                castSpellSleep("Serpent Sting", ret => PvPBeastSettings.Instance.SerpentBox == "Always" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1), "Serpent Sting"),
 
-                                castSpell("Serpent Sting", ret => PvPBeastSettings.Instance.SerpentBox == "Sometimes" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1) && Me.CurrentTarget.HealthPercent > 50, "Serpent Sting"),
+                                castSpellSleep("Serpent Sting", ret => PvPBeastSettings.Instance.SerpentBox == "Sometimes" && (!IsMyAuraActive(Me.CurrentTarget, "Serpent Sting") || MyDebuffTime("Serpent Sting", Me.CurrentTarget) < 1) && Me.CurrentTarget.HealthPercent > 50, "Serpent Sting"),
 
                                 castSpell("Dire Beast", ret => PvPBeastSettings.Instance.TL3_DB, "Dire Beast"),
 
