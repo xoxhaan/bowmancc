@@ -24,7 +24,7 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 9, 2);
+        public static readonly Version Version = new Version(2, 9, 3);
 
         public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
@@ -864,7 +864,7 @@ namespace PvPBeast
                                     )
                                 ),
 
-                                new Decorator(ret => Me.CurrentPendingCursorSpell == null,
+                                new Decorator(ret => Me.CurrentPendingCursorSpell == null && (Me.CurrentTarget == null || !Me.CurrentTarget.HasAura("Scatter Shot")) && ((validFocus() && !Me.FocusedUnit.HasAura("Scatter Shot")) || !validFocus() || Me.FocusedUnit.HasAura("Freezing Trap")),
                                     new PrioritySelector(
 
                                 castOnTarget("Wyvern Sting", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FWVS && validFocus() && !Invulnerable(Me.FocusedUnit) && !Me.FocusedUnit.HasAura("Freezing Trap") && Me.FocusedUnit.Distance <= 35, "Wyvern Sting"),
