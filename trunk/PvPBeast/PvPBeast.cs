@@ -24,7 +24,7 @@ namespace PvPBeast
     {
         public override WoWClass Class { get { return WoWClass.Hunter; } }
 
-        public static readonly Version Version = new Version(2, 9, 3);
+        public static readonly Version Version = new Version(2, 9, 6);
 
         public override string Name { get { return "PvPBeast " + Version + " TreeSharp Edition"; } }
 
@@ -100,7 +100,7 @@ namespace PvPBeast
         public static bool canCast(string spellName, WoWUnit target)
         {
             if (SpellManager.HasSpell(spellName) && SpellManager.Spells[spellName].CooldownTimeLeft.TotalMilliseconds < 200
-                && FocusCost(spellName) && !Me.IsChanneling && (!Me.IsCasting || Me.CurrentCastTimeLeft.TotalMilliseconds < 350)
+                && Me.CurrentFocus >= SpellManager.Spells[spellName].PowerCost && !Me.IsChanneling && (!Me.IsCasting || Me.CurrentCastTimeLeft.TotalMilliseconds < 350)
                 && (spellName != "Powershot" || !Me.IsMoving))
             {
                 return true;
@@ -143,7 +143,7 @@ namespace PvPBeast
                     new Sequence(
                         new Action(a => standardLog("[Casting] {0} on {1}", label, safeName(onUnit(a)))),
                         new Action(a => SpellManager.Cast(spellName, onUnit(a))),
-                        new Action(a => Thread.Sleep(1000)))));
+                        new Action(a => Thread.Sleep(1500)))));
         }
 
         public static Composite castSpellSleep(string spellName, CanRunDecoratorDelegate cond, string label)
@@ -410,12 +410,20 @@ namespace PvPBeast
         public bool CanBeTranqed(WoWUnit unit, int time)
         {
             if (DebuffTime("Power Word: Shield", unit) > time || DebuffTime("Icy Veins", unit) > time || DebuffTime("Ice Barrier", unit) > time
-            || DebuffTime("Berserker Rage", unit) > time || DebuffTime("Hand of Sacrifice", unit) > time || DebuffTime("Hand of Freedom", unit) > time
-            || DebuffTime("Master's Call", unit) > time || DebuffTime("Hand of Protection", unit) > time)
+            || DebuffTime("Enrage", unit) > time || DebuffTime("Berserker Rage", unit) > time || DebuffTime("Hand of Sacrifice", unit) > time || DebuffTime("Hand of Freedom", unit) > time
+            || DebuffTime("Master's Call", unit) > time || DebuffTime("Hand of Protection", unit) > time || DebuffTime("Power Infusion", unit) > time
+            || DebuffTime("Predatory Swiftness", unit) > time || DebuffTime("Innervate", unit) > 6 || DebuffTime("Unholy Frenzy", unit) > 10)
                 return true;
             else
                 return false;
         }
+
+//Warrior
+ // Bloodbath
+
+//Death Knight
+//Unholy Frenzy
+
 
         #endregion
 
@@ -708,12 +716,11 @@ namespace PvPBeast
 
                                 castSelfSpell("Mend Pet", ret => PvPBeastSettings.Instance.MP && Me.GotAlivePet && !Me.Pet.HasAura("Mend Pet") && Me.Pet.HealthPercent < PvPBeastSettings.Instance.MendHealth, "Mend Pet"),
                                 /*  (isStunned(Me.Pet).TotalSeconds > 0 || isForsaken(Me.Pet).TotalSeconds > 0 || isRooted(Me.Pet).TotalMilliseconds > 0 || isSlowed(Me.Pet) || isControlled(Me.Pet).TotalSeconds > 0 ||  <- Mend Pet code for use with Glyph */
-                                castSelfSpell("Exhilaration", ret => PvPBeastSettings.Instance.TL2_EXH && (Me.HealthPercent < 67 || (Me.GotAlivePet && Me.Pet.HealthPercent < 15)
-                                || (Me.GotAlivePet && Me.Pet.HealthPercent < 15 && !SpellManager.HasSpell("Heart of the Phoenix"))), "Exhilaration"),
+                                castSelfSpell("Exhilaration", ret => PvPBeastSettings.Instance.TL2_EXH && (Me.HealthPercent < 67 || (Me.GotAlivePet && Me.Pet.HealthPercent < 15)), "Exhilaration"),
 
                                 castSelfSpell("Gift of the Naaru", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Draenei && Me.HealthPercent < 30 && !SpellManager.Spells["Gift of the Naaru"].Cooldown, "Gift of the Naaru"),
 
-                                castSelfSpell("Master's Call", ret => isSlowed(Me) || isRooted(Me).TotalMilliseconds > 0, "Master's Call"),
+                                castSelfSpell("Master's Call", ret => isSlowed(Me) || isRooted(Me).TotalMilliseconds > 0 && !SpellManager.Spells["Master's Call"].Cooldown, "Master's Call"),
 
                                 new Decorator(ret => PvPBeastSettings.Instance.SpiritMendBox != "Never" && Me.GotAlivePet && !WoWSpell.FromId(90361).Cooldown,
                                 new Action(delegate
@@ -864,34 +871,39 @@ namespace PvPBeast
                                     )
                                 ),
 
-                                new Decorator(ret => Me.CurrentPendingCursorSpell == null && (Me.CurrentTarget == null || !Me.CurrentTarget.HasAura("Scatter Shot")) && ((validFocus() && !Me.FocusedUnit.HasAura("Scatter Shot")) || !validFocus() || Me.FocusedUnit.HasAura("Freezing Trap")),
+                                new Decorator(ret => Me.CurrentPendingCursorSpell == null && (Me.CurrentTarget == null || !Me.CurrentTarget.HasAura("Scatter Shot")) && ((validFocus() && !Me.FocusedUnit.HasAura("Scatter Shot")) || !validFocus() || Me.FocusedUnit.HasAura("Freezing Trap") || SpellManager.Spells["Freezing Trap"].CooldownTimeLeft.TotalSeconds > 1),
                                     new PrioritySelector(
+                                        new Decorator(ret => validFocus(),
+                                        new PrioritySelector(
+                                        castOnTarget("Wyvern Sting", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FWVS  && !Invulnerable(Me.FocusedUnit) && !Me.FocusedUnit.HasAura("Freezing Trap") && Me.FocusedUnit.Distance <= 35, "Wyvern Sting"),
 
-                                castOnTarget("Wyvern Sting", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FWVS && validFocus() && !Invulnerable(Me.FocusedUnit) && !Me.FocusedUnit.HasAura("Freezing Trap") && Me.FocusedUnit.Distance <= 35, "Wyvern Sting"),
+                                        castOnTarget("Scatter Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FSCA && !SelfControl(Me.FocusedUnit) && Me.FocusedUnit.Distance <= 20 && !Invulnerable(Me.FocusedUnit), "Scatter Shot"),
 
-                                castOnTarget("Scatter Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FSCA && validFocus() && !SelfControl(Me.FocusedUnit) && Me.FocusedUnit.Distance <= 20 && !Invulnerable(Me.FocusedUnit), "Scatter Shot"),
-
-                                castOnTarget("Silencing Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FSS && validFocus() && Me.FocusedUnit.IsCasting && Me.FocusedUnit.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.FocusedUnit.CastingSpellId).SpellEffect1.EffectType == WoWSpellEffectType.Heal, "Silencing Shot"),
+                                        castOnTarget("Silencing Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FSS && Me.FocusedUnit.IsCasting && Me.FocusedUnit.CanInterruptCurrentSpellCast && WoWSpell.FromId(Me.FocusedUnit.CastingSpellId).SpellEffect1.EffectType == WoWSpellEffectType.Heal, "Silencing Shot"),
                                 
-                                castOnTarget("Concussive Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FCONC && validFocus() && !SelfControl(Me.FocusedUnit) && NeedSnare(Me.FocusedUnit) && !Invulnerable(Me.FocusedUnit) && MyDebuffTime("Concussive Shot", Me.FocusedUnit) <= 1 && Me.FocusedUnit.Distance <= 40, "Concussive Shot"),
+                                        castOnTarget("Concussive Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FCONC && !SelfControl(Me.FocusedUnit) && NeedSnare(Me.FocusedUnit) && !Invulnerable(Me.FocusedUnit) && MyDebuffTime("Concussive Shot", Me.FocusedUnit) <= 1 && Me.FocusedUnit.Distance <= 40, "Concussive Shot"),
 
-                                castOnTarget("Tranquilizing Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FTRQS && validFocus() && CanBeTranqed(Me.CurrentTarget, 2) && (Me.CurrentFocus > 60 || Me.HasAura("The Beast Within")) && !SelfControl(Me.FocusedUnit) && !Invulnerable(Me.FocusedUnit) && Me.FocusedUnit.Distance <= 40, "Tranquilizing Shot"),
+                                        castOnTarget("Tranquilizing Shot", ret => Me.FocusedUnit, ret => PvPBeastSettings.Instance.FTRQS && CanBeTranqed(Me.CurrentTarget, 2) && (Me.CurrentFocus > 60 || Me.HasAura("The Beast Within") || Me.HasAura("Thrill of the Hunt")) && !SelfControl(Me.FocusedUnit) && !Invulnerable(Me.FocusedUnit) && Me.FocusedUnit.Distance <= 40, "Tranquilizing Shot")
+                                        )),
 
-                                castSpell("Tranquilizing Shot", ret => PvPBeastSettings.Instance.TRQS && CanBeTranqed(Me.CurrentTarget, 2) && (Me.CurrentFocus > 60 || Me.HasAura("The Beast Within")) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.Distance <= 40, "Tranquilizing Shot"),
+                                castSpell("Tranquilizing Shot", ret => PvPBeastSettings.Instance.TRQS && CanBeTranqed(Me.CurrentTarget, 2) && (Me.CurrentFocus > 60 || Me.HasAura("The Beast Within") || Me.HasAura("Thrill of the Hunt")) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.Distance <= 40, "Tranquilizing Shot"),
+                                
+                                new Decorator(ret => Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget),
+                                new PrioritySelector(
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1. Interrupt" && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast, "Intimidation"),
 
-                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1. Interrupt" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast, "Intimidation"),
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "2. Low Health" && Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth, "Intimidation"),
 
-                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "2. Low Health" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth, "Intimidation"),
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "3. Protection" && Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget), "Intimidation"),
 
-                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "3. Protection" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget), "Intimidation"),
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 2"  && ((Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast) || Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth), "Intimidation"),
 
-                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 2" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast) || Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth), "Intimidation"),
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 3" && ((Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast) || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget))), "Intimidation"),
 
-                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast) || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget))), "Intimidation"),
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "2 + 3" && (Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget))), "Intimidation"),
 
-                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "2 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && (Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget))), "Intimidation"),
-
-                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 2 + 3" && Me.GotAlivePet && Me.Pet.Location.Distance(Me.CurrentTarget.Location) < 9 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget) && ((Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast) || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget)) || (Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth)), "Intimidation"),
+                                castSelfSpell("Intimidation", ret => PvPBeastSettings.Instance.IntimidateBox == "1 + 2 + 3" && ((Me.CurrentTarget.IsCasting && Me.CurrentTarget.CanInterruptCurrentSpellCast) || (Me.CurrentTarget.Distance < 7 && MeleeClass(Me.CurrentTarget)) || (Me.CurrentTarget.HealthPercent <= PvPBeastSettings.Instance.TargetHealth)), "Intimidation")
+                                )),
 
                                 castSelfSpell("Every Man for Himself", ret => PvPBeastSettings.Instance.RS && Me.Race == WoWRace.Human && !SpellManager.Spells["Every Man for Himself"].Cooldown && !PvPBeastSettings.Instance.T2MOB && !PvPBeastSettings.Instance.T1MOB && (isStunned(Me).TotalSeconds > 2 || isControlled(Me).TotalSeconds > 2), "Every Man for Himself"),
 
@@ -947,7 +959,7 @@ namespace PvPBeast
 
                                 castSpell("Rapid Fire", ret => PvPBeastSettings.Instance.RF && !Me.HasAura("Rapid Fire") && Me.CurrentTarget.CurrentHealth > 25000 && HostilePlayer(Me.CurrentTarget) && !Invulnerable(Me.CurrentTarget), "Rapid Fire"),
 
-                                castSpell("Stampede", ret => PvPBeastSettings.Instance.STAM && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.Distance <= 30, "Stampede"),
+                                castSpell("Stampede", ret => PvPBeastSettings.Instance.STAM && !Invulnerable(Me.CurrentTarget) && Me.CurrentTarget.Distance <= 30 && HostilePlayer(Me.CurrentTarget), "Stampede"),
 
                                 castSelfSpell("Bestial Wrath", ret => Me.GotAlivePet && PvPBeastSettings.Instance.BWR && (!PvPBeastSettings.Instance.TL4_LR || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalSeconds > 5
                                 || SpellManager.Spells["Lynx Rush"].CooldownTimeLeft.TotalMilliseconds < 1500) && (!PvPBeastSettings.Instance.TL4_AMOC || SpellManager.Spells["A Murder of Crows"].CooldownTimeLeft.TotalSeconds > 5
@@ -1052,24 +1064,25 @@ namespace PvPBeast
 
                                 new Decorator(ret => PvPBeastSettings.Instance.ARC
                                     && (!PvPBeastSettings.Instance.TL5_GLV || spellCD("Glaive Toss") > 2 || !SpellManager.GlobalCooldown)
+                                    && (!PvPBeastSettings.Instance.KCO || spellCD("Kill Command") > 2 || !SpellManager.GlobalCooldown)
                                     && (!PvPBeastSettings.Instance.TL4_BSTRK || spellCD("Blink Strike") > 2 || !SpellManager.GlobalCooldown),
                                     new PrioritySelector(
                                         new Decorator(ret => PvPBeastSettings.Instance.KCO,
                                             new PrioritySelector(
                                                 new Decorator(ret => !Me.HasAura("Thrill of the Hunt"),
                                                     new PrioritySelector(
-                                                        new Decorator(ret => Me.GotAlivePet && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 300,
+                                                        new Decorator(ret => Me.GotAlivePet && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalMilliseconds > 500,
                                                             new PrioritySelector(
                                                                 new Decorator(ret => !Me.HasAura("The Beast Within"),
                                                                     new PrioritySelector(
-                                                                        castSpell("Arcane Shot", ret => (Me.CurrentFocus > 60 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds <= 2) 
-                                                                        || (Me.CurrentFocus > 40 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 2), "Arcane Shot")
+                                                                        castSpell("Arcane Shot", ret => (Me.CurrentFocus > 63 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds <= 2) 
+                                                                        || (Me.CurrentFocus > 43 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 2), "Arcane Shot")
                                                                     )
                                                                 ),
                                                                 new Decorator(ret => Me.HasAura("The Beast Within"),
                                                                     new PrioritySelector(
-                                                                        castSpell("Arcane Shot", ret => (Me.CurrentFocus > 50 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds <= 2) 
-                                                                        || (Me.CurrentFocus > 30 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 2), "Arcane Shot")
+                                                                        castSpell("Arcane Shot", ret => (Me.CurrentFocus > 53 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds <= 2) 
+                                                                        || (Me.CurrentFocus > 33 && SpellManager.Spells["Kill Command"].CooldownTimeLeft.TotalSeconds > 2), "Arcane Shot")
                                                                     )
                                                                 )
                                                             )
@@ -1096,7 +1109,7 @@ namespace PvPBeast
                                 }
                                 )),
 
-                                new Decorator(ret => ((!Me.IsCasting && !SpellManager.GlobalCooldown && spellCD("Kill Command") > 1.5) || Me.CurrentFocus < 18 || (!Me.HasAura("The Beast Within") && Me.CurrentFocus < 38))
+                                new Decorator(ret => ((!Me.IsCasting && !SpellManager.GlobalCooldown && spellCD("Kill Command") > 1.5) || Me.CurrentFocus < 20 || (!Me.HasAura("The Beast Within") && Me.CurrentFocus < 40))
                                     && (!PvPBeastSettings.Instance.TL3_FV || (SpellManager.Spells["Fervor"].CooldownTimeLeft.TotalMilliseconds > 750 && spellCD("Fervor") < 29)),
                                     new PrioritySelector(
                                         castSpell("Steady Shot", ret => Me.CurrentFocus < PvPBeastSettings.Instance.FocusShots || (Me.HasAura("The Beast Within") && Me.CurrentFocus < PvPBeastSettings.Instance.FocusShots / 2), "Cobra Shot")
